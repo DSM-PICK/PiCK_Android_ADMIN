@@ -222,9 +222,6 @@
         }
       }
     },
-    "Events: %lld" : {
-
-    },
     "Favorite" : {
       "comment" : "Item editor title label for marking the item as a favorite",
       "extractionState" : "stale",

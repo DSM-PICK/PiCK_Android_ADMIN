@@ -21,9 +21,10 @@ struct PlanView: View {
 
             ScrollView {
                 VStack(spacing: 0) {
-                    Text("Events: \(viewModel.monthAcademicSchedule.count)") // DEBUG
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    // DEBUG Text removed for cleaner UI as logic is fixed
+                    // Text("Events: \(viewModel.monthAcademicSchedule.count)")
+                    //    .font(.caption)
+                    //    .foregroundColor(.gray)
 
                     AcademicScheduleCalendarView(
                         monthSchedule: viewModel.monthAcademicSchedule,
@@ -82,7 +83,7 @@ struct MonthHeaderView: View {
                 .frame(width: 12)
 
             Text(currentMonth.toKoreanYearMonthString())
-                .pickText(type: .body1) // Approx font
+                .pickText(type: .body1)
                 .foregroundColor(.black)
 
             Spacer()
@@ -104,7 +105,11 @@ struct AcademicScheduleCalendarView: View {
     let currentMonth: Date
     let onDateSelect: (Date) -> Void
 
-    private let calendar = Calendar.current
+    private let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        return cal
+    }()
     private let daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"]
     
     var body: some View {
@@ -181,7 +186,11 @@ struct DateCell: View {
     let hasEvent: Bool
     let isCurrentMonth: Bool
     
-    private let calendar = Calendar.current
+    private let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        return cal
+    }()
     
     var body: some View {
         VStack(spacing: 4) {
@@ -214,8 +223,7 @@ struct DateCell: View {
             return .gray
         }
         if isSelected || isToday {
-            return .black // iOS logic says black for selected/today. Wait, checking iOS DateCell.swift...
-            // iOS: if isSelected || isToday { return .black } (Wait, usually selected is White on Primary? iOS DateCell said black text on Primary100 bg)
+            return .black
         }
         return .black
     }
@@ -240,7 +248,11 @@ struct ScheduleListView: View {
     let selectedDate: Date
     let schedules: [AcademicSchedule]
     
-    private let calendar = Calendar.current
+    private let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        return cal
+    }()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -291,7 +303,7 @@ struct ScheduleRow: View {
                 .frame(width: 4, height: 51)
             
             Text(schedule.eventName)
-                .pickText(type: .body2, textColor: .Normal.black) // subTitle2 -> body2 mapping
+                .pickText(type: .body2, textColor: .Normal.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 20)
         }
@@ -304,6 +316,7 @@ extension Date {
     func toKoreanYearMonthString() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 M월"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul") // Fix timezone
         return formatter.string(from: self)
     }
 }

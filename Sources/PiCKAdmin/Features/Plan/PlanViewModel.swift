@@ -40,7 +40,11 @@ public final class PlanViewModel {
     @MainActor
     public func changeMonth(by value: Int) async {
         print("Changing month by \(value)")
-        guard let newMonth = Calendar.current.date(byAdding: .month, value: value, to: currentMonth) else { 
+        
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        
+        guard let newMonth = calendar.date(byAdding: .month, value: value, to: currentMonth) else { 
             print("Failed to calculate new month")
             return 
         }
