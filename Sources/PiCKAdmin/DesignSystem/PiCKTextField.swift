@@ -10,7 +10,7 @@ public struct PiCKTextField: View {
     public var errorMessage: String?
     public var verificationButtonTapped: (() -> Void)?
 
-    @FocusState private var isFocused: Bool
+    @FocusState var isFocused: Bool
     @State var isSecure: Bool = false
     @State var isVerificationSent: Bool = false
     @State var remainingSeconds = 0
