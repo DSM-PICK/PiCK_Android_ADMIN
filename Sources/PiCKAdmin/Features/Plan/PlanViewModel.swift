@@ -1,0 +1,111 @@
+import Foundation
+import Observation
+
+// MARK: - Plan Models
+public struct AcademicSchedule: Identifiable, Hashable {
+    public let id: String
+    public let eventName: String
+    public let month: Int
+    public let day: Int
+    public let dayName: String
+}
+
+struct AcademicScheduleDTO: Decodable {
+    let id: String
+    let eventName: String
+    let month: Int
+    let day: Int
+    let dayName: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case eventName = "event_name"
+        case month
+        case day
+        case dayName = "day_name"
+    }
+}
+
+@Observable
+public final class PlanViewModel {
+    public var monthAcademicSchedule: [AcademicSchedule] = []
+    public var academicSchedule: [AcademicSchedule] = []
+    public var selectedDate: Date = Date()
+    public var currentMonth: Date = Date()
+    
+    public init() {
+        let today = Date()
+        self.selectedDate = today
+        self.currentMonth = today
+    }
+    
+    @MainActor
+    public func onAppear() async {
+        await fetchInitialData()
+    }
+    
+    @MainActor
+    public func changeMonth(by value: Int) async {
+        guard let newMonth = Calendar.current.date(byAdding: .month, value: value, to: currentMonth) else { return }
+        self.currentMonth = newMonth
+        await fetchMonthSchedule()
+    }
+    
+    @MainActor
+    public func selectDate(_ date: Date) async {
+        self.selectedDate = date
+        await fetchDaySchedule()
+    }
+    
+    @MainActor
+    private func fetchInitialData() async {
+        await fetchMonthSchedule()
+        await fetchDaySchedule()
+    }
+    
+    @MainActor
+    private func fetchMonthSchedule() async {
+        let calendar = Calendar.current
+        let year = String(calendar.component(.year, from: currentMonth))
+        let monthFormatter = DateFormatter()
+        monthFormatter.dateFormat = "MMMM" // Server expects full month name? iOS used "MMMM" with "en_US" locale.
+        monthFormatter.locale = Locale(identifier: "en_US")
+        let month = monthFormatter.string(from: currentMonth).uppercased() // Usually API might expect "MARCH" or "March". iOS Reducer used MMMM.
+        
+        // Wait, iOS Reducer: `let month = monthFormatter.string(from: today)`. `monthFormatter` had locale "en_US".
+        // Let's assume standard full month name.
+        
+        do {
+            let response = try await APIClient.shared.request(
+                PlanAPI.fetchMonthAcademicSchedule(year: year, month: month),
+                responseType: [AcademicScheduleDTO].self
+            )
+            self.monthAcademicSchedule = response.map {
+                AcademicSchedule(id: $0.id, eventName: $0.eventName, month: $0.month, day: $0.day, dayName: $0.dayName)
+            }
+        } catch {
+            print("Failed to fetch month schedule: \(error)")
+            self.monthAcademicSchedule = []
+        }
+    }
+    
+    @MainActor
+    private func fetchDaySchedule() async {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: selectedDate)
+        
+        do {
+            let response = try await APIClient.shared.request(
+                PlanAPI.fetchAcademicScheduleByDate(date: dateString),
+                responseType: [AcademicScheduleDTO].self
+            )
+            self.academicSchedule = response.map {
+                AcademicSchedule(id: $0.id, eventName: $0.eventName, month: $0.month, day: $0.day, dayName: $0.dayName)
+            }
+        } catch {
+            print("Failed to fetch day schedule: \(error)")
+            self.academicSchedule = []
+        }
+    }
+}

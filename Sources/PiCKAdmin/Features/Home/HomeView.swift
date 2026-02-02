@@ -195,7 +195,7 @@ struct SelfStudyCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(Date.koreanDateString())
+            Text(Date().koreanDateString())
                 .pickText(type: .body2)
                 .padding(.top, 14)
                 .padding(.leading, 20)
@@ -443,10 +443,10 @@ struct ClassroomMoveCell: View {
 
 // MARK: - Date Extension
 extension Date {
-    static func koreanDateString() -> String {
+    func koreanDateString() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "M월 d일 EEEE"
-        return formatter.string(from: Date())
+        return formatter.string(from: self)
     }
 }

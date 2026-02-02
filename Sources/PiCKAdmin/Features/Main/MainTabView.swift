@@ -13,11 +13,13 @@ struct MainTabView: View {
                 }
             
             // Tab 1: 일정
-            Color.blue
-                .tag(1)
-                .tabItem {
-                    Label("일정", systemImage: "calendar")
-                }
+            NavigationStack {
+                PlanView()
+            }
+            .tag(1)
+            .tabItem {
+                Label("일정", systemImage: "calendar")
+            }
             
             // Tab 2: 홈
             NavigationStack {
