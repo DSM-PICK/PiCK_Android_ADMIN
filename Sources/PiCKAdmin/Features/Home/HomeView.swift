@@ -7,105 +7,117 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             ScrollView {
-                VStack(spacing: 24) {
-                    // Self Study Info Card
-                    SelfStudyInfoCard(message: viewModel.adminSelfStudyTeacher)
+                VStack(spacing: 20) {
+                    // Self Study Info Card (SelfStudyView)
+                    SelfStudyCard(adminMessage: viewModel.adminSelfStudyTeacher)
+                        .frame(height: 120)
 
-                    // Outing Accept Section (for Homeroom Teacher)
+                    // Outing Accept Section (AccordionView)
                     if viewModel.isHomeroomTeacher {
-                        AccordionSection(
+                        AccordionView(
                             badge: viewModel.classroom,
-                            title: "외출 수락",
-                            isEmpty: viewModel.outingAcceptList.isEmpty,
-                            emptyMessage: "외출 신청이 없습니다"
+                            title: "외출 수락"
                         ) {
-                            ForEach(viewModel.outingAcceptList) { item in
-                                AcceptCell(
-                                    studentNumber: studentNumber(
-                                        grade: item.grade,
-                                        classNum: item.classNum,
-                                        num: item.num
-                                    ),
-                                    name: item.userName,
-                                    type: item.type,
-                                    onAccept: {
-                                        Task {
-                                            if item.type == .outgoing {
-                                                await viewModel.acceptApplication(id: item.id)
-                                            } else {
-                                                await viewModel.acceptEarlyReturn(id: item.id)
+                            if viewModel.outingAcceptList.isEmpty {
+                                Text("외출 신청이 없습니다")
+                                    .pickText(type: .body2, textColor: .Gray.gray600)
+                                    .padding(.vertical, 12)
+                            } else {
+                                ForEach(viewModel.outingAcceptList) { item in
+                                    AcceptCell(
+                                        studentNumber: studentNumber(
+                                            grade: item.grade,
+                                            classNum: item.classNum,
+                                            num: item.num
+                                        ),
+                                        name: item.userName,
+                                        type: item.type,
+                                        onAccept: {
+                                            Task {
+                                                if item.type == .outgoing {
+                                                    await viewModel.acceptApplication(id: item.id)
+                                                } else {
+                                                    await viewModel.acceptEarlyReturn(id: item.id)
+                                                }
+                                            }
+                                        },
+                                        onReject: {
+                                            Task {
+                                                if item.type == .outgoing {
+                                                    await viewModel.rejectApplication(id: item.id)
+                                                } else {
+                                                    await viewModel.rejectEarlyReturn(id: item.id)
+                                                }
                                             }
                                         }
-                                    },
-                                    onReject: {
-                                        Task {
-                                            if item.type == .outgoing {
-                                                await viewModel.rejectApplication(id: item.id)
-                                            } else {
-                                                await viewModel.rejectEarlyReturn(id: item.id)
-                                            }
-                                        }
-                                    }
-                                )
+                                    )
+                                }
                             }
                         }
                     }
 
-                    // Self Study Teacher Sections
+                    // Monitor Sections (AccordionView)
                     if viewModel.isSelfStudyTeacher {
                         // Outing Student List
-                        AccordionSection(
+                        AccordionView(
                             badge: viewModel.floor,
-                            title: "외출자 확인",
-                            isEmpty: viewModel.outingStudentList.isEmpty,
-                            emptyMessage: "외출자가 없습니다"
+                            title: "외출자 확인"
                         ) {
-                            ForEach(viewModel.outingStudentList) { item in
-                                OutingCell(
-                                    studentNumber: studentNumber(
-                                        grade: item.grade,
-                                        classNum: item.classNum,
-                                        num: item.num
-                                    ),
-                                    name: item.userName,
-                                    type: item.type
-                                )
+                            if viewModel.outingStudentList.isEmpty {
+                                Text("외출자가 없습니다")
+                                    .pickText(type: .body2, textColor: .Gray.gray600)
+                                    .padding(.vertical, 12)
+                            } else {
+                                ForEach(viewModel.outingStudentList) { item in
+                                    OutingCell(
+                                        studentNumber: studentNumber(
+                                            grade: item.grade,
+                                            classNum: item.classNum,
+                                            num: item.num
+                                        ),
+                                        name: item.userName,
+                                        type: item.type
+                                    )
+                                }
                             }
                         }
 
                         // Classroom Move List
-                        AccordionSection(
+                        AccordionView(
                             badge: viewModel.floor,
-                            title: "교실 이동자 확인",
-                            isEmpty: viewModel.classroomMoveList.isEmpty,
-                            emptyMessage: "교실 이동자가 없습니다"
+                            title: "교실 이동자 확인"
                         ) {
-                            ForEach(viewModel.classroomMoveList) { item in
-                                ClassroomMoveCell(
-                                    studentNumber: studentNumber(
-                                        grade: item.grade,
-                                        classNum: item.classNum,
-                                        num: item.num
-                                    ),
-                                    studentName: item.userName,
-                                    startPeriod: item.start,
-                                    endPeriod: item.end,
-                                    currentClassroom: "\(item.grade)학년 \(item.classNum)반",
-                                    moveToClassroom: item.classroomName
-                                )
+                            if viewModel.classroomMoveList.isEmpty {
+                                Text("교실 이동자가 없습니다")
+                                    .pickText(type: .body2, textColor: .Gray.gray600)
+                                    .padding(.vertical, 12)
+                            } else {
+                                ForEach(viewModel.classroomMoveList) { item in
+                                    ClassroomMoveCell(
+                                        studentNumber: studentNumber(
+                                            grade: item.grade,
+                                            classNum: item.classNum,
+                                            num: item.num
+                                        ),
+                                        studentName: item.userName,
+                                        startPeriod: item.start,
+                                        endPeriod: item.end,
+                                        currentClassroom: "\(item.grade)학년 \(item.classNum)반",
+                                        moveToClassroom: item.classroomName
+                                    )
+                                }
                             }
                         }
                     }
 
-                    // All Self Study Directors
-                    AllSelfStudySection(selfStudyDirector: viewModel.selfStudyDirector)
+                    // All Self Study Directors (AllSelfStudyView)
+                    AllSelfStudyCard(selfStudyDirector: viewModel.selfStudyDirector)
                 }
                 .padding(24)
             }
             .navigationBarBackButtonHidden(true)
-            #if os(iOS)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     HStack(spacing: 8) {
                         Image(systemName: "checkmark.shield.fill")
                             .foregroundColor(.Primary.primary500)
@@ -114,7 +126,7 @@ struct HomeView: View {
                     }
                 }
 
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         Button(action: { router.navigate(to: .outList) }) {
                             Label("외출 목록", systemImage: "list.bullet")
@@ -135,7 +147,6 @@ struct HomeView: View {
                     }
                 }
             }
-            #endif
             .task {
                 await viewModel.fetchSelfStudyDirector(date: Date.todayString())
                 await viewModel.fetchAdminSelfStudyInfo()
@@ -178,77 +189,151 @@ struct HomeView: View {
     }
 }
 
-// MARK: - Self Study Info Card
-struct SelfStudyInfoCard: View {
-    let message: String
+// MARK: - Self Study Card (Matching SelfStudyView)
+struct SelfStudyCard: View {
+    let adminMessage: String
 
     var body: some View {
-        HStack {
-            Image(systemName: "info.circle.fill")
-                .foregroundColor(.Primary.primary500)
-            Text(message)
-                .pickText(type: .body1)
+        VStack(alignment: .leading, spacing: 0) {
+            Text(Date.koreanDateString())
+                .pickText(type: .body2)
+                .padding(.top, 14)
+                .padding(.leading, 20)
+            
             Spacer()
+            
+            // Note: Simple text for now as complex AttributedString regex might be unstable in Skip/SwiftUI-Android
+            Text(adminMessage.isEmpty ? "자습감독 정보를 불러오는 중입니다" : adminMessage)
+                .pickText(type: .body1)
+                .padding(.bottom, 14)
+                .padding(.leading, 20)
         }
-        .padding(16)
-        .background(Color.Primary.primary50)
-        .cornerRadius(12)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(Color.Gray.gray50)
+        .cornerRadius(8)
     }
 }
 
-// MARK: - Accordion Section
-struct AccordionSection<Content: View>: View {
+// MARK: - Accordion View (Matching AccordionView)
+struct AccordionView<Content: View>: View {
+    @State var isExpanded: Bool = false
     let badge: String
     let title: String
-    let isEmpty: Bool
-    let emptyMessage: String
     @ViewBuilder let content: () -> Content
-
-    @State var isExpanded: Bool = true
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header
             Button(action: { withAnimation { isExpanded.toggle() } }) {
-                HStack {
+                HStack(spacing: 8) {
+                    // Left Arrow (Simulated with system image)
+                    Image(systemName: "chevron.down")
+                        .foregroundColor(.Normal.black)
+                        .rotationEffect(.degrees(isExpanded ? 180 : 0))
+                    
                     Text(badge)
-                        .pickText(type: .caption1, textColor: .Primary.primary500)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.Primary.primary50)
-                        .cornerRadius(4)
-
+                        .pickText(type: .label1, textColor: .Primary.primary500)
+                    
                     Text(title)
-                        .pickText(type: .body1)
-
+                        .pickText(type: .label1, textColor: .Normal.black)
+                    
                     Spacer()
-
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .foregroundColor(.Gray.gray500)
                 }
+                .padding(16)
+                .background(Color.Normal.white) // Assuming white background for header
             }
-            .padding(16)
-            .background(Color.Normal.white)
 
-            // Content
             if isExpanded {
-                if isEmpty {
-                    Text(emptyMessage)
-                        .pickText(type: .body1, textColor: .Gray.gray600)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 24)
-                } else {
-                    VStack(spacing: 8) {
-                        content()
+                VStack(spacing: 8) {
+                    content()
+                }
+                .padding(.bottom, 16)
+                .padding(.horizontal, 16)
+            }
+        }
+        .background(Color.Normal.white) // Overall background
+        // Note: iOS version didn't seem to have card styling (shadow/radius) on the View itself, 
+        // but often it's used in a context. I'll keep it simple or match surrounding style.
+        // The iOS AccordionView code didn't show cornerRadius/shadow. 
+        // But previously I added them. I will REMOVE them to match iOS code exactly, 
+        // or keep them if they were applied by parent. 
+        // Looking at iOS HomeView (not visible here), it likely composes them.
+        // I will add slight radius/shadow for better look on Android if not specified, 
+        // or stick to flat if iOS is flat. 
+        // Let's stick to the previous card style for container but use the NEW internal layout.
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+    }
+}
+
+// MARK: - All Self Study Card (Matching AllSelfStudyView)
+struct AllSelfStudyCard: View {
+    let selfStudyDirector: [SelfStudyDirector]
+
+    var body: some View {
+        ZStack {
+            if selfStudyDirector.isEmpty {
+                ZStack {
+                    VStack(alignment: .leading) {
+                        Text("오늘은\n자습감독 선생님이 없습니다.")
+                            .pickText(type: .body1, textColor: .Normal.black)
+                            .padding(.top, 70)
+                            .padding(.leading, 20)
+                            .padding(.bottom, 70)
+                        Spacer()
                     }
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 16)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    
+                    // Placeholder Image
+                    Image(systemName: "calendar")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.Gray.gray200)
+                        .frame(width: 120, height: 120)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 20)
+                }
+            } else {
+                ZStack {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("오늘의 자습 감독 선생님 입니다")
+                            .pickText(type: .body1)
+                            .padding(.top, 24)
+                            .padding(.leading, 20)
+                        
+                        VStack(alignment: .leading, spacing: 12) {
+                            ForEach(selfStudyDirector, id: \.floor) { director in
+                                HStack(spacing: 16) {
+                                    Text("\(director.floor)층")
+                                        .pickText(type: .body1, textColor: .Primary.primary500)
+                                    
+                                    Text("\(director.teacherName) 선생님")
+                                        .pickText(type: .heading3, textColor: .Normal.black)
+                                }
+                            }
+                        }
+                        .padding(.top, 16)
+                        .padding(.leading, 20)
+                        
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    
+                    // Placeholder Image (Matching iOS Position)
+                    Image(systemName: "calendar")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.Gray.gray200) // Placeholder color
+                        .frame(width: 120, height: 120) // Slightly smaller than 140 to fit better
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 10)
                 }
             }
         }
-        .background(Color.Normal.white)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+        .frame(minHeight: 180) // Changed to minHeight and increased slightly
+        .background(Color.Gray.gray50)
+        .cornerRadius(8)
     }
 }
 
@@ -356,33 +441,12 @@ struct ClassroomMoveCell: View {
     }
 }
 
-// MARK: - All Self Study Section
-struct AllSelfStudySection: View {
-    let selfStudyDirector: [SelfStudyDirector]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("전체 자습감독")
-                .pickText(type: .body1)
-
-            VStack(spacing: 8) {
-                ForEach(selfStudyDirector, id: \.floor) { director in
-                    HStack {
-                        Text("\(director.floor)층")
-                            .pickText(type: .body2, textColor: .Gray.gray600)
-                        Spacer()
-                        Text(director.teacherName)
-                            .pickText(type: .body2)
-                    }
-                    .padding(12)
-                    .background(Color.Gray.gray50)
-                    .cornerRadius(8)
-                }
-            }
-        }
-        .padding(16)
-        .background(Color.Normal.white)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+// MARK: - Date Extension
+extension Date {
+    static func koreanDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "M월 d일 EEEE"
+        return formatter.string(from: Date())
     }
 }

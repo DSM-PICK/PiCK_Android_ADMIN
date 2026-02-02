@@ -223,6 +223,71 @@ public final class APIClient: @unchecked Sendable {
             throw APIError.networkError(error)
         }
     }
+
+    public func requestString(_ endpoint: APIEndpoint) async throws -> String {
+        guard var urlComponents = URLComponents(string: baseURL + endpoint.path) else {
+            apiLogger.info("❌ Invalid URL: \(self.baseURL + endpoint.path)")
+            throw APIError.invalidURL
+        }
+
+        urlComponents.queryItems = endpoint.queryItems
+
+        guard let url = urlComponents.url else {
+            apiLogger.info("❌ Failed to construct URL from components")
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = endpoint.method.rawValue
+        request.httpBody = endpoint.body
+
+        // Default headers
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        // Add authorization if available
+        if let token = JwtStore.shared.accessToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        // Custom headers
+        endpoint.headers?.forEach { key, value in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+
+        // Log request
+        apiLogger.info("📤 REQUEST: \(endpoint.method.rawValue) \(url.absoluteString)")
+
+        do {
+            let (data, response) = try await session.data(for: request)
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                apiLogger.info("❌ Invalid response type")
+                throw APIError.invalidResponse
+            }
+
+            // Log response
+            apiLogger.info("📥 RESPONSE: \(httpResponse.statusCode) \(url.absoluteString)")
+            let responseString = String(data: data, encoding: .utf8) ?? ""
+            apiLogger.info("📥 DATA: \(responseString)")
+
+            switch httpResponse.statusCode {
+            case 200...299:
+                apiLogger.info("✅ SUCCESS: \(endpoint.path)")
+                return responseString
+            case 401:
+                apiLogger.info("❌ Unauthorized (401)")
+                throw APIError.unauthorized
+            default:
+                apiLogger.info("❌ Server error: \(httpResponse.statusCode)")
+                throw APIError.serverError(httpResponse.statusCode)
+            }
+        } catch let error as APIError {
+            throw error
+        } catch {
+            apiLogger.info("❌ Network error: \(error.localizedDescription)")
+            throw APIError.networkError(error)
+        }
+    }
 }
 
 // MARK: - Auth API
@@ -309,4 +374,107 @@ public struct SignupRequest: Codable {
     public let accountId: String
     public let password: String
     public let name: String
+}
+
+// MARK: - Home API
+public struct HomeAPI {
+    // MARK: Home / Self Study
+    public static func getSelfStudyDirector(date: String) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/self-study/today",
+            queryItems: [URLQueryItem(name: "date", value: date)]
+        )
+    }
+
+    public static func getAdminSelfStudyInfo() -> APIEndpoint {
+        return APIEndpoint(
+            path: "/self-study/admin"
+        )
+    }
+
+    public static func getSelfStudyAndClassroom() -> APIEndpoint {
+        return APIEndpoint(
+            path: "/admin/main"
+        )
+    }
+
+    // MARK: Accept (Homeroom Teacher)
+    public static func getApplicationsByGrade(grade: Int, classNum: Int) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/application/grade",
+            queryItems: [
+                URLQueryItem(name: "grade", value: String(grade)),
+                URLQueryItem(name: "class_num", value: String(classNum))
+            ]
+        )
+    }
+
+    public static func getEarlyReturnByGrade(grade: Int, classNum: Int) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/early-return/grade",
+            queryItems: [
+                URLQueryItem(name: "grade", value: String(grade)),
+                URLQueryItem(name: "class_num", value: String(classNum))
+            ]
+        )
+    }
+
+    public static func updateApplicationStatus(idList: [String], status: String) -> APIEndpoint {
+        let body = try? JSONEncoder().encode(UpdateStatusRequest(status: status, idList: idList))
+        return APIEndpoint(
+            path: "/application/status",
+            method: .patch,
+            body: body
+        )
+    }
+
+    public static func updateEarlyReturnStatus(idList: [String], status: String) -> APIEndpoint {
+        let body = try? JSONEncoder().encode(UpdateStatusRequest(status: status, idList: idList))
+        return APIEndpoint(
+            path: "/early-return/status",
+            method: .patch,
+            body: body
+        )
+    }
+
+    // MARK: Monitor (Self Study Teacher)
+    public static func getClassroomMoveByFloor(floor: Int) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/classroom/floor",
+            queryItems: [
+                URLQueryItem(name: "floor", value: String(floor)),
+                URLQueryItem(name: "status", value: "OK")
+            ]
+        )
+    }
+
+    public static func getOutList(floor: Int) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/application/floor",
+            queryItems: [
+                URLQueryItem(name: "floor", value: String(floor)),
+                URLQueryItem(name: "status", value: "OK")
+            ]
+        )
+    }
+
+    public static func getEarlyReturnList(floor: Int) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/early-return/floor",
+            queryItems: [
+                URLQueryItem(name: "floor", value: String(floor)),
+                URLQueryItem(name: "status", value: "OK")
+            ]
+        )
+    }
+}
+
+public struct UpdateStatusRequest: Codable {
+    public let status: String
+    public let idList: [String]
+    
+    enum CodingKeys: String, CodingKey {
+        case status
+        case idList = "id_list"
+    }
 }

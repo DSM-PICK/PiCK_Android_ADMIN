@@ -25,10 +25,8 @@ struct ContentView: View {
     }
 
     private var homeView: some View {
-        NavigationStack {
-            HomeView()
-        }
-        .environment(\.appRouter, router)
+        MainTabView()
+            .environment(\.appRouter, router)
     }
 
     private var navigationStackView: some View {
