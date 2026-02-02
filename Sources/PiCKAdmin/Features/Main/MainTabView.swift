@@ -40,11 +40,13 @@ struct MainTabView: View {
                 }
             
             // Tab 4: 전체
-            Color.orange
-                .tag(4)
-                .tabItem {
-                    Label("전체", systemImage: "line.3.horizontal")
-                }
+            NavigationStack {
+                AllTabView()
+            }
+            .tag(4)
+            .tabItem {
+                Label("전체", systemImage: "line.3.horizontal")
+            }
         }
         .tint(Color.Primary.primary500)
     }

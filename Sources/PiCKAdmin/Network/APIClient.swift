@@ -520,6 +520,13 @@ public struct SchoolMealAPI {
     }
 }
 
+// MARK: - Admin API
+public struct AdminAPI {
+    public static func getMyName() -> APIEndpoint {
+        return APIEndpoint(path: "/admin/my-name")
+    }
+}
+
 public struct UpdateStatusRequest: Codable {
     public let status: String
     public let idList: [String]
