@@ -16,14 +16,6 @@ struct AcademicScheduleDTO: Decodable {
     let month: Int
     let day: Int
     let dayName: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case eventName = "event_name"
-        case month
-        case day
-        case dayName = "day_name"
-    }
 }
 
 @Observable
@@ -70,21 +62,20 @@ public final class PlanViewModel {
         let monthFormatter = DateFormatter()
         monthFormatter.dateFormat = "MMMM" // Server expects full month name? iOS used "MMMM" with "en_US" locale.
         monthFormatter.locale = Locale(identifier: "en_US")
-        let month = monthFormatter.string(from: currentMonth).uppercased() // Usually API might expect "MARCH" or "March". iOS Reducer used MMMM.
-        
-        // Wait, iOS Reducer: `let month = monthFormatter.string(from: today)`. `monthFormatter` had locale "en_US".
-        // Let's assume standard full month name.
+        let month = monthFormatter.string(from: currentMonth)
         
         do {
+            print("📅 Fetching month schedule for: \(year) \(month)")
             let response = try await APIClient.shared.request(
                 PlanAPI.fetchMonthAcademicSchedule(year: year, month: month),
                 responseType: [AcademicScheduleDTO].self
             )
+            print("✅ Month schedule fetched: \(response.count) events")
             self.monthAcademicSchedule = response.map {
                 AcademicSchedule(id: $0.id, eventName: $0.eventName, month: $0.month, day: $0.day, dayName: $0.dayName)
             }
         } catch {
-            print("Failed to fetch month schedule: \(error)")
+            print("❌ Failed to fetch month schedule: \(error)")
             self.monthAcademicSchedule = []
         }
     }

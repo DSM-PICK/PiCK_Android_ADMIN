@@ -197,6 +197,7 @@ struct DateCell: View {
             }
         }
         .opacity(isCurrentMonth ? 1.0 : 0.3)
+        .background(Color.white.opacity(0.001)) // Ensure tap area covers the whole cell
     }
     
     private var textColor: Color {
