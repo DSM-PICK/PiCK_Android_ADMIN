@@ -1,7 +1,5 @@
 import Foundation
-#if canImport(Observation)
 import Observation
-#endif
 
 // MARK: - Home Models
 public struct OutingStudent: Identifiable, Hashable {
@@ -51,26 +49,27 @@ public struct SelfStudyDirector: Hashable {
 }
 
 // MARK: - Home ViewModel
-@MainActor
-public final class HomeViewModel: ObservableObject {
-    @Published public var adminSelfStudyTeacher: String = ""
-    @Published public var selfStudyDirector: [SelfStudyDirector] = []
-    @Published public var outingAcceptList: [AcceptStudent] = []
-    @Published public var outingStudentList: [OutingStudent] = []
-    @Published public var classroomMoveList: [ClassroomMoveStudent] = []
+@Observable
+public final class HomeViewModel {
+    public var adminSelfStudyTeacher: String = ""
+    public var selfStudyDirector: [SelfStudyDirector] = []
+    public var outingAcceptList: [AcceptStudent] = []
+    public var outingStudentList: [OutingStudent] = []
+    public var classroomMoveList: [ClassroomMoveStudent] = []
 
-    @Published public var isHomeroomTeacher: Bool = true
-    @Published public var isSelfStudyTeacher: Bool = true
-    @Published public var classroom: String = "2학년 1반"
-    @Published public var floor: String = "2층"
+    public var isHomeroomTeacher: Bool = true
+    public var isSelfStudyTeacher: Bool = true
+    public var classroom: String = "2학년 1반"
+    public var floor: String = "2층"
 
-    @Published public var isLoading: Bool = false
-    @Published public var showAlert: Bool = false
-    @Published public var alertMessage: String = ""
-    @Published public var alertSuccessType: Bool = true
+    public var isLoading: Bool = false
+    public var showAlert: Bool = false
+    public var alertMessage: String = ""
+    public var alertSuccessType: Bool = true
 
     public init() {}
 
+    @MainActor
     public func fetchSelfStudyDirector(date: String) async {
         // TODO: Implement API call
         // Mock data for now
@@ -81,11 +80,13 @@ public final class HomeViewModel: ObservableObject {
         ]
     }
 
+    @MainActor
     public func fetchAdminSelfStudyInfo() async {
         // TODO: Implement API call
         adminSelfStudyTeacher = "오늘의 자습감독 선생님: 김선생님"
     }
 
+    @MainActor
     public func fetchSelfStudyAndClassroom() async {
         // TODO: Implement API call
         // Mock data
@@ -112,30 +113,35 @@ public final class HomeViewModel: ObservableObject {
         ]
     }
 
+    @MainActor
     public func acceptApplication(id: String) async {
         // TODO: Implement API call
         outingAcceptList.removeAll { $0.id == id }
         showSuccessAlert(message: "외출이 승인되었습니다")
     }
 
+    @MainActor
     public func rejectApplication(id: String) async {
         // TODO: Implement API call
         outingAcceptList.removeAll { $0.id == id }
         showSuccessAlert(message: "외출이 거절되었습니다")
     }
 
+    @MainActor
     public func acceptEarlyReturn(id: String) async {
         // TODO: Implement API call
         outingAcceptList.removeAll { $0.id == id }
         showSuccessAlert(message: "조기귀가가 승인되었습니다")
     }
 
+    @MainActor
     public func rejectEarlyReturn(id: String) async {
         // TODO: Implement API call
         outingAcceptList.removeAll { $0.id == id }
         showSuccessAlert(message: "조기귀가가 거절되었습니다")
     }
 
+    @MainActor
     private func showSuccessAlert(message: String) {
         alertMessage = message
         alertSuccessType = true
@@ -147,6 +153,7 @@ public final class HomeViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     public func dismissAlert() {
         showAlert = false
     }

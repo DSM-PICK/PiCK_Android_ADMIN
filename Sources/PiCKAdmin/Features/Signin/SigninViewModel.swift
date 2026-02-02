@@ -1,12 +1,13 @@
 import Foundation
+import Observation
 
-@MainActor
-public final class SigninViewModel: ObservableObject {
-    @Published public var email: String = ""
-    @Published public var password: String = ""
-    @Published public var isLoading: Bool = false
-    @Published public var errorMessage: String?
-    @Published public var isSigninSuccessful: Bool = false
+@Observable
+public final class SigninViewModel {
+    public var email: String = ""
+    public var password: String = ""
+    public var isLoading: Bool = false
+    public var errorMessage: String?
+    public var isSigninSuccessful: Bool = false
 
     public init() {}
 
@@ -14,6 +15,7 @@ public final class SigninViewModel: ObservableObject {
         !email.isEmpty && !password.isEmpty
     }
 
+    @MainActor
     public func signin() async {
         guard isFormValid else { return }
 
@@ -41,6 +43,7 @@ public final class SigninViewModel: ObservableObject {
         isLoading = false
     }
 
+    @MainActor
     public func clearError() {
         errorMessage = nil
     }

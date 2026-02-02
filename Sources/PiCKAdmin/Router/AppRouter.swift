@@ -1,8 +1,9 @@
 import SwiftUI
-import Foundation
+import Observation
 
-public final class AppRouter: ObservableObject {
-    @Published public var path: [AppRoute] = []
+@Observable
+public final class AppRouter {
+    public var path: [AppRoute] = []
 
     public init() {}
 
@@ -21,5 +22,17 @@ public final class AppRouter: ObservableObject {
 
     public func replace(with route: AppRoute) {
         path = [route]
+    }
+}
+
+// MARK: - Environment Key
+struct AppRouterKey: EnvironmentKey {
+    static let defaultValue: AppRouter = AppRouter()
+}
+
+extension EnvironmentValues {
+    var appRouter: AppRouter {
+        get { self[AppRouterKey.self] }
+        set { self[AppRouterKey.self] = newValue }
     }
 }

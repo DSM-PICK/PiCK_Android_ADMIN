@@ -1,14 +1,16 @@
 import SwiftUI
 
 struct SigninView: View {
-    @EnvironmentObject var router: AppRouter
-    @StateObject var viewModel = SigninViewModel()
+    @Environment(\.appRouter) var router: AppRouter
+    @State var viewModel = SigninViewModel()
 
     var body: some View {
+        @Bindable var vm = viewModel
+
         VStack(alignment: .leading, spacing: 0) {
             headerSection
-            emailTextField
-            passwordTextField
+            emailTextField(vm: vm)
+            passwordTextField(vm: vm)
             forgotPasswordLinkSection
             Spacer()
             signupLinkSection
@@ -56,9 +58,9 @@ struct SigninView: View {
         .padding(.leading, 24)
     }
 
-    private var emailTextField: some View {
+    private func emailTextField(vm: Bindable<SigninViewModel>) -> some View {
         PiCKTextField(
-            text: $viewModel.email,
+            text: vm.$email,
             placeholder: "학교 이메일을 입력해주세요",
             titleText: "이메일",
             showEmail: true
@@ -67,9 +69,9 @@ struct SigninView: View {
         .padding(.top, 50)
     }
 
-    private var passwordTextField: some View {
+    private func passwordTextField(vm: Bindable<SigninViewModel>) -> some View {
         PiCKTextField(
-            text: $viewModel.password,
+            text: vm.$password,
             placeholder: "비밀번호를 입력해주세요",
             titleText: "비밀번호",
             isSecurity: true

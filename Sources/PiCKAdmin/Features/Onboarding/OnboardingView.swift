@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @EnvironmentObject var router: AppRouter
+    @Environment(\.appRouter) var router: AppRouter
 
     var body: some View {
         VStack {

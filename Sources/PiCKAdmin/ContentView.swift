@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var router = AppRouter()
+    @State var router = AppRouter()
     @State var isCheckingAuth = true
 
     var body: some View {
@@ -15,7 +15,7 @@ struct ContentView: View {
             }
         }
         .onAppear(perform: checkAuthStatus)
-        .environmentObject(router)
+        .environment(\.appRouter, router)
     }
 
     private var authLoadingView: some View {
@@ -28,33 +28,36 @@ struct ContentView: View {
         NavigationStack {
             HomeView()
         }
-        .environmentObject(router)
+        .environment(\.appRouter, router)
     }
 
     private var navigationStackView: some View {
         ZStack {
             if router.path.isEmpty {
                 OnboardingView()
-                    .environmentObject(router)
-                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                    .environment(\.appRouter, router)
+                    .transition(AnyTransition.opacity.combined(with: AnyTransition.scale(scale: 0.95)))
                     .zIndex(0)
             }
 
             if !router.path.isEmpty {
-                NavigationStack(path: $router.path) {
+                NavigationStack(path: Binding(
+                    get: { router.path },
+                    set: { router.path = $0 }
+                )) {
                     Color.clear
                         .navigationDestination(for: AppRoute.self) { route in
                             routeDestination(for: route)
                         }
                 }
-                .transition(.asymmetric(
-                    insertion: AnyTransition.offset(x: 0, y: 20).combined(with: .opacity),
-                    removal: .opacity.combined(with: .scale(scale: 1.05))
+                .transition(AnyTransition.asymmetric(
+                    insertion: AnyTransition.offset(x: 0, y: 20).combined(with: AnyTransition.opacity),
+                    removal: AnyTransition.opacity.combined(with: AnyTransition.scale(scale: 1.05))
                 ))
                 .zIndex(1)
             }
         }
-        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: router.path.count)
+        .animation(.easeInOut(duration: 0.35), value: router.path.count)
     }
 
     @ViewBuilder
@@ -62,48 +65,36 @@ struct ContentView: View {
         switch route {
         case .onboarding:
             OnboardingView()
-                .environmentObject(router)
+                .environment(\.appRouter, router)
         case .signin:
             SigninView()
-                .environmentObject(router)
+                .environment(\.appRouter, router)
         case .secretKey:
-            SecretKeyView()
-                .environmentObject(router)
+            SecretKeyView(router: router)
         case let .email(secretKey):
-            EmailVerifyView(secretKey: secretKey)
-                .environmentObject(router)
+            EmailVerifyView(secretKey: secretKey, router: router)
         case let .password(secretKey, accountId, code):
-            PasswordView(secretKey: secretKey, accountId: accountId, code: code)
-                .environmentObject(router)
+            PasswordView(secretKey: secretKey, accountId: accountId, code: code, router: router)
         case let .infoSetting(secretKey, accountId, code, password):
-            InfoSettingView(secretKey: secretKey, accountId: accountId, code: code, password: password)
-                .environmentObject(router)
+            InfoSettingView(secretKey: secretKey, accountId: accountId, code: code, password: password, router: router)
         case .home:
             EmptyView()
         case .outList:
-            OutListView()
-                .environmentObject(router)
+            OutListView(router: router)
         case .checkSelfStudyTeacher:
-            CheckSelfStudyTeacherView()
-                .environmentObject(router)
+            CheckSelfStudyTeacherView(router: router)
         case .bugReport:
-            BugReportView()
-                .environmentObject(router)
+            BugReportView(router: router)
         case .changePassword:
-            ChangePasswordView()
-                .environmentObject(router)
+            ChangePasswordView(router: router)
         case let .newPassword(accountId, code):
-            NewPasswordView(accountId: accountId, code: code)
-                .environmentObject(router)
+            NewPasswordView(accountId: accountId, code: code, router: router)
         case .selfStudyCheck:
-            SelfStudyCheckView()
-                .environmentObject(router)
+            SelfStudyCheckView(router: router)
         case .classroomMoveList:
-            ClassroomMoveListView()
-                .environmentObject(router)
+            ClassroomMoveListView(router: router)
         case .outingHistory:
-            OutingHistoryView()
-                .environmentObject(router)
+            OutingHistoryView(router: router)
         }
     }
 
@@ -125,7 +116,7 @@ struct ContentView: View {
 // MARK: - Placeholder Views (TODO: Implement)
 
 struct SecretKeyView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "시크릿 키 입력", backAction: { router.pop() })
@@ -134,7 +125,7 @@ struct SecretKeyView: View {
 
 struct EmailVerifyView: View {
     let secretKey: String
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "이메일 인증", backAction: { router.pop() })
@@ -145,7 +136,7 @@ struct PasswordView: View {
     let secretKey: String
     let accountId: String
     let code: String
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "비밀번호 설정", backAction: { router.pop() })
@@ -157,7 +148,7 @@ struct InfoSettingView: View {
     let accountId: String
     let code: String
     let password: String
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "정보 설정", backAction: { router.pop() })
@@ -165,7 +156,7 @@ struct InfoSettingView: View {
 }
 
 struct OutListView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "외출 목록", backAction: { router.pop() })
@@ -173,7 +164,7 @@ struct OutListView: View {
 }
 
 struct CheckSelfStudyTeacherView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "자습감독 확인", backAction: { router.pop() })
@@ -181,7 +172,7 @@ struct CheckSelfStudyTeacherView: View {
 }
 
 struct BugReportView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "버그 신고", backAction: { router.pop() })
@@ -189,7 +180,7 @@ struct BugReportView: View {
 }
 
 struct ChangePasswordView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "비밀번호 변경", backAction: { router.pop() })
@@ -199,7 +190,7 @@ struct ChangePasswordView: View {
 struct NewPasswordView: View {
     let accountId: String
     let code: String
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "새 비밀번호", backAction: { router.pop() })
@@ -207,7 +198,7 @@ struct NewPasswordView: View {
 }
 
 struct SelfStudyCheckView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "자습 확인", backAction: { router.pop() })
@@ -215,7 +206,7 @@ struct SelfStudyCheckView: View {
 }
 
 struct ClassroomMoveListView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "교실 이동 목록", backAction: { router.pop() })
@@ -223,7 +214,7 @@ struct ClassroomMoveListView: View {
 }
 
 struct OutingHistoryView: View {
-    @EnvironmentObject var router: AppRouter
+    var router: AppRouter
 
     var body: some View {
         PlaceholderView(title: "외출 기록", backAction: { router.pop() })

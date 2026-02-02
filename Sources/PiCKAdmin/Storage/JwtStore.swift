@@ -1,6 +1,6 @@
 import Foundation
 
-public final class JwtStore: ObservableObject, @unchecked Sendable {
+public final class JwtStore: @unchecked Sendable {
     public static let shared = JwtStore()
 
     private let storage = UserDefaultStorage.shared

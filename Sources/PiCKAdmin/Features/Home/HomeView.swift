@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var router: AppRouter
-    @StateObject var viewModel = HomeViewModel()
+    @Environment(\.appRouter) var router: AppRouter
+    @State var viewModel = HomeViewModel()
 
     var body: some View {
         ZStack {
@@ -174,7 +174,7 @@ struct HomeView: View {
             .padding(.bottom, 100)
         }
         .transition(AnyTransition.move(edge: .bottom).combined(with: .opacity))
-        .animation(.spring(), value: viewModel.showAlert)
+        .animation(.easeInOut, value: viewModel.showAlert)
     }
 }
 
