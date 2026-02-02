@@ -469,6 +469,26 @@ public struct HomeAPI {
     }
 }
 
+// MARK: - Plan API
+public struct PlanAPI {
+    public static func fetchAcademicScheduleByDate(date: String) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/schedule/date",
+            queryItems: [URLQueryItem(name: "date", value: date)]
+        )
+    }
+
+    public static func fetchMonthAcademicSchedule(year: String, month: String) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/schedule/month",
+            queryItems: [
+                URLQueryItem(name: "year", value: year),
+                URLQueryItem(name: "month", value: month)
+            ]
+        )
+    }
+}
+
 public struct UpdateStatusRequest: Codable {
     public let status: String
     public let idList: [String]
