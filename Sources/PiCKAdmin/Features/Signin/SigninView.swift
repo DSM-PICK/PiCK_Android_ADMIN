@@ -2,16 +2,20 @@ import SwiftUI
 
 struct SigninView: View {
     @Environment(\.appRouter) var router: AppRouter
-    @State var viewModel = SigninViewModel()
+
+    // Use local @State for text fields (Skip compatible)
+    @State var email: String = ""
+    @State var password: String = ""
+    @State var isLoading: Bool = false
+    @State var errorMessage: String?
+    @State var isSigninSuccessful: Bool = false
 
     var body: some View {
-        @Bindable var vm = viewModel
-
         VStack(alignment: .leading, spacing: 0) {
             headerSection
 
             PiCKTextField(
-                text: $vm.email,
+                text: $email,
                 placeholder: "학교 이메일을 입력해주세요",
                 titleText: "이메일",
                 showEmail: true
@@ -20,7 +24,7 @@ struct SigninView: View {
             .padding(.top, 50)
 
             PiCKTextField(
-                text: $vm.password,
+                text: $password,
                 placeholder: "비밀번호를 입력해주세요",
                 titleText: "비밀번호",
                 isSecurity: true
@@ -34,8 +38,8 @@ struct SigninView: View {
             signinButton
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onChange(of: viewModel.isSigninSuccessful) { _, isSuccessful in
-            if isSuccessful {
+        .onChange(of: isSigninSuccessful) { _, success in
+            if success {
                 router.replace(with: .home)
             }
         }
@@ -53,10 +57,14 @@ struct SigninView: View {
         }
         #endif
         .overlay(alignment: .top) {
-            if viewModel.errorMessage != nil {
+            if errorMessage != nil {
                 errorToast
             }
         }
+    }
+
+    private var isFormValid: Bool {
+        !email.isEmpty && !password.isEmpty
     }
 
     private var headerSection: some View {
@@ -103,11 +111,11 @@ struct SigninView: View {
     private var signinButton: some View {
         PiCKButton(
             buttonText: "로그인하기",
-            isEnabled: viewModel.isFormValid,
-            isLoading: viewModel.isLoading,
+            isEnabled: isFormValid,
+            isLoading: isLoading,
             action: {
                 Task {
-                    await viewModel.signin()
+                    await signin()
                 }
             }
         )
@@ -115,11 +123,38 @@ struct SigninView: View {
         .padding(.bottom, 28)
     }
 
+    private func signin() async {
+        guard isFormValid else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            let response = try await APIClient.shared.request(
+                AuthAPI.signin(adminId: email, password: password),
+                responseType: SigninResponse.self
+            )
+
+            JwtStore.shared.saveTokens(
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken
+            )
+
+            isSigninSuccessful = true
+        } catch let error as APIError {
+            errorMessage = error.errorDescription
+        } catch {
+            errorMessage = "로그인에 실패했습니다"
+        }
+
+        isLoading = false
+    }
+
     private var errorToast: some View {
         HStack {
             Image(systemName: "exclamationmark.circle.fill")
                 .foregroundColor(.Error.error)
-            Text(viewModel.errorMessage ?? "")
+            Text(errorMessage ?? "")
                 .pickText(type: .body2, textColor: .Normal.white)
         }
         .padding(.horizontal, 16)
@@ -132,7 +167,7 @@ struct SigninView: View {
             Task {
                 try? await Task.sleep(nanoseconds: 3_000_000_000)
                 withAnimation {
-                    viewModel.clearError()
+                    errorMessage = nil
                 }
             }
         }

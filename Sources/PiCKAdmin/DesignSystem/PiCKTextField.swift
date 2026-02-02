@@ -10,7 +10,6 @@ public struct PiCKTextField: View {
     public var errorMessage: String?
     public var verificationButtonTapped: (() -> Void)?
 
-    @FocusState var isFocused: Bool
     @State var isSecure: Bool = false
     @State var isVerificationSent: Bool = false
     @State var remainingSeconds = 0
@@ -47,19 +46,18 @@ public struct PiCKTextField: View {
             HStack {
                 if isSecure {
                     SecureField(placeholder, text: $text)
-                        .pickText(type: .caption2, textColor: .Normal.black)
+                        .font(.system(size: 14))
                         #if os(iOS)
                         .textInputAutocapitalization(.never)
                         #endif
                         .autocorrectionDisabled(true)
                 } else {
                     TextField(placeholder, text: $text)
-                        .pickText(type: .caption2, textColor: .Normal.black)
+                        .font(.system(size: 14))
                         #if os(iOS)
                         .textInputAutocapitalization(.never)
                         #endif
                         .autocorrectionDisabled(true)
-                        .focused($isFocused)
                 }
 
                 if isSecurity {
@@ -71,14 +69,16 @@ public struct PiCKTextField: View {
                     }
                 } else if showVerification {
                     Text("@dsm.hs.kr")
-                        .pickText(type: .caption2, textColor: .Gray.gray500)
+                        .font(.system(size: 14))
+                        .foregroundColor(.Gray.gray500)
 
                     Button(action: {
                         verificationButtonTapped?()
                         startTimer()
                     }) {
                         Text(buttonText)
-                            .pickText(type: .button2, textColor: .Primary.primary900)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.Primary.primary900)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 4)
                             .background(Color.Primary.primary50)
@@ -87,11 +87,12 @@ public struct PiCKTextField: View {
                     .disabled(text.isEmpty || remainingSeconds > 0)
                 } else if showEmail {
                     Text("@dsm.hs.kr")
-                        .pickText(type: .caption2, textColor: .Gray.gray500)
+                        .font(.system(size: 14))
+                        .foregroundColor(.Gray.gray500)
                 }
             }
             .padding(.horizontal, 16)
-            .frame(height: 40)
+            .padding(.vertical, 12)
             .background(Color.Gray.gray50)
             .cornerRadius(4)
             .overlay(
@@ -101,7 +102,8 @@ public struct PiCKTextField: View {
 
             if let errorMessage = errorMessage, !errorMessage.isEmpty {
                 Text(errorMessage)
-                    .pickText(type: .body1, textColor: .Error.error)
+                    .font(.system(size: 14))
+                    .foregroundColor(.Error.error)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
@@ -113,8 +115,6 @@ public struct PiCKTextField: View {
     private var borderColor: Color {
         if errorMessage != nil && !errorMessage!.isEmpty {
             return .Error.error
-        } else if isFocused {
-            return .Primary.primary500
         } else {
             return .clear
         }
