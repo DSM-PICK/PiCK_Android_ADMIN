@@ -52,19 +52,22 @@ public struct APIEndpoint {
     let headers: [String: String]?
     let body: Data?
     let queryItems: [URLQueryItem]?
+    let customBaseURL: String?
 
     public init(
         path: String,
         method: HTTPMethod = .get,
         headers: [String: String]? = nil,
         body: Data? = nil,
-        queryItems: [URLQueryItem]? = nil
+        queryItems: [URLQueryItem]? = nil,
+        customBaseURL: String? = nil
     ) {
         self.path = path
         self.method = method
         self.headers = headers
         self.body = body
         self.queryItems = queryItems
+        self.customBaseURL = customBaseURL
     }
 }
 
@@ -85,8 +88,9 @@ public final class APIClient: @unchecked Sendable {
         _ endpoint: APIEndpoint,
         responseType: T.Type
     ) async throws -> T {
-        guard var urlComponents = URLComponents(string: baseURL + endpoint.path) else {
-            apiLogger.info("❌ Invalid URL: \(self.baseURL + endpoint.path)")
+        let rootURL = endpoint.customBaseURL ?? baseURL
+        guard var urlComponents = URLComponents(string: rootURL + endpoint.path) else {
+            apiLogger.info("❌ Invalid URL: \(rootURL + endpoint.path)")
             throw APIError.invalidURL
         }
 
@@ -162,8 +166,9 @@ public final class APIClient: @unchecked Sendable {
     }
 
     public func requestVoid(_ endpoint: APIEndpoint) async throws {
-        guard var urlComponents = URLComponents(string: baseURL + endpoint.path) else {
-            apiLogger.info("❌ Invalid URL: \(self.baseURL + endpoint.path)")
+        let rootURL = endpoint.customBaseURL ?? baseURL
+        guard var urlComponents = URLComponents(string: rootURL + endpoint.path) else {
+            apiLogger.info("❌ Invalid URL: \(rootURL + endpoint.path)")
             throw APIError.invalidURL
         }
 
@@ -225,8 +230,9 @@ public final class APIClient: @unchecked Sendable {
     }
 
     public func requestString(_ endpoint: APIEndpoint) async throws -> String {
-        guard var urlComponents = URLComponents(string: baseURL + endpoint.path) else {
-            apiLogger.info("❌ Invalid URL: \(self.baseURL + endpoint.path)")
+        let rootURL = endpoint.customBaseURL ?? baseURL
+        guard var urlComponents = URLComponents(string: rootURL + endpoint.path) else {
+            apiLogger.info("❌ Invalid URL: \(rootURL + endpoint.path)")
             throw APIError.invalidURL
         }
 
@@ -485,6 +491,31 @@ public struct PlanAPI {
                 URLQueryItem(name: "year", value: year),
                 URLQueryItem(name: "month", value: month)
             ]
+        )
+    }
+}
+
+// MARK: - School Meal API
+public struct SchoolMealAPI {
+    static let neisBaseURL = "https://open.neis.go.kr/hub"
+    static let neisAPIKey = "d7841b2039214f68b21eafc749ba196a"
+    static let neisAtptOfcdcScCode = "G10"
+    static let neisSdSchulCode = "7430310"
+
+    public static func fetchSchoolMeal(date: String) -> APIEndpoint {
+        let neisDate = date.replacingOccurrences(of: "-", with: "")
+        return APIEndpoint(
+            path: "/mealServiceDietInfo",
+            queryItems: [
+                URLQueryItem(name: "KEY", value: neisAPIKey),
+                URLQueryItem(name: "Type", value: "json"),
+                URLQueryItem(name: "pIndex", value: "1"),
+                URLQueryItem(name: "pSize", value: "100"),
+                URLQueryItem(name: "ATPT_OFCDC_SC_CODE", value: neisAtptOfcdcScCode),
+                URLQueryItem(name: "SD_SCHUL_CODE", value: neisSdSchulCode),
+                URLQueryItem(name: "MLSV_YMD", value: neisDate)
+            ],
+            customBaseURL: neisBaseURL
         )
     }
 }

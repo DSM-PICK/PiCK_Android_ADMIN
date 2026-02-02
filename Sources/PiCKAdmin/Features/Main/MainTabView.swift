@@ -6,11 +6,13 @@ struct MainTabView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             // Tab 0: 급식
-            Color.red
-                .tag(0)
-                .tabItem {
-                    Label("급식", systemImage: "fork.knife")
-                }
+            NavigationStack {
+                SchoolMealView()
+            }
+            .tag(0)
+            .tabItem {
+                Label("급식", systemImage: "fork.knife")
+            }
             
             // Tab 1: 일정
             NavigationStack {
