@@ -272,42 +272,66 @@ struct AllSelfStudyCard: View {
     var body: some View {
         ZStack {
             if selfStudyDirector.isEmpty {
-                VStack(alignment: .leading) {
-                    Text("오늘은\n자습감독 선생님이 없습니다.")
-                        .pickText(type: .body1, textColor: .Normal.black) // label2 mapping
-                        .padding(.top, 70)
-                        .padding(.leading, 20)
-                        .padding(.bottom, 70)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-            } else {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("오늘의 자습 감독 선생님 입니다")
-                        .pickText(type: .body1) // label2 mapping
-                        .padding(.top, 27.5)
-                        .padding(.leading, 20)
+                ZStack {
+                    VStack(alignment: .leading) {
+                        Text("오늘은\n자습감독 선생님이 없습니다.")
+                            .pickText(type: .body1, textColor: .Normal.black)
+                            .padding(.top, 70)
+                            .padding(.leading, 20)
+                            .padding(.bottom, 70)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                     
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach(selfStudyDirector, id: \.floor) { director in
-                            HStack(spacing: 16) {
-                                Text("\(director.floor)층")
-                                    .pickText(type: .body1, textColor: .Primary.primary500) // label2 mapping
-                                
-                                Text("\(director.teacherName) 선생님")
-                                    .pickText(type: .heading3, textColor: .Normal.black) // subTitle2 mapping
+                    // Placeholder Image
+                    Image(systemName: "calendar")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.Gray.gray200)
+                        .frame(width: 120, height: 120)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 20)
+                }
+            } else {
+                ZStack {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("오늘의 자습 감독 선생님 입니다")
+                            .pickText(type: .body1)
+                            .padding(.top, 24)
+                            .padding(.leading, 20)
+                        
+                        VStack(alignment: .leading, spacing: 12) {
+                            ForEach(selfStudyDirector, id: \.floor) { director in
+                                HStack(spacing: 16) {
+                                    Text("\(director.floor)층")
+                                        .pickText(type: .body1, textColor: .Primary.primary500)
+                                    
+                                    Text("\(director.teacherName) 선생님")
+                                        .pickText(type: .heading3, textColor: .Normal.black)
+                                }
                             }
                         }
+                        .padding(.top, 16)
+                        .padding(.leading, 20)
+                        
+                        Spacer()
                     }
-                    .padding(.top, 16)
-                    .padding(.leading, 20)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                     
-                    Spacer()
+                    // Placeholder Image (Matching iOS Position)
+                    Image(systemName: "calendar")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.Gray.gray200) // Placeholder color
+                        .frame(width: 120, height: 120) // Slightly smaller than 140 to fit better
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 10)
                 }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
             }
         }
-        .frame(height: 172)
+        .frame(minHeight: 180) // Changed to minHeight and increased slightly
         .background(Color.Gray.gray50)
         .cornerRadius(8)
     }
