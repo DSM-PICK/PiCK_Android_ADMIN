@@ -73,8 +73,7 @@ public final class APIClient: @unchecked Sendable {
     private let session: URLSession
 
     private init() {
-        // TODO: Replace with actual API base URL
-        self.baseURL = "https://api.pick.dsm.hs.kr"
+        self.baseURL = Secrets.apiBaseURL
         self.session = URLSession.shared
     }
 

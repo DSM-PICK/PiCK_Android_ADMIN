@@ -2,7 +2,7 @@ import SwiftUI
 import Observation
 
 @Observable
-public final class AppRouter {
+public final class AppRouter: @unchecked Sendable {
     public var path: [AppRoute] = []
 
     public init() {}

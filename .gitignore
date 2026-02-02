@@ -74,3 +74,9 @@ Carthage/Build/
 **/fastlane/README.md
 **/fastlane/Preview.html
 **/fastlane/test_output
+
+# Secrets - DO NOT COMMIT
+**/Secrets.swift
+**/secrets.json
+*.env
+.env.*

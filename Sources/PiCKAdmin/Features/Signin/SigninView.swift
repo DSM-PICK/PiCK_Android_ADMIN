@@ -9,8 +9,25 @@ struct SigninView: View {
 
         VStack(alignment: .leading, spacing: 0) {
             headerSection
-            emailTextField(vm: vm)
-            passwordTextField(vm: vm)
+
+            PiCKTextField(
+                text: $vm.email,
+                placeholder: "학교 이메일을 입력해주세요",
+                titleText: "이메일",
+                showEmail: true
+            )
+            .padding(.horizontal, 24)
+            .padding(.top, 50)
+
+            PiCKTextField(
+                text: $vm.password,
+                placeholder: "비밀번호를 입력해주세요",
+                titleText: "비밀번호",
+                isSecurity: true
+            )
+            .padding(.horizontal, 24)
+            .padding(.top, 44)
+
             forgotPasswordLinkSection
             Spacer()
             signupLinkSection
@@ -56,28 +73,6 @@ struct SigninView: View {
         }
         .padding(.top, 80)
         .padding(.leading, 24)
-    }
-
-    private func emailTextField(vm: Bindable<SigninViewModel>) -> some View {
-        PiCKTextField(
-            text: vm.$email,
-            placeholder: "학교 이메일을 입력해주세요",
-            titleText: "이메일",
-            showEmail: true
-        )
-        .padding(.horizontal, 24)
-        .padding(.top, 50)
-    }
-
-    private func passwordTextField(vm: Bindable<SigninViewModel>) -> some View {
-        PiCKTextField(
-            text: vm.$password,
-            placeholder: "비밀번호를 입력해주세요",
-            titleText: "비밀번호",
-            isSecurity: true
-        )
-        .padding(.horizontal, 24)
-        .padding(.top, 44)
     }
 
     private var forgotPasswordLinkSection: some View {
