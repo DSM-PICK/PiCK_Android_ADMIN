@@ -2,62 +2,85 @@ import SwiftUI
 
 struct SchoolMealView: View {
     @State var viewModel = SchoolMealViewModel()
+    @State var currentPage = Date()
+    @State var isWeekMode = true
     
     var body: some View {
-        VStack(spacing: 0) {
-            // Date Header
-            HStack(spacing: 12) {
-                Button(action: {
-                    Task { await viewModel.changeDate(by: -1) }
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .frame(width: 24, height: 24)
-                }
-                
-                Text(dateString(viewModel.selectedDate))
-                    .pickText(type: .heading2)
-                
-                Button(action: {
-                    Task { await viewModel.changeDate(by: 1) }
-                }) {
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.black)
-                        .frame(width: 24, height: 24)
+        ZStack(alignment: .top) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    SelectedDateView(date: viewModel.selectedDate)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 184) // Space for calendar
+                        .padding(.bottom, 20)
+
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 40)
+                    } else if let error = viewModel.errorMessage {
+                        Text(error)
+                            .pickText(type: .body1, textColor: .Gray.gray600)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 40)
+                    } else if viewModel.meals.isEmpty {
+                        Text("급식이 없습니다")
+                            .pickText(type: .body1, textColor: .Gray.gray600)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 40)
+                    } else {
+                        VStack(spacing: 20) {
+                            ForEach(viewModel.meals) { meal in
+                                SchoolMealCell(
+                                    mealTime: meal.mealType,
+                                    menu: meal.menu,
+                                    kcal: meal.kcal
+                                )
+                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 120) // Bottom padding
+                    }
                 }
             }
-            .padding(.top, 24)
-            .padding(.bottom, 20)
+            .ignoresSafeArea(edges: .bottom)
+            .overlay(
+                Group {
+                    if !isWeekMode {
+                        Color.Normal.black.opacity(0.4)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                withAnimation {
+                                    isWeekMode = true
+                                }
+                            }
+                    }
+                }
+            )
             
-            // Content
-            ScrollView {
-                if viewModel.isLoading {
-                    ProgressView()
-                        .padding(.top, 40)
-                } else if let error = viewModel.errorMessage {
-                    Text(error)
-                        .pickText(type: .body1, textColor: .Gray.gray600)
-                        .padding(.top, 40)
-                } else if viewModel.meals.isEmpty {
-                    Text("급식이 없습니다")
-                        .pickText(type: .body1, textColor: .Gray.gray600)
-                        .padding(.top, 40)
-                } else {
-                    VStack(spacing: 20) {
-                        ForEach(viewModel.meals) { meal in
-                            SchoolMealCell(
-                                mealTime: meal.mealType,
-                                menu: meal.menu,
-                                kcal: meal.kcal
-                            )
+            PiCKCalendarView(
+                calendarType: .schoolMeal,
+                selectedDate: Binding(
+                    get: { viewModel.selectedDate },
+                    set: { date in
+                        _ = Task {
+                            await viewModel.selectDate(date)
                         }
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 24)
+                ),
+                currentPage: $currentPage,
+                isWeekMode: $isWeekMode,
+                bottomToggleButtonTapped: {
+                    // Logic handled in view, but callback available
+                },
+                dateSelected: { date in
+                    // Impact feedback or additional logic
                 }
-            }
+            )
+            .shadow(color: Color.Normal.black.opacity(0.25), radius: 20, x: 0, y: 0)
+            .background(Color.Background.primary)
         }
-        .background(Color.white)
+        .background(Color.Normal.white)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 HStack(spacing: 8) {
@@ -72,25 +95,38 @@ struct SchoolMealView: View {
             await viewModel.onAppear()
         }
     }
+}
+
+// MARK: - Selected Date View
+struct SelectedDateView: View {
+    let date: Date
+
+    var body: some View {
+        HStack(spacing: 4) {
+            if isToday {
+                Text("오늘")
+                    .pickText(type: .heading2, textColor: .Primary.primary500)
+            }
+            Text(formattedDate)
+                .pickText(type: .heading2, textColor: .Normal.black)
+        }
+    }
     
-    private func dateString(_ date: Date) -> String {
+    private var formattedDate: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "MM월 dd일"
         formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-        
-        let formatted = formatter.string(from: date)
-        
+        return formatter.string(from: date)
+    }
+    
+    private var isToday: Bool {
         let todayFormatter = DateFormatter()
         todayFormatter.locale = Locale(identifier: "ko_KR")
         todayFormatter.dateFormat = "MM월 dd일"
         todayFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         let today = todayFormatter.string(from: Date())
-        
-        if formatted == today {
-            return "오늘 \(formatted)"
-        }
-        return formatted
+        return formattedDate == today
     }
 }
 
@@ -123,13 +159,13 @@ struct SchoolMealCell: View {
             Text(menu.isEmpty ? "급식이 없습니다" : menu.joined(separator: "\n"))
                 .pickText(type: .label1, textColor: .Normal.black)
                 .multilineTextAlignment(.leading)
-                .frame(width: 120, alignment: .leading) // Fixed width for alignment
+                .frame(width: 120, alignment: .leading)
 
             Spacer()
         }
         .frame(maxWidth: .infinity, minHeight: 140)
         .padding(.vertical, 10)
-        .background(Color.Background.primary) // Check if Background.background exists, else .white
+        .background(Color.Background.primary)
         .cornerRadius(8)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
@@ -137,7 +173,3 @@ struct SchoolMealCell: View {
         )
     }
 }
-
-// Extension to support .subTitle1 if not present (PiCK iOS DesignSystem check)
-// Assuming .subTitle1 exists based on previous file reads.
-// If not, I will map it to .body1

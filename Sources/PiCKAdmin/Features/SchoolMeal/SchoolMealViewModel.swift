@@ -74,6 +74,12 @@ public final class SchoolMealViewModel {
     }
     
     @MainActor
+    public func selectDate(_ date: Date) async {
+        self.selectedDate = date
+        await fetchSchoolMeal()
+    }
+    
+    @MainActor
     public func fetchSchoolMeal() async {
         isLoading = true
         errorMessage = nil
