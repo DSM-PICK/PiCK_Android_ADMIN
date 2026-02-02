@@ -120,8 +120,8 @@ struct PiCKCalendarView: View {
             RoundedCorner(
                 radius: 20,
                 corners: calendarType == .schoolMeal
-                    ? [.bottomLeft, .bottomRight]
-                    : [.topLeft, .topRight]
+                    ? [RectCorner.bottomLeft, RectCorner.bottomRight]
+                    : [RectCorner.topLeft, RectCorner.topRight]
             )
         )
     }

@@ -58,10 +58,9 @@ struct TeacherInfoView: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            Image(systemName: "person.circle.fill")
+            Image("profile", bundle: .module)
                 .resizable()
                 .scaledToFit()
-                .foregroundColor(.Gray.gray300)
                 .frame(width: 60, height: 60)
                 .padding(.leading, 24)
                 .padding(.top, 12)
@@ -100,52 +99,52 @@ struct AllTabMenuList: View {
             sections: [
                 MenuSectionModel(title: "출결 확인", items: [
                     MenuItemModel(
-                        iconName: "mappin.and.ellipse",
+                        iconName: "location",
                         title: "외출자 목록",
                         action: onOutListTap
                     ),
                     MenuItemModel(
-                        iconName: "clock",
+                        iconName: "beforeOuting",
                         title: "자습시간 출결",
                         action: onSelfStudyCheckTap
                     ),
                     MenuItemModel(
-                        iconName: "arrow.left.arrow.right",
+                        iconName: "moveClass",
                         title: "교실 이동 현황",
                         action: onClassroomMoveListTap
                     ),
                     MenuItemModel(
-                        iconName: "book.closed",
+                        iconName: "book",
                         title: "이전 외출기록",
                         action: onOutingHistoryTap
                     )
                 ]),
                 MenuSectionModel(title: "도움말", items: [
                     MenuItemModel(
-                        iconName: "face.smiling",
+                        iconName: "smile",
                         title: "자습 감독 선생님 확인",
                         action: onCheckTeacherTap
                     ),
                     MenuItemModel(
-                        iconName: "ladybug",
+                        iconName: "bug",
                         title: "버그 제보",
                         action: onBugReportTap
                     )
                 ]),
                 MenuSectionModel(title: "계정", items: [
                     MenuItemModel(
-                        iconName: "lock.rotation",
+                        iconName: "changePassword",
                         title: "비밀번호 변경",
                         action: onChangePasswordTap
                     ),
                     MenuItemModel(
-                        iconName: "rectangle.portrait.and.arrow.right",
+                        iconName: "logout",
                         title: "로그아웃",
                         iconColor: .Error.error,
                         action: onLogoutTap
                     ),
                     MenuItemModel(
-                        iconName: "person.crop.circle.badge.minus",
+                        iconName: "withDraw",
                         title: "회원탈퇴",
                         iconColor: .Error.error,
                         action: onResignTap
@@ -223,7 +222,7 @@ struct MenuItemCell: View {
             item.action?()
         }) {
             HStack(spacing: 20) {
-                Image(systemName: item.iconName)
+                Image(item.iconName, bundle: .module)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 24, height: 24)
