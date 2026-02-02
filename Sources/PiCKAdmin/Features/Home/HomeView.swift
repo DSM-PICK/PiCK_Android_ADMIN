@@ -216,7 +216,7 @@ struct SelfStudyCard: View {
 
 // MARK: - Accordion View (Matching AccordionView)
 struct AccordionView<Content: View>: View {
-    @State private var isExpanded: Bool = false
+    @State var isExpanded: Bool = false
     let badge: String
     let title: String
     @ViewBuilder let content: () -> Content
@@ -423,12 +423,6 @@ extension Date {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "M월 d일 EEEE"
-        return formatter.string(from: Date())
-    }
-    
-    static func todayString() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: Date())
     }
 }
