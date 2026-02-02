@@ -8,9 +8,11 @@ struct PlanView: View {
             MonthHeaderView(
                 currentMonth: viewModel.currentMonth,
                 onPrevMonth: {
+                    print("Prev Month Clicked")
                     Task { await viewModel.changeMonth(by: -1) }
                 },
                 onNextMonth: {
+                    print("Next Month Clicked")
                     Task { await viewModel.changeMonth(by: 1) }
                 }
             )
@@ -19,14 +21,20 @@ struct PlanView: View {
 
             ScrollView {
                 VStack(spacing: 0) {
+                    Text("Events: \(viewModel.monthAcademicSchedule.count)") // DEBUG
+                        .font(.caption)
+                        .foregroundColor(.gray)
+
                     AcademicScheduleCalendarView(
                         monthSchedule: viewModel.monthAcademicSchedule,
                         selectedDate: viewModel.selectedDate,
                         currentMonth: viewModel.currentMonth,
                         onDateSelect: { date in
+                            print("Date Selected: \(date)")
                             Task { await viewModel.selectDate(date) }
                         }
                     )
+                    .id(viewModel.selectedDate) // FORCE REDRAW on date change
                     .padding(.top, 12)
                     .padding(.horizontal, 24)
                     

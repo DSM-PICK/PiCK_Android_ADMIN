@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 
 // MARK: - Plan Models
 public struct AcademicSchedule: Identifiable, Hashable {
@@ -38,13 +39,19 @@ public final class PlanViewModel {
     
     @MainActor
     public func changeMonth(by value: Int) async {
-        guard let newMonth = Calendar.current.date(byAdding: .month, value: value, to: currentMonth) else { return }
+        print("Changing month by \(value)")
+        guard let newMonth = Calendar.current.date(byAdding: .month, value: value, to: currentMonth) else { 
+            print("Failed to calculate new month")
+            return 
+        }
         self.currentMonth = newMonth
+        print("New month: \(currentMonth)")
         await fetchMonthSchedule()
     }
     
     @MainActor
     public func selectDate(_ date: Date) async {
+        print("Selecting date: \(date)")
         self.selectedDate = date
         await fetchDaySchedule()
     }
