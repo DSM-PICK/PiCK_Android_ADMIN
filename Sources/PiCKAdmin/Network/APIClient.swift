@@ -355,6 +355,13 @@ public struct AuthAPI {
             headers: ["Refresh-Token": JwtStore.shared.refreshToken ?? ""]
         )
     }
+
+    public static func deleteAccount() -> APIEndpoint {
+        return APIEndpoint(
+            path: "/admin/delete",
+            method: .delete
+        )
+    }
 }
 
 // MARK: - Request/Response Models

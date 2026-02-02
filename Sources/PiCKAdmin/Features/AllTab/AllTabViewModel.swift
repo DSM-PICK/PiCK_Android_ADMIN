@@ -37,7 +37,11 @@ public final class AllTabViewModel {
     
     @MainActor
     public func resign() async {
-        // Implement resign API logic if needed
-        JwtStore.shared.clearTokens()
+        do {
+            try await APIClient.shared.requestVoid(AuthAPI.deleteAccount())
+            JwtStore.shared.clearTokens()
+        } catch {
+            print("Failed to resign: \(error)")
+        }
     }
 }
