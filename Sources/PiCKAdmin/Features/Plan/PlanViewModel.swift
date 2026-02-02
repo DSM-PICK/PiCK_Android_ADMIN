@@ -64,11 +64,14 @@ public final class PlanViewModel {
     
     @MainActor
     private func fetchMonthSchedule() async {
-        let calendar = Calendar.current
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        
         let year = String(calendar.component(.year, from: currentMonth))
         let monthFormatter = DateFormatter()
-        monthFormatter.dateFormat = "MMMM" // Server expects full month name? iOS used "MMMM" with "en_US" locale.
-        monthFormatter.locale = Locale(identifier: "en_US")
+        monthFormatter.dateFormat = "MMMM"
+        monthFormatter.locale = Locale(identifier: "en_US") // API expects English month name?
+        monthFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         let month = monthFormatter.string(from: currentMonth)
         
         do {
@@ -91,9 +94,12 @@ public final class PlanViewModel {
     private func fetchDaySchedule() async {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul") // Fix timezone issue
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         let dateString = dateFormatter.string(from: selectedDate)
         
         do {
+            print("📅 Fetching day schedule for: \(dateString)")
             let response = try await APIClient.shared.request(
                 PlanAPI.fetchAcademicScheduleByDate(date: dateString),
                 responseType: [AcademicScheduleDTO].self

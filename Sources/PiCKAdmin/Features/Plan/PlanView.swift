@@ -34,7 +34,7 @@ struct PlanView: View {
                             Task { await viewModel.selectDate(date) }
                         }
                     )
-                    .id(viewModel.selectedDate) // FORCE REDRAW on date change
+                    .id("\(viewModel.currentMonth)\(viewModel.selectedDate)\(viewModel.monthAcademicSchedule.count)") // Combine IDs
                     .padding(.top, 12)
                     .padding(.horizontal, 24)
                     
@@ -120,7 +120,7 @@ struct AcademicScheduleCalendarView: View {
             .padding(.bottom, 16)
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 5) {
-                ForEach(calendarDates, id: \.self) { date in
+                ForEach(Array(calendarDates.enumerated()), id: \.offset) { index, date in
                     if let date = date {
                         DateCell(
                             date: date,
@@ -140,6 +140,7 @@ struct AcademicScheduleCalendarView: View {
             }
         }
         .padding(.vertical)
+        .id(currentMonth) // Force redraw when month changes
     }
     
     private var calendarDates: [Date?] {
