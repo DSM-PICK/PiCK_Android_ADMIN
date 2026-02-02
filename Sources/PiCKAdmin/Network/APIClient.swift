@@ -3,6 +3,11 @@ import Foundation
 import FoundationNetworking
 #endif
 
+// MARK: - Simple Logger
+private func log(_ message: String) {
+    print("[APIClient] \(message)")
+}
+
 // MARK: - API Error
 public enum APIError: Error, LocalizedError {
     case invalidURL
@@ -75,6 +80,7 @@ public final class APIClient: @unchecked Sendable {
     private init() {
         self.baseURL = Secrets.apiBaseURL
         self.session = URLSession.shared
+        log("🌐 APIClient initialized with baseURL: \(self.baseURL)")
     }
 
     public func request<T: Decodable>(
@@ -82,12 +88,14 @@ public final class APIClient: @unchecked Sendable {
         responseType: T.Type
     ) async throws -> T {
         guard var urlComponents = URLComponents(string: baseURL + endpoint.path) else {
+            log("❌ Invalid URL: \(self.baseURL + endpoint.path)")
             throw APIError.invalidURL
         }
 
         urlComponents.queryItems = endpoint.queryItems
 
         guard let url = urlComponents.url else {
+            log("❌ Failed to construct URL from components")
             throw APIError.invalidURL
         }
 
@@ -108,11 +116,24 @@ public final class APIClient: @unchecked Sendable {
             request.setValue(value, forHTTPHeaderField: key)
         }
 
+        // Log request
+        log("📤 REQUEST: \(endpoint.method.rawValue) \(url.absoluteString)")
+        if let body = endpoint.body, let bodyString = String(data: body, encoding: .utf8) {
+            log("📤 BODY: \(bodyString)")
+        }
+
         do {
             let (data, response) = try await session.data(for: request)
 
             guard let httpResponse = response as? HTTPURLResponse else {
+                log("❌ Invalid response type")
                 throw APIError.invalidResponse
+            }
+
+            // Log response
+            log("📥 RESPONSE: \(httpResponse.statusCode) \(url.absoluteString)")
+            if let responseString = String(data: data, encoding: .utf8) {
+                log("📥 DATA: \(responseString)")
             }
 
             switch httpResponse.statusCode {
@@ -120,30 +141,38 @@ public final class APIClient: @unchecked Sendable {
                 do {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    return try decoder.decode(T.self, from: data)
+                    let result = try decoder.decode(T.self, from: data)
+                    log("✅ SUCCESS: \(endpoint.path)")
+                    return result
                 } catch {
+                    log("❌ Decoding error: \(error.localizedDescription)")
                     throw APIError.decodingError(error)
                 }
             case 401:
+                log("❌ Unauthorized (401)")
                 throw APIError.unauthorized
             default:
+                log("❌ Server error: \(httpResponse.statusCode)")
                 throw APIError.serverError(httpResponse.statusCode)
             }
         } catch let error as APIError {
             throw error
         } catch {
+            log("❌ Network error: \(error.localizedDescription)")
             throw APIError.networkError(error)
         }
     }
 
     public func requestVoid(_ endpoint: APIEndpoint) async throws {
         guard var urlComponents = URLComponents(string: baseURL + endpoint.path) else {
+            log("❌ Invalid URL: \(self.baseURL + endpoint.path)")
             throw APIError.invalidURL
         }
 
         urlComponents.queryItems = endpoint.queryItems
 
         guard let url = urlComponents.url else {
+            log("❌ Failed to construct URL from components")
             throw APIError.invalidURL
         }
 
@@ -161,24 +190,38 @@ public final class APIClient: @unchecked Sendable {
             request.setValue(value, forHTTPHeaderField: key)
         }
 
+        // Log request
+        log("📤 REQUEST: \(endpoint.method.rawValue) \(url.absoluteString)")
+
         do {
-            let (_, response) = try await session.data(for: request)
+            let (data, response) = try await session.data(for: request)
 
             guard let httpResponse = response as? HTTPURLResponse else {
+                log("❌ Invalid response type")
                 throw APIError.invalidResponse
+            }
+
+            // Log response
+            log("📥 RESPONSE: \(httpResponse.statusCode) \(url.absoluteString)")
+            if let responseString = String(data: data, encoding: .utf8) {
+                log("📥 DATA: \(responseString)")
             }
 
             switch httpResponse.statusCode {
             case 200...299:
+                log("✅ SUCCESS: \(endpoint.path)")
                 return
             case 401:
+                log("❌ Unauthorized (401)")
                 throw APIError.unauthorized
             default:
+                log("❌ Server error: \(httpResponse.statusCode)")
                 throw APIError.serverError(httpResponse.statusCode)
             }
         } catch let error as APIError {
             throw error
         } catch {
+            log("❌ Network error: \(error.localizedDescription)")
             throw APIError.networkError(error)
         }
     }
