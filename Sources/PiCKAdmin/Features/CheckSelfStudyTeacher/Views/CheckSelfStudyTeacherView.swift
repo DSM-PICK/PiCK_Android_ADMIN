@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CheckSelfStudyTeacherView: View {
-    var router: AppRouter
+    @Environment(\.appRouter) var router: AppRouter
     @State var viewModel = CheckSelfStudyTeacherViewModel()
     @State var selectedDate = Date()
     @State var currentPage = Date()
