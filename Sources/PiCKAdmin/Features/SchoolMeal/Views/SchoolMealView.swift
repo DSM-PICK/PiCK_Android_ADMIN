@@ -91,7 +91,6 @@ struct SchoolMealView: View {
             }
         }
         .task {
-            router.selectedTab = 0
             await viewModel.onAppear()
         }
     }

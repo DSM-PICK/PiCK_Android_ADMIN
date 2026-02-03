@@ -102,6 +102,7 @@ struct BugReportView: View {
             imagePlaceholder
             #endif
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     #if canImport(PhotosUI)

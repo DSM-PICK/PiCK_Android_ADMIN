@@ -36,7 +36,6 @@ struct AllTabView: View {
             }
         }
         .task {
-            router.selectedTab = 4
             await viewModel.fetchMyName()
         }
         .alert("로그아웃", isPresented: $viewModel.showLogoutAlert) {

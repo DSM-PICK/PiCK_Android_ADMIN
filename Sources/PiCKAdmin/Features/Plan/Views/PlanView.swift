@@ -53,7 +53,6 @@ struct PlanView: View {
             }
         }
         .task {
-            router.selectedTab = 1
             await viewModel.onAppear()
         }
     }

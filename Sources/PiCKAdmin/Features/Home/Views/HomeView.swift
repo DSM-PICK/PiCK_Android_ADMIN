@@ -131,7 +131,6 @@ struct HomeView: View {
                 }
             }
             .task {
-                router.selectedTab = 2
                 await viewModel.loadInitialDataIfNeeded()
             }
 

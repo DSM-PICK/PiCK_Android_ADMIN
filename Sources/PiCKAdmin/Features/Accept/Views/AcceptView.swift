@@ -49,7 +49,6 @@ public struct AcceptView: View {
                 }
             }
             .task {
-                router.selectedTab = 3
                 await viewModel.fetchInitialData()
             }
 
