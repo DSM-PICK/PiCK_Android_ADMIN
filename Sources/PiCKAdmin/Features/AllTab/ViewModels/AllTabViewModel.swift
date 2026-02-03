@@ -2,12 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-struct MyNameDTO: Decodable {
-    let name: String
-    let grade: Int
-    let classNum: Int
-}
-
 @Observable
 public final class AllTabViewModel {
     public var teacherName: String = "선생님"
@@ -32,7 +26,6 @@ public final class AllTabViewModel {
     @MainActor
     public func logout() {
         JwtStore.shared.clearTokens()
-        // Router logic will be handled in View or AppRouter
     }
     
     @MainActor
