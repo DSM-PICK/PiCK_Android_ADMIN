@@ -126,14 +126,12 @@ struct HomeView: View {
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    HStack(spacing: 8) {
-                        Image("pickLogo", bundle: .module)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 20)
-                    }
+                    Image("pickLogo", bundle: .module)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 20)
+                        .padding(.leading, 8)
                 }
-
             }
             .task {
                 await viewModel.fetchSelfStudyDirector(date: Date.todayString())
@@ -195,17 +193,21 @@ struct SelfStudyCard: View {
                 .pickText(type: .body2)
                 .padding(.top, 14)
                 .padding(.leading, 20)
-            
+
             Spacer()
-            
+
             Text(adminMessage.isEmpty ? "자습감독 정보를 불러오는 중입니다" : adminMessage)
                 .pickText(type: .body1)
                 .padding(.bottom, 14)
                 .padding(.leading, 20)
         }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background(Color.Gray.gray50)
-        .cornerRadius(8)
+        .frame(maxWidth: .infinity, minHeight: 72, alignment: .topLeading)
+        .background(Color(hex: "#F5F5F5"))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color(hex: "#E0E0E0"), lineWidth: 1)
+        )
     }
 }
 
@@ -397,51 +399,60 @@ struct AllSelfStudyCard: View {
     let selfStudyDirector: [SelfStudyDirector]
 
     var body: some View {
-        HStack(spacing: 0) {
-            if selfStudyDirector.isEmpty {
-                VStack(alignment: .leading, spacing: 0) {
-                    Spacer()
-                    Text("오늘은\n자습감독 선생님이 없습니다.")
-                        .pickText(type: .body2, textColor: .Normal.black)
-                    Spacer()
-                }
-                .padding(.leading, 20)
-            } else {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("오늘의 자습 감독 선생님 입니다")
-                        .pickText(type: .body2)
-                        .padding(.top, 27.5)
+        ZStack {
+            HStack(spacing: 0) {
+                if selfStudyDirector.isEmpty {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Spacer()
+                        Text("오늘은\n자습감독 선생님이 없습니다.")
+                            .pickText(type: .body2, textColor: .Normal.black)
+                        Spacer()
+                    }
+                    .padding(.leading, 20)
+                } else {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("오늘의 자습 감독 선생님 입니다")
+                            .pickText(type: .body2)
+                            .padding(.top, 27.5)
 
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach(selfStudyDirector, id: \.floor) { director in
-                            HStack(spacing: 16) {
-                                Text("\(director.floor)층")
-                                    .pickText(type: .body2, textColor: .Primary.primary500)
+                        VStack(alignment: .leading, spacing: 12) {
+                            ForEach(selfStudyDirector, id: \.floor) { director in
+                                HStack(spacing: 16) {
+                                    Text("\(director.floor)층")
+                                        .pickText(type: .body2, textColor: .Primary.primary500)
 
-                                Text("\(director.teacherName) 선생님")
-                                    .pickText(type: .button1, textColor: .Normal.black)
+                                    Text("\(director.teacherName) 선생님")
+                                        .pickText(type: .button1, textColor: .Normal.black)
+                                }
                             }
                         }
-                    }
-                    .padding(.top, 16)
+                        .padding(.top, 16)
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .padding(.leading, 20)
                 }
-                .padding(.leading, 20)
+
+                Spacer()
             }
 
-            Spacer(minLength: 8)
-
-            Image("calendar", bundle: .module)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 120, height: 120)
-                .padding(.trailing, 20)
+            HStack {
+                Spacer()
+                Image("calendar", bundle: .module)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120, height: 120)
+                    .padding(.trailing, 20)
+            }
         }
         .frame(maxWidth: .infinity)
         .frame(height: 172)
-        .background(Color.Gray.gray50)
-        .cornerRadius(8)
+        .background(Color(hex: "#F5F5F5"))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color(hex: "#E0E0E0"), lineWidth: 1)
+        )
     }
 }
 

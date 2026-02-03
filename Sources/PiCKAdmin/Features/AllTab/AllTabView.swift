@@ -32,6 +32,7 @@ struct AllTabView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(height: 20)
+                    .padding(.leading, 8)
             }
         }
         .task {
