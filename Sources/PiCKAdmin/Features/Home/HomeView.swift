@@ -11,7 +11,7 @@ struct HomeView: View {
                     // Self Study Info Card
                     SelfStudyCard(adminMessage: viewModel.adminSelfStudyTeacher)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 72)
+                        .frame(minHeight: 72)
 
                     // Outing Accept Section
                     if viewModel.isHomeroomTeacher {
@@ -134,26 +134,6 @@ struct HomeView: View {
                     }
                 }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button(action: { router.navigate(to: .outList) }) {
-                            Label("외출 목록", systemImage: "list.bullet")
-                        }
-                        Button(action: { router.navigate(to: .classroomMoveList) }) {
-                            Label("교실 이동", systemImage: "arrow.left.arrow.right")
-                        }
-                        Button(action: { router.navigate(to: .bugReport) }) {
-                            Label("버그 신고", systemImage: "ant")
-                        }
-                        Divider()
-                        Button(role: .destructive, action: logout) {
-                            Label("로그아웃", systemImage: "rectangle.portrait.and.arrow.right")
-                        }
-                    } label: {
-                        Image(systemName: "line.3.horizontal")
-                            .foregroundColor(.Normal.black)
-                    }
-                }
             }
             .task {
                 await viewModel.fetchSelfStudyDirector(date: Date.todayString())
@@ -413,63 +393,52 @@ struct PiCKClassroomMoveCell: View {
     }
 }
 
-// MARK: - All Self Study Card
 struct AllSelfStudyCard: View {
     let selfStudyDirector: [SelfStudyDirector]
 
     var body: some View {
-        ZStack {
+        HStack(spacing: 0) {
             if selfStudyDirector.isEmpty {
-                HStack(spacing: 28) {
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer()
                     Text("오늘은\n자습감독 선생님이 없습니다.")
                         .pickText(type: .body2, textColor: .Normal.black)
-                    
-                    Image("calendar", bundle: .module)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 140, height: 140)
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding(.top, 70)
                 .padding(.leading, 20)
-                .padding(.bottom, 70)
             } else {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("오늘의 자습 감독 선생님 입니다")
                         .pickText(type: .body2)
                         .padding(.top, 27.5)
-                        .padding(.leading, 20)
-                    
+
                     VStack(alignment: .leading, spacing: 12) {
                         ForEach(selfStudyDirector, id: \.floor) { director in
                             HStack(spacing: 16) {
                                 Text("\(director.floor)층")
                                     .pickText(type: .body2, textColor: .Primary.primary500)
-                                
+
                                 Text("\(director.teacherName) 선생님")
-                                    .pickText(type: .button1, textColor: .Normal.black) // subTitle2 -> button1
+                                    .pickText(type: .button1, textColor: .Normal.black)
                             }
                         }
                     }
                     .padding(.top, 16)
-                    .padding(.leading, 20)
-                    
+
                     Spacer()
                 }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-
-                Image("calendar", bundle: .module)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 140, height: 140)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                    .padding(.top, 10)
-                    .padding(.trailing, 20)
-                    .padding(.bottom, 10)
-                    .allowsHitTesting(false)
+                .padding(.leading, 20)
             }
+
+            Spacer(minLength: 8)
+
+            Image("calendar", bundle: .module)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
+                .padding(.trailing, 20)
         }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity)
         .frame(height: 172)
         .background(Color.Gray.gray50)
         .cornerRadius(8)
