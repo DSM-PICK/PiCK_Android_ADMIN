@@ -2,47 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-// MARK: - ClassroomMoveList Type
-public enum ClassroomMoveListType: String, Equatable, Hashable {
-    case floor = "층으로"
-    case classroom = "교실로"
-}
-
-// MARK: - Models
-public struct ClassroomMoveListStudent: Identifiable, Hashable {
-    public let id: String
-    public let userName: String
-    public let grade: Int
-    public let classNum: Int
-    public let num: Int
-    public let start: Int
-    public let end: Int
-    public let classroomName: String
-}
-
-// MARK: - DTOs
-struct ClassroomMoveListDTO: Decodable {
-    let userName: String
-    let classroomName: String
-    let grade: Int
-    let classNum: Int
-    let num: Int
-    let start: Int
-    let end: Int
-    let userId: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case userName = "user_name"
-        case classroomName = "classroom_name"
-        case grade
-        case classNum = "class_num"
-        case num
-        case start
-        case end
-        case userId = "user_id"
-    }
-}
-
 // MARK: - ViewModel
 @Observable
 public final class ClassroomMoveListViewModel {
@@ -104,9 +63,6 @@ public final class ClassroomMoveListViewModel {
     
     @MainActor
     private func fetchByClassroom() async {
-        // If selectedGrade is 5 (All), fallback to a default floor or show all?
-        // iOS implementation says: if state.selectedGrade == 5 { return loadClassroomMoveListByFloor(floor: 5) }
-        
         if selectedGrade == 5 {
             do {
                 let response = try await APIClient.shared.request(
