@@ -78,7 +78,7 @@ struct ContentView: View {
         case .home:
             EmptyView()
         case .outList:
-            OutListView(router: router)
+            OutListView()
         case .checkSelfStudyTeacher:
             CheckSelfStudyTeacherView(router: router)
         case .bugReport:
@@ -150,14 +150,6 @@ struct InfoSettingView: View {
 
     var body: some View {
         PlaceholderView(title: "정보 설정", backAction: { router.pop() })
-    }
-}
-
-struct OutListView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "외출 목록", backAction: { router.pop() })
     }
 }
 
