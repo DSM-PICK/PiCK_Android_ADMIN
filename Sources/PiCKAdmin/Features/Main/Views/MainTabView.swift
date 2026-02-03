@@ -9,6 +9,8 @@ struct MainTabView: View {
             // Tab 0: 급식
             NavigationStack {
                 SchoolMealView()
+                    .toolbarBackground(Color.white, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
             }
             .tag(0)
             .tabItem {
@@ -22,6 +24,8 @@ struct MainTabView: View {
             // Tab 1: 일정
             NavigationStack {
                 PlanView()
+                    .toolbarBackground(Color.white, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
             }
             .tag(1)
             .tabItem {
@@ -35,6 +39,8 @@ struct MainTabView: View {
             // Tab 2: 홈
             NavigationStack {
                 HomeView()
+                    .toolbarBackground(Color.white, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
             }
             .tag(2)
             .tabItem {
@@ -48,6 +54,8 @@ struct MainTabView: View {
             // Tab 3: 수락
             NavigationStack {
                 AcceptView()
+                    .toolbarBackground(Color.white, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
             }
             .tag(3)
             .tabItem {
@@ -61,6 +69,8 @@ struct MainTabView: View {
             // Tab 4: 전체
             NavigationStack {
                 AllTabView()
+                    .toolbarBackground(Color.white, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
             }
             .tag(4)
             .tabItem {
