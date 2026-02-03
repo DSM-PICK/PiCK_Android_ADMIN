@@ -6,7 +6,7 @@ struct OutingHistoryView: View {
 
     var body: some View {
         ZStack {
-            Color.Background.background
+            Color.Normal.white
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -65,7 +65,7 @@ struct OutingHistoryView: View {
             }
         }
         .frame(height: 56)
-        .background(Color.Background.background)
+        .background(Color.Normal.white)
     }
 
     private var searchBar: some View {
@@ -110,24 +110,26 @@ struct OutingHistoryCell: View {
             HStack(spacing: 12) {
                 HStack(spacing: 8) {
                     Text("조기귀가")
-                        .pickText(type: .body1, textColor: .Normal.white)
-                        .frame(width: 68, height: 28)
+                        .pickText(type: .body2, textColor: .Normal.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
                         .background(Color.Primary.primary300)
                         .cornerRadius(8)
 
                     Text("\(data.earlyReturnCnt)회")
-                        .pickText(type: .body1, textColor: .Normal.black)
+                        .pickText(type: .body2, textColor: .Normal.black)
                 }
 
                 HStack(spacing: 8) {
                     Text("외출")
-                        .pickText(type: .body1, textColor: .Normal.white)
-                        .frame(width: 64, height: 28)
+                        .pickText(type: .body2, textColor: .Normal.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
                         .background(Color.Primary.primary500)
                         .cornerRadius(8)
 
                     Text("\(data.applicationCnt)회")
-                        .pickText(type: .body1, textColor: .Normal.black)
+                        .pickText(type: .body2, textColor: .Normal.black)
                 }
             }
         }
