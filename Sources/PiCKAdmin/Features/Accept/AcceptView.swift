@@ -139,31 +139,34 @@ public struct AcceptView: View {
 
     // MARK: - Floor Filter Section
     private var floorFilterSection: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach([1, 2, 3, 4, 5], id: \.self) { floor in
-                    Button {
-                        Task {
-                            await viewModel.fetchClassroomMovesByFloor(floor: floor)
-                        }
-                    } label: {
-                        Text("\(floor)층")
-                            .pickText(
-                                type: .body1,
-                                textColor: viewModel.currentFloor == floor ? .Primary.primary500 : .Gray.gray600
-                            )
-                            .frame(width: 60, height: 32)
-                            .background(
-                                viewModel.currentFloor == floor
-                                ? Color.Primary.primary50
-                                : Color.clear
-                            )
-                            .cornerRadius(8)
+        HStack(spacing: 0) {
+            ForEach([1, 2, 3, 4, 5], id: \.self) { floor in
+                Button {
+                    Task {
+                        await viewModel.fetchClassroomMovesByFloor(floor: floor)
                     }
+                } label: {
+                    Text("\(floor)층")
+                        .pickText(
+                            type: .body1,
+                            textColor: viewModel.currentFloor == floor ? .Primary.primary500 : .Gray.gray600
+                        )
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 32)
+                        .background(
+                            viewModel.currentFloor == floor
+                            ? Color.Primary.primary50
+                            : Color.clear
+                        )
+                        .cornerRadius(8)
+                }
+                
+                if floor != 5 {
+                    Spacer()
                 }
             }
-            .padding(.horizontal, 24)
         }
+        .padding(.horizontal, 24)
         .padding(.top, 16)
     }
 
