@@ -161,13 +161,6 @@ struct OutListView: View {
     }
 }
 
-struct CheckSelfStudyTeacherView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "자습감독 확인", backAction: { router.pop() })
-    }
-}
 
 struct BugReportView: View {
     var router: AppRouter

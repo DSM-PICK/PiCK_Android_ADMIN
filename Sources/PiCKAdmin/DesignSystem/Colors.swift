@@ -53,6 +53,7 @@ public extension Color {
     struct Background {
         public static let primary = Color.white
         public static let secondary = Color(hex: "#F5F5F5")
+        public static let background = Color(hex: "#F5F5F5")
     }
 }
 
