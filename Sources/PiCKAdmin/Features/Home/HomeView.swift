@@ -439,6 +439,7 @@ struct AllSelfStudyCard: View {
             HStack {
                 Spacer()
                 Image("calendar", bundle: .module)
+                    .renderingMode(.original)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 120, height: 120)
