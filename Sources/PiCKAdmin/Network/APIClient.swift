@@ -37,7 +37,7 @@ public enum APIError: Error, LocalizedError {
 }
 
 // MARK: - HTTP Method
-public enum HTTPMethod: String {
+public enum HTTPMethod: String, Sendable {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
@@ -46,7 +46,7 @@ public enum HTTPMethod: String {
 }
 
 // MARK: - API Endpoint
-public struct APIEndpoint {
+public struct APIEndpoint: Sendable {
     let path: String
     let method: HTTPMethod
     let headers: [String: String]?

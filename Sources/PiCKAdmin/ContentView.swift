@@ -188,13 +188,6 @@ struct NewPasswordView: View {
     }
 }
 
-struct SelfStudyCheckView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "자습 확인", backAction: { router.pop() })
-    }
-}
 
 struct ClassroomMoveListView: View {
     var router: AppRouter
