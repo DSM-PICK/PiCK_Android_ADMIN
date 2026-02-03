@@ -204,13 +204,6 @@ struct ClassroomMoveListView: View {
     }
 }
 
-struct OutingHistoryView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "외출 기록", backAction: { router.pop() })
-    }
-}
 
 // MARK: - Placeholder View Component
 struct PlaceholderView: View {

@@ -534,6 +534,13 @@ public struct AdminAPI {
     }
 }
 
+// MARK: - Outing History API
+public struct OutingHistoryAPI {
+    public static func getOutingHistory() -> APIEndpoint {
+        return APIEndpoint(path: "/story/all")
+    }
+}
+
 public struct UpdateStatusRequest: Codable {
     public let status: String
     public let idList: [String]
