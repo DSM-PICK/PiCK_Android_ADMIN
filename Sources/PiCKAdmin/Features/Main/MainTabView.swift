@@ -11,7 +11,11 @@ struct MainTabView: View {
             }
             .tag(0)
             .tabItem {
-                Label("급식", systemImage: "fork.knife")
+                Label {
+                    Text("급식")
+                } icon: {
+                    Image("schoolMealIcon", bundle: .module)
+                }
             }
             
             // Tab 1: 일정
@@ -20,7 +24,11 @@ struct MainTabView: View {
             }
             .tag(1)
             .tabItem {
-                Label("일정", systemImage: "calendar")
+                Label {
+                    Text("일정")
+                } icon: {
+                    Image("scheduleIcon", bundle: .module)
+                }
             }
             
             // Tab 2: 홈
@@ -29,22 +37,38 @@ struct MainTabView: View {
             }
             .tag(2)
             .tabItem {
-                Label("홈", systemImage: "house.fill")
+                Label {
+                    Text("홈")
+                } icon: {
+                    Image("homeIcon", bundle: .module)
+                }
             }
             
             // Tab 3: 수락
-            Color.green
-                .tag(3)
-                .tabItem {
-                    Label("수락", systemImage: "checkmark.circle")
+            NavigationStack {
+                AcceptView()
+            }
+            .tag(3)
+            .tabItem {
+                Label {
+                    Text("수락")
+                } icon: {
+                    Image("applyIcon", bundle: .module)
                 }
+            }
             
             // Tab 4: 전체
-            Color.orange
-                .tag(4)
-                .tabItem {
-                    Label("전체", systemImage: "line.3.horizontal")
+            NavigationStack {
+                AllTabView()
+            }
+            .tag(4)
+            .tabItem {
+                Label {
+                    Text("전체")
+                } icon: {
+                    Image("allTabIcon", bundle: .module)
                 }
+            }
         }
         .tint(Color.Primary.primary500)
     }

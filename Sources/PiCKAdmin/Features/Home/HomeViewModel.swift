@@ -1,6 +1,6 @@
 import Foundation
 import Observation
-import SkipFuse
+import SwiftUI
 
 // MARK: - Home Models (Used by View)
 public struct OutingStudent: Identifiable, Hashable {
@@ -9,7 +9,7 @@ public struct OutingStudent: Identifiable, Hashable {
     public let grade: Int
     public let classNum: Int
     public let num: Int
-    public let type: OutingType
+    public let type: OutgoingType
 }
 
 public struct ClassroomMoveStudent: Identifiable, Hashable {
@@ -29,14 +29,14 @@ public struct AcceptStudent: Identifiable, Hashable {
     public let grade: Int
     public let classNum: Int
     public let num: Int
-    public let type: OutingType
+    public let type: OutgoingType
 }
 
-public enum OutingType: String, Codable, Hashable {
+public enum OutgoingType: String, Codable, Hashable {
     case outgoing = "OUTGOING"
     case earlyReturn = "EARLY_RETURN"
 
-    public var displayName: String {
+    public var title: String {
         switch self {
         case .outgoing: return "외출"
         case .earlyReturn: return "조기귀가"
@@ -67,7 +67,6 @@ struct ApplicationDTO: Decodable {
     let grade: Int
     let classNum: Int
     let num: Int
-    // Some endpoints might return user_id, start, end, reason, but we only need these for the list
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -102,14 +101,6 @@ struct ClassroomMoveDTO: Decodable {
     let num: Int
     let start: Int
     let end: Int
-    
-    // The View needs an ID. If API doesn't provide one, we generate or use properties.
-    // Assuming API might not provide ID for classroom move list? 
-    // Wait, ClassroomMoveResponseDTO in iOS had userId. We can use that + timestamp as ID or just UUID() if strictly needed for Identifiable.
-    // Let's see if we can get ID. iOS used `ClassroomMoveListEntity` which had `id`.
-    // Let's assume response has userId and we use it as key? Or generic ID?
-    // iOS `ClassroomMoveResponseDTO` had `userId`.
-    
     let userId: String?
     
     enum CodingKeys: String, CodingKey {
@@ -336,8 +327,6 @@ public final class HomeViewModel {
     
     @MainActor
     private func refreshAcceptList() async {
-        // Parse current classroom string to get grade/classNum to refresh
-        // Format: "2학년 1반"
         let components = classroom.components(separatedBy: CharacterSet.decimalDigits.inverted).filter { !$0.isEmpty }
         if components.count >= 2, let grade = Int(components[0]), let classNum = Int(components[1]) {
             await fetchAcceptLists(grade: grade, classNum: classNum)
@@ -371,14 +360,5 @@ public final class HomeViewModel {
     @MainActor
     public func dismissAlert() {
         showAlert = false
-    }
-}
-
-// MARK: - Date Extension
-extension Date {
-    static func todayString() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: Date())
     }
 }

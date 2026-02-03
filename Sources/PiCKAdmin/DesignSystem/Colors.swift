@@ -3,16 +3,16 @@ import SwiftUI
 // MARK: - Primary Colors
 public extension Color {
     struct Primary {
-        public static let primary50 = Color(hex: "#E8F5E9")
-        public static let primary100 = Color(hex: "#C8E6C9")
-        public static let primary200 = Color(hex: "#A5D6A7")
-        public static let primary300 = Color(hex: "#81C784")
-        public static let primary400 = Color(hex: "#66BB6A")
-        public static let primary500 = Color(hex: "#4CAF50")
-        public static let primary600 = Color(hex: "#43A047")
-        public static let primary700 = Color(hex: "#388E3C")
-        public static let primary800 = Color(hex: "#2E7D32")
-        public static let primary900 = Color(hex: "#1B5E20")
+        public static let primary50 = Color(hex: "#EDE7F6")
+        public static let primary100 = Color(hex: "#D1C4E9")
+        public static let primary200 = Color(hex: "#B39DDB")
+        public static let primary300 = Color(hex: "#9575CD")
+        public static let primary400 = Color(hex: "#7E57C2")
+        public static let primary500 = Color(hex: "#673AB7")
+        public static let primary600 = Color(hex: "#5E35B1")
+        public static let primary700 = Color(hex: "#512DA8")
+        public static let primary800 = Color(hex: "#4527A0")
+        public static let primary900 = Color(hex: "#311B92")
     }
 }
 
@@ -53,6 +53,7 @@ public extension Color {
     struct Background {
         public static let primary = Color.white
         public static let secondary = Color(hex: "#F5F5F5")
+        public static let background = Color(hex: "#F5F5F5")
     }
 }
 

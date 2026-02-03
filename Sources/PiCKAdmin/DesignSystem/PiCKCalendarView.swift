@@ -18,6 +18,7 @@ struct PiCKCalendarView: View {
     private let calendar: Calendar = {
         var cal = Calendar.current
         cal.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        cal.firstWeekday = 1 // 일요일 시작
         return cal
     }()
     private let weekSymbols = ["일", "월", "화", "수", "목", "금", "토"]
@@ -120,8 +121,8 @@ struct PiCKCalendarView: View {
             RoundedCorner(
                 radius: 20,
                 corners: calendarType == .schoolMeal
-                    ? [.bottomLeft, .bottomRight]
-                    : [.topLeft, .topRight]
+                    ? [RectCorner.bottomLeft, RectCorner.bottomRight]
+                    : [RectCorner.topLeft, RectCorner.topRight]
             )
         )
     }
@@ -173,42 +174,25 @@ struct PiCKCalendarView: View {
     }
 
     private func generateDates(for month: Date) -> [Date] {
-        let range = calendar.range(of: .day, in: .month, for: month)!
-        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: month))!
-        let startWeekday = calendar.component(.weekday, from: startOfMonth) // 1=Sun
-        let leadingEmptyDays = (startWeekday - calendar.firstWeekday + 7) % 7
+        // 월의 첫날과 마지막날 구하기
+        guard let monthInterval = calendar.dateInterval(of: .month, for: month) else {
+            return []
+        }
+
+        // 월의 첫 주와 마지막 주의 범위 구하기 (firstWeekday 자동 반영)
+        guard let firstWeekInterval = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.start),
+              let lastWeekInterval = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.end.addingTimeInterval(-1)) else {
+            return []
+        }
 
         var dates: [Date] = []
-        // Previous month days
-        for i in 0..<leadingEmptyDays {
-            if let date = calendar.date(byAdding: .day, value: -(leadingEmptyDays - i), to: startOfMonth) {
-                dates.append(date)
-            }
-        }
+        var currentDate = firstWeekInterval.start
 
-        // Current month days
-        for day in range {
-            if let date = calendar.date(byAdding: .day, value: day - 1, to: startOfMonth) {
-                dates.append(date)
-            }
-        }
-        
-        // Next month days to fill grid (optional but good for 6 rows)
-        // PiCK implementation fills up to 42 days (6 weeks) or just enough for month?
-        // Code snippet showed:
-        /*
-        let totalDays = dates.count
-        let remainingDays = 7 - (totalDays % 7)
-        if remainingDays < 7, let lastDate = dates.last { ... }
-        */
-        let totalDays = dates.count
-        let remainingDays = 7 - (totalDays % 7)
-        if remainingDays < 7, let lastDate = dates.last {
-            for i in 1...remainingDays {
-                if let date = calendar.date(byAdding: .day, value: i, to: lastDate) {
-                    dates.append(date)
-                }
-            }
+        // 첫 주 시작부터 마지막 주 끝까지 날짜 생성
+        while currentDate < lastWeekInterval.end {
+            dates.append(currentDate)
+            guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else { break }
+            currentDate = nextDate
         }
 
         return dates

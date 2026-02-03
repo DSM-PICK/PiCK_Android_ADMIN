@@ -78,7 +78,7 @@ struct ContentView: View {
         case .home:
             EmptyView()
         case .outList:
-            OutListView(router: router)
+            OutListView()
         case .checkSelfStudyTeacher:
             CheckSelfStudyTeacherView(router: router)
         case .bugReport:
@@ -90,7 +90,7 @@ struct ContentView: View {
         case .selfStudyCheck:
             SelfStudyCheckView(router: router)
         case .classroomMoveList:
-            ClassroomMoveListView(router: router)
+            ClassroomMoveListView()
         case .outingHistory:
             OutingHistoryView(router: router)
         }
@@ -153,21 +153,6 @@ struct InfoSettingView: View {
     }
 }
 
-struct OutListView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "외출 목록", backAction: { router.pop() })
-    }
-}
-
-struct CheckSelfStudyTeacherView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "자습감독 확인", backAction: { router.pop() })
-    }
-}
 
 struct BugReportView: View {
     var router: AppRouter
@@ -195,29 +180,6 @@ struct NewPasswordView: View {
     }
 }
 
-struct SelfStudyCheckView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "자습 확인", backAction: { router.pop() })
-    }
-}
-
-struct ClassroomMoveListView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "교실 이동 목록", backAction: { router.pop() })
-    }
-}
-
-struct OutingHistoryView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "외출 기록", backAction: { router.pop() })
-    }
-}
 
 // MARK: - Placeholder View Component
 struct PlaceholderView: View {

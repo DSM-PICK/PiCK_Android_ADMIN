@@ -5,6 +5,9 @@ public enum PiCKTextType {
     case heading1
     case heading2
     case heading3
+    case heading4
+    case subTitle1
+    case subTitle2
     case body1
     case body2
     case caption1
@@ -21,6 +24,12 @@ public enum PiCKTextType {
             return .system(size: 24, weight: .bold)
         case .heading3:
             return .system(size: 20, weight: .semibold)
+        case .heading4:
+            return .system(size: 20, weight: .semibold)
+        case .subTitle1:
+            return .system(size: 18, weight: .semibold)
+        case .subTitle2:
+            return .system(size: 16, weight: .semibold)
         case .body1:
             return .system(size: 16, weight: .regular)
         case .body2:

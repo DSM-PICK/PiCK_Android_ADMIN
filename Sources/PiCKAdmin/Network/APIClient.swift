@@ -37,7 +37,7 @@ public enum APIError: Error, LocalizedError {
 }
 
 // MARK: - HTTP Method
-public enum HTTPMethod: String {
+public enum HTTPMethod: String, Sendable {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
@@ -46,7 +46,7 @@ public enum HTTPMethod: String {
 }
 
 // MARK: - API Endpoint
-public struct APIEndpoint {
+public struct APIEndpoint: Sendable {
     let path: String
     let method: HTTPMethod
     let headers: [String: String]?
@@ -355,6 +355,13 @@ public struct AuthAPI {
             headers: ["Refresh-Token": JwtStore.shared.refreshToken ?? ""]
         )
     }
+
+    public static func deleteAccount() -> APIEndpoint {
+        return APIEndpoint(
+            path: "/admin/delete",
+            method: .delete
+        )
+    }
 }
 
 // MARK: - Request/Response Models
@@ -446,10 +453,20 @@ public struct HomeAPI {
     // MARK: Monitor (Self Study Teacher)
     public static func getClassroomMoveByFloor(floor: Int) -> APIEndpoint {
         return APIEndpoint(
-            path: "/classroom/floor",
+            path: "/class-room/floor",
             queryItems: [
                 URLQueryItem(name: "floor", value: String(floor)),
                 URLQueryItem(name: "status", value: "OK")
+            ]
+        )
+    }
+
+    public static func getClassroomMoveByClassroom(grade: Int, classNum: Int) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/class-room/grade",
+            queryItems: [
+                URLQueryItem(name: "grade", value: String(grade)),
+                URLQueryItem(name: "class_num", value: String(classNum))
             ]
         )
     }
@@ -517,6 +534,20 @@ public struct SchoolMealAPI {
             ],
             customBaseURL: neisBaseURL
         )
+    }
+}
+
+// MARK: - Admin API
+public struct AdminAPI {
+    public static func getMyName() -> APIEndpoint {
+        return APIEndpoint(path: "/admin/my-name")
+    }
+}
+
+// MARK: - Outing History API
+public struct OutingHistoryAPI {
+    public static func getOutingHistory() -> APIEndpoint {
+        return APIEndpoint(path: "/story/all")
     }
 }
 

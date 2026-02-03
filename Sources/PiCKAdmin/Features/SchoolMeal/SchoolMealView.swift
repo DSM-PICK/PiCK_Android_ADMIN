@@ -81,14 +81,14 @@ struct SchoolMealView: View {
             .background(Color.Background.primary)
         }
         .background(Color.Normal.white)
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                HStack(spacing: 8) {
-                    Image(systemName: "checkmark.shield.fill")
-                        .foregroundColor(.Primary.primary500)
-                    Text("PiCK")
-                        .pickText(type: .heading3, textColor: .Primary.primary500)
-                }
+                Image("pickLogo", bundle: .module)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 20)
+                    .padding(.leading, 8)
             }
         }
         .task {
