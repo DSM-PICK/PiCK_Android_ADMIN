@@ -1,70 +1,5 @@
 import SwiftUI
 
-struct PlanView: View {
-    @State var viewModel = PlanViewModel()
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            MonthHeaderView(
-                currentMonth: viewModel.currentMonth,
-                onPrevMonth: {
-                    print("Prev Month Clicked")
-                    Task { await viewModel.changeMonth(by: -1) }
-                },
-                onNextMonth: {
-                    print("Next Month Clicked")
-                    Task { await viewModel.changeMonth(by: 1) }
-                }
-            )
-            .padding(.top, 32)
-            .padding(.horizontal, 20)
-
-            ScrollView {
-                VStack(spacing: 0) {
-                    // DEBUG Text removed for cleaner UI as logic is fixed
-                    // Text("Events: \(viewModel.monthAcademicSchedule.count)")
-                    //    .font(.caption)
-                    //    .foregroundColor(.gray)
-
-                    AcademicScheduleCalendarView(
-                        monthSchedule: viewModel.monthAcademicSchedule,
-                        selectedDate: viewModel.selectedDate,
-                        currentMonth: viewModel.currentMonth,
-                        onDateSelect: { date in
-                            print("Date Selected: \(date)")
-                            Task { await viewModel.selectDate(date) }
-                        }
-                    )
-                    .id("\(viewModel.currentMonth)\(viewModel.selectedDate)\(viewModel.monthAcademicSchedule.count)") // Combine IDs
-                    .padding(.top, 12)
-                    .padding(.horizontal, 24)
-                    
-                    ScheduleListView(
-                        selectedDate: viewModel.selectedDate,
-                        schedules: viewModel.academicSchedule
-                    )
-                    
-                    Spacer()
-                }
-            }
-        }
-        .background(Color.white)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Image("pickLogo", bundle: .module)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 20)
-                    .padding(.leading, 8)
-            }
-        }
-        .task {
-            await viewModel.onAppear()
-        }
-    }
-}
-
 // MARK: - Month Header
 struct MonthHeaderView: View {
     let currentMonth: Date
@@ -316,7 +251,28 @@ extension Date {
     func toKoreanYearMonthString() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 M월"
-        formatter.timeZone = TimeZone(identifier: "Asia/Seoul") // Fix timezone
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        return formatter.string(from: self)
+    }
+
+    func koreanDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M월 d일"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        return formatter.string(from: self)
+    }
+
+    func koreanMonthDayString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M월 d일"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        return formatter.string(from: self)
+    }
+
+    func toAPIDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         return formatter.string(from: self)
     }
 }
