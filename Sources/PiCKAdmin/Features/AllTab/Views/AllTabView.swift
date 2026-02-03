@@ -24,7 +24,8 @@ struct AllTabView: View {
                 .padding(.top, 32)
             }
         }
-        .background(Color.Gray.gray50)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.white)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {

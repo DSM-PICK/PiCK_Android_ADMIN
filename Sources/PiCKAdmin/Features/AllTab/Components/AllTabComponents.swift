@@ -26,7 +26,7 @@ struct TeacherInfoView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 84)
-        .background(Color.Normal.white)
+        .background(Color.white)
     }
 }
 
@@ -155,9 +155,8 @@ struct MenuItemCell: View {
                 Spacer()
             }
             .padding(.vertical, 20)
-            .background(Color.Normal.white)
-            .background(Color.white.opacity(0.001))
+            .background(Color.white)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PlainButtonStyle())
     }
 }

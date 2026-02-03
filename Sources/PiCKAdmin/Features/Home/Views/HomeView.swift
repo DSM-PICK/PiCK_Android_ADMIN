@@ -139,6 +139,7 @@ struct HomeView: View {
                 alertOverlay
             }
         }
+        .background(Color.white)
     }
 
     private func studentNumber(grade: Int, classNum: Int, num: Int) -> String {

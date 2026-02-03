@@ -80,6 +80,7 @@ public struct AcceptView: View {
                 alertOverlay
             }
         }
+        .background(Color.white)
     }
 
     // MARK: - Header Section

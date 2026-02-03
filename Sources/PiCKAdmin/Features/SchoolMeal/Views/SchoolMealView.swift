@@ -83,6 +83,7 @@ struct SchoolMealView: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .allowsHitTesting(true)
         }
+        .background(Color.white)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
