@@ -172,11 +172,12 @@ public struct AcceptView: View {
     }
 
     // MARK: - Student List Section
+    @ViewBuilder
     private var studentListSection: some View {
-        ScrollView {
-            if viewModel.studentItems.isEmpty && !viewModel.isLoading {
-                emptyStateView
-            } else {
+        if viewModel.studentItems.isEmpty && !viewModel.isLoading {
+            emptyStateView
+        } else {
+            ScrollView {
                 VStack(spacing: 16) {
                     ForEach(viewModel.studentItems, id: \.id) { item in
                         switch item {
@@ -226,18 +227,20 @@ public struct AcceptView: View {
 
     // MARK: - Empty State View
     private var emptyStateView: some View {
-        VStack(spacing: 12) {
-            Image("pickLogo", bundle: .module)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 88, height: 91)
-                .opacity(0.5)
+        VStack {
+            Spacer()
+            VStack(spacing: 12) {
+                Image("blackLogo", bundle: .module)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 88, height: 91)
 
-            Text(emptyStateMessage)
-                .pickText(type: .body1, textColor: .Gray.gray500)
+                Text(emptyStateMessage)
+                    .pickText(type: .body1, textColor: .Gray.gray500)
+            }
+            Spacer()
         }
         .frame(maxWidth: .infinity)
-        .padding(.top, 100)
     }
 
     private var emptyStateMessage: String {

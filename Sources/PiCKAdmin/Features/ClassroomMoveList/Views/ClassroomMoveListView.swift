@@ -178,11 +178,10 @@ public struct ClassroomMoveListView: View {
         VStack {
             Spacer()
             VStack(spacing: 12) {
-                Image("pickLogo", bundle: .module)
+                Image("blackLogo", bundle: .module)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 88, height: 91)
-                    .opacity(0.5)
 
                 Text("아직 교실 이동을 한 학생이 없어요")
                     .pickText(type: .body1, textColor: .Gray.gray500)
