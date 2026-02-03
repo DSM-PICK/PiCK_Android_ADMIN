@@ -18,20 +18,26 @@ struct CheckSelfStudyTeacherView: View {
             Color.Background.background
                 .ignoresSafeArea()
 
-            VStack(alignment: .leading, spacing: 0) {
-                titleView(selectedDate: viewModel.selectedDate)
-                    .padding(.top, 32)
-                    .padding(.leading, 24)
+            VStack(spacing: 0) {
+                // 커스텀 네비게이션 바
+                navigationBar
 
-                if !viewModel.teachers.isEmpty {
-                    teacherListView(teachers: viewModel.teachers)
+                // 컨텐츠 영역
+                VStack(alignment: .leading, spacing: 0) {
+                    titleView(selectedDate: viewModel.selectedDate)
+                        .padding(.top, 24)
                         .padding(.leading, 24)
-                        .padding(.top, 32)
-                }
 
-                Spacer()
+                    if !viewModel.teachers.isEmpty {
+                        teacherListView(teachers: viewModel.teachers)
+                            .padding(.leading, 24)
+                            .padding(.top, 32)
+                    }
+
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
 
             if viewModel.teachers.isEmpty && !viewModel.isLoading {
                 VStack {
@@ -58,45 +64,38 @@ struct CheckSelfStudyTeacherView: View {
                         }
                     }
                 )
+                .padding(.bottom, 16)
             }
-            .ignoresSafeArea(edges: .bottom)
         }
         .navigationBarBackButtonHidden(true)
-        #if os(iOS)
-        .toolbar(.hidden, for: .tabBar)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    router.pop()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.Normal.black)
-                }
-            }
-
-            ToolbarItem(placement: .principal) {
-                Text("자습 감독 선생님 확인")
-                    .pickText(type: .subTitle1, textColor: .Normal.black)
-            }
-        }
-        #else
-        .toolbar {
-            ToolbarItem(placement: .navigation) {
-                Button {
-                    router.pop()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.Normal.black)
-                }
-            }
-        }
-        .navigationTitle("자습 감독 선생님 확인")
-        #endif
+        .toolbar(.hidden)
         .task { @MainActor in
             await viewModel.fetchSelfStudyTeacher(for: selectedDate)
         }
+    }
+
+    private var navigationBar: some View {
+        ZStack {
+            // 중앙 타이틀
+            Text("자습 감독 선생님 확인")
+                .pickText(type: .subTitle1, textColor: .Normal.black)
+
+            // 뒤로가기 버튼
+            HStack {
+                Button {
+                    router.pop()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.Normal.black)
+                }
+                .padding(.leading, 16)
+
+                Spacer()
+            }
+        }
+        .frame(height: 56)
+        .background(Color.Background.background)
     }
 
     @ViewBuilder
