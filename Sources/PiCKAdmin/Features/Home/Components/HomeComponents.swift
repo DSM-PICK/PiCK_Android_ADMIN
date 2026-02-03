@@ -19,12 +19,8 @@ struct SelfStudyCard: View {
                 .padding(.leading, 20)
         }
         .frame(maxWidth: .infinity, minHeight: 72, alignment: .topLeading)
-        .background(Color(hex: "#F5F5F5"))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color(hex: "#E0E0E0"), lineWidth: 1)
-        )
+        .background(Color.Gray.gray50)
+        .cornerRadius(8)
     }
 }
 
@@ -208,11 +204,7 @@ struct AllSelfStudyCard: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 172)
-        .background(Color(hex: "#F5F5F5"))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color(hex: "#E0E0E0"), lineWidth: 1)
-        )
+        .background(Color.Gray.gray50)
+        .cornerRadius(8)
     }
 }

@@ -8,13 +8,13 @@ struct SelectedDateView: View {
         HStack(spacing: 4) {
             if isToday {
                 Text("오늘")
-                    .pickText(type: .heading2, textColor: .Primary.primary500)
+                    .foregroundColor(Color.Primary.primary500)
             }
             Text(formattedDate)
-                .pickText(type: .heading2, textColor: .Normal.black)
+                .foregroundColor(Color.Normal.black)
         }
     }
-    
+
     private var formattedDate: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
@@ -22,7 +22,7 @@ struct SelectedDateView: View {
         formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         return formatter.string(from: date)
     }
-    
+
     private var isToday: Bool {
         let todayFormatter = DateFormatter()
         todayFormatter.locale = Locale(identifier: "ko_KR")
@@ -45,7 +45,7 @@ struct SchoolMealCell: View {
 
             VStack(spacing: 16) {
                 Text(mealTime)
-                    .pickText(type: .button1, textColor: .Primary.primary700)
+                    .pickText(type: .subTitle1, textColor: .Primary.primary700)
 
                 if !menu.isEmpty {
                     Text(kcal)

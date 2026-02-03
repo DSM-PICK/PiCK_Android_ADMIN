@@ -11,8 +11,10 @@ struct SchoolMealView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     SelectedDateView(date: viewModel.selectedDate)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .pickText(type: .heading4)
                         .padding(.horizontal, 24)
-                        .padding(.top, 184) // Space for calendar
+                        .padding(.top, 184)
                         .padding(.bottom, 20)
 
                     if viewModel.isLoading {
@@ -78,8 +80,9 @@ struct SchoolMealView: View {
             )
             .shadow(color: Color.Normal.black.opacity(0.25), radius: 20, x: 0, y: 0)
             .background(Color.Background.primary)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .allowsHitTesting(true)
         }
-        .background(Color.Normal.white)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
