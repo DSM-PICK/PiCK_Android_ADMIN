@@ -24,7 +24,16 @@ struct AllTabView: View {
                 .padding(.top, 32)
             }
         }
-        .background(Color.Gray.gray50) // Background color check
+        .background(Color.Gray.gray50)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Image("pickLogo", bundle: .module)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 20)
+            }
+        }
         .task {
             await viewModel.fetchMyName()
         }
