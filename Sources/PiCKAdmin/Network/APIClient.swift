@@ -461,6 +461,16 @@ public struct HomeAPI {
         )
     }
 
+    public static func getClassroomMoveByClassroom(grade: Int, classNum: Int) -> APIEndpoint {
+        return APIEndpoint(
+            path: "/class-room/grade",
+            queryItems: [
+                URLQueryItem(name: "grade", value: String(grade)),
+                URLQueryItem(name: "class_num", value: String(classNum))
+            ]
+        )
+    }
+
     public static func getOutList(floor: Int) -> APIEndpoint {
         return APIEndpoint(
             path: "/application/floor",

@@ -90,7 +90,7 @@ struct ContentView: View {
         case .selfStudyCheck:
             SelfStudyCheckView(router: router)
         case .classroomMoveList:
-            ClassroomMoveListView(router: router)
+            ClassroomMoveListView()
         case .outingHistory:
             OutingHistoryView(router: router)
         }
@@ -177,15 +177,6 @@ struct NewPasswordView: View {
 
     var body: some View {
         PlaceholderView(title: "새 비밀번호", backAction: { router.pop() })
-    }
-}
-
-
-struct ClassroomMoveListView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "교실 이동 목록", backAction: { router.pop() })
     }
 }
 
