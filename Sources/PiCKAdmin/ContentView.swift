@@ -80,7 +80,7 @@ struct ContentView: View {
         case .outList:
             OutListView()
         case .checkSelfStudyTeacher:
-            CheckSelfStudyTeacherView(router: router)
+            CheckSelfStudyTeacherView()
         case .bugReport:
             BugReportView(router: router)
         case .changePassword:
@@ -88,11 +88,11 @@ struct ContentView: View {
         case let .newPassword(accountId, code):
             NewPasswordView(accountId: accountId, code: code, router: router)
         case .selfStudyCheck:
-            SelfStudyCheckView(router: router)
+            SelfStudyCheckView()
         case .classroomMoveList:
             ClassroomMoveListView()
         case .outingHistory:
-            OutingHistoryView(router: router)
+            OutingHistoryView()
         }
     }
 
@@ -154,13 +154,6 @@ struct InfoSettingView: View {
 }
 
 
-struct BugReportView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "버그 신고", backAction: { router.pop() })
-    }
-}
 
 struct ChangePasswordView: View {
     var router: AppRouter
