@@ -93,7 +93,7 @@ struct HomeView: View {
                                     emptyStateView(message: "교실 이동자가 없습니다")
                                 } else {
                                     ForEach(viewModel.classroomMoveList) { item in
-                                        PiCKClassroomMoveCell(
+                                        AcceptClassroomMoveCell(
                                             studentNumber: studentNumber(
                                                 grade: item.grade,
                                                 classNum: item.classNum,
@@ -132,9 +132,7 @@ struct HomeView: View {
             }
             .task {
                 router.selectedTab = 2
-                await viewModel.fetchSelfStudyDirector(date: Date.todayString())
-                await viewModel.fetchAdminSelfStudyInfo()
-                await viewModel.fetchSelfStudyAndClassroom()
+                await viewModel.loadInitialDataIfNeeded()
             }
 
             // Alert Overlay

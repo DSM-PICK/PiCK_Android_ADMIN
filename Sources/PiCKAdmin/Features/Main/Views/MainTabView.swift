@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State var selectedTab = 2
-    
+    @Environment(\.appRouter) var router: AppRouter
+
     var body: some View {
-        TabView(selection: $selectedTab) {
+        @Bindable var bindableRouter = router
+        TabView(selection: $bindableRouter.selectedTab) {
             // Tab 0: 급식
             NavigationStack {
                 SchoolMealView()

@@ -21,7 +21,19 @@ public final class HomeViewModel {
     public var alertMessage: String = ""
     public var alertSuccessType: Bool = true
 
+    private var hasLoaded: Bool = false
+
     public init() {}
+
+    @MainActor
+    public func loadInitialDataIfNeeded() async {
+        guard !hasLoaded else { return }
+        hasLoaded = true
+
+        await fetchSelfStudyDirector(date: Date().toAPIDateString())
+        await fetchAdminSelfStudyInfo()
+        await fetchSelfStudyAndClassroom()
+    }
 
     @MainActor
     public func fetchSelfStudyDirector(date: String) async {
