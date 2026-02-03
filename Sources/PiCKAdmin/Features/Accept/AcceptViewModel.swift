@@ -428,7 +428,7 @@ public struct AcceptAPI {
     // Get classroom moves by floor (QUIET status for pending)
     public static func getClassroomMovesByFloor(floor: Int) -> APIEndpoint {
         return APIEndpoint(
-            path: "/classroom/floor",
+            path: "/class-room/floor",
             queryItems: [
                 URLQueryItem(name: "floor", value: String(floor)),
                 URLQueryItem(name: "status", value: "QUIET")
@@ -450,7 +450,7 @@ public struct AcceptAPI {
     public static func updateClassroomMoveStatus(idList: [String], status: String) -> APIEndpoint {
         let body = try? JSONEncoder().encode(UpdateStatusRequest(status: status, idList: idList))
         return APIEndpoint(
-            path: "/classroom/status",
+            path: "/class-room/status",
             method: .patch,
             body: body
         )

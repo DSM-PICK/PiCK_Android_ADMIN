@@ -453,7 +453,7 @@ public struct HomeAPI {
     // MARK: Monitor (Self Study Teacher)
     public static func getClassroomMoveByFloor(floor: Int) -> APIEndpoint {
         return APIEndpoint(
-            path: "/classroom/floor",
+            path: "/class-room/floor",
             queryItems: [
                 URLQueryItem(name: "floor", value: String(floor)),
                 URLQueryItem(name: "status", value: "OK")
