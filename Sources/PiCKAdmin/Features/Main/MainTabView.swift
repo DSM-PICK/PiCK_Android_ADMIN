@@ -45,15 +45,17 @@ struct MainTabView: View {
             }
             
             // Tab 3: 수락
-            Color.green
-                .tag(3)
-                .tabItem {
-                    Label {
-                        Text("수락")
-                    } icon: {
-                        Image("applyIcon", bundle: .module)
-                    }
+            NavigationStack {
+                AcceptView()
+            }
+            .tag(3)
+            .tabItem {
+                Label {
+                    Text("수락")
+                } icon: {
+                    Image("applyIcon", bundle: .module)
                 }
+            }
             
             // Tab 4: 전체
             NavigationStack {
