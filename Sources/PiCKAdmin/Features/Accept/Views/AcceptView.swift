@@ -117,20 +117,26 @@ public struct AcceptView: View {
                 Button(action: { viewModel.showRejectPopup = true }) {
                     Text("거절")
                         .pickText(type: .body2, textColor: .Normal.white)
-                        .padding(.horizontal, 15)
-                        .padding(.vertical, 8)
-                        .background(viewModel.selectedItemIds.isEmpty ? Color.Gray.gray400 : Color.Error.error)
+                        .frame(width: 65, height: 34)
+                        .background(Color.Error.error)
                         .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.white.opacity(!viewModel.selectedItemIds.isEmpty ? 0 : 0.6))
+                        )
                 }
                 .disabled(viewModel.selectedItemIds.isEmpty)
 
                 Button(action: { viewModel.showApprovePopup = true }) {
                     Text("수락")
                         .pickText(type: .body2, textColor: .Normal.white)
-                        .padding(.horizontal, 15)
-                        .padding(.vertical, 8)
-                        .background(viewModel.selectedItemIds.isEmpty ? Color.Gray.gray400 : Color.Primary.primary500)
+                        .frame(width: 65, height: 34)
+                        .background(Color.Primary.primary900)
                         .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.white.opacity(!viewModel.selectedItemIds.isEmpty ? 0 : 0.6))
+                        )
                 }
                 .disabled(viewModel.selectedItemIds.isEmpty)
             }

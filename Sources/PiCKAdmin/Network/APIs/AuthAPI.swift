@@ -65,4 +65,29 @@ public struct AuthAPI {
             method: .delete
         )
     }
+
+    public static func changePassword(adminId: String, code: String, password: String) -> APIEndpoint {
+        struct ChangePasswordRequest: Encodable {
+            let password: String
+            let adminId: String
+            let code: String
+
+            enum CodingKeys: String, CodingKey {
+                case password
+                case adminId = "admin_id"
+                case code
+            }
+        }
+
+        let body = try? JSONEncoder().encode(ChangePasswordRequest(
+            password: password,
+            adminId: adminId,
+            code: code
+        ))
+        return APIEndpoint(
+            path: "/admin/password",
+            method: .post,
+            body: body
+        )
+    }
 }

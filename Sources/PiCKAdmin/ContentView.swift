@@ -84,7 +84,7 @@ struct ContentView: View {
         case .bugReport:
             BugReportView(router: router)
         case .changePassword:
-            ChangePasswordView(router: router)
+            ChangePasswordView()
         case let .newPassword(accountId, code):
             NewPasswordView(accountId: accountId, code: code, router: router)
         case .selfStudyCheck:
@@ -152,27 +152,6 @@ struct InfoSettingView: View {
         PlaceholderView(title: "정보 설정", backAction: { router.pop() })
     }
 }
-
-
-
-struct ChangePasswordView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "비밀번호 변경", backAction: { router.pop() })
-    }
-}
-
-struct NewPasswordView: View {
-    let accountId: String
-    let code: String
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "새 비밀번호", backAction: { router.pop() })
-    }
-}
-
 
 // MARK: - Placeholder View Component
 struct PlaceholderView: View {
