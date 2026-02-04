@@ -39,6 +39,7 @@ struct NewPasswordView: View {
         }
         .onChange(of: viewModel.isSuccess) { _, success in
             if success {
+                JwtStore.shared.clearTokens()
                 router.popToRoot()
             }
         }

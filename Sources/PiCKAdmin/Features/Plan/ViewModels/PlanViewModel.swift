@@ -29,7 +29,11 @@ public final class PlanViewModel {
             return 
         }
         self.currentMonth = newMonth
+        self.selectedDate = newMonth
+        self.academicSchedule = []
+        
         await fetchMonthSchedule()
+        await fetchDaySchedule()
     }
     
     @MainActor
