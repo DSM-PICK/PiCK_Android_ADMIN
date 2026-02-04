@@ -4,6 +4,7 @@ import Observation
 @Observable
 public final class AppRouter: @unchecked Sendable {
     public var path: [AppRoute] = []
+    public var selectedTab: Int = 2
 
     public init() {}
 

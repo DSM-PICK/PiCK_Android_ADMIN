@@ -3,32 +3,32 @@ import SwiftUI
 // MARK: - Primary Colors
 public extension Color {
     struct Primary {
-        public static let primary50 = Color(hex: "#EDE7F6")
-        public static let primary100 = Color(hex: "#D1C4E9")
-        public static let primary200 = Color(hex: "#B39DDB")
-        public static let primary300 = Color(hex: "#9575CD")
-        public static let primary400 = Color(hex: "#7E57C2")
-        public static let primary500 = Color(hex: "#673AB7")
-        public static let primary600 = Color(hex: "#5E35B1")
-        public static let primary700 = Color(hex: "#512DA8")
-        public static let primary800 = Color(hex: "#4527A0")
-        public static let primary900 = Color(hex: "#311B92")
+        public static let primary50 = Color(hex: "#F2EAFE")
+        public static let primary100 = Color(hex: "#E0CBFE")
+        public static let primary200 = Color(hex: "#CBA8FD")
+        public static let primary300 = Color(hex: "#B685FC")
+        public static let primary400 = Color(hex: "#A66AFB")
+        public static let primary500 = Color(hex: "#9650FA")
+        public static let primary600 = Color(hex: "#8E49F9")
+        public static let primary700 = Color(hex: "#8340F9")
+        public static let primary800 = Color(hex: "#7937F8")
+        public static let primary900 = Color(hex: "#6827F6")
     }
 }
 
 // MARK: - Gray Colors
 public extension Color {
     struct Gray {
-        public static let gray50 = Color(hex: "#FAFAFA")
-        public static let gray100 = Color(hex: "#F5F5F5")
-        public static let gray200 = Color(hex: "#EEEEEE")
-        public static let gray300 = Color(hex: "#E0E0E0")
-        public static let gray400 = Color(hex: "#BDBDBD")
-        public static let gray500 = Color(hex: "#9E9E9E")
-        public static let gray600 = Color(hex: "#757575")
-        public static let gray700 = Color(hex: "#616161")
-        public static let gray800 = Color(hex: "#424242")
-        public static let gray900 = Color(hex: "#212121")
+        public static let gray50 = Color(hex: "#F1F1F2")
+        public static let gray100 = Color(hex: "#DDDCDD")
+        public static let gray200 = Color(hex: "#C6C5C7")
+        public static let gray300 = Color(hex: "#AFADB1")
+        public static let gray400 = Color(hex: "#9D9CA0")
+        public static let gray500 = Color(hex: "#8C8A8F")
+        public static let gray600 = Color(hex: "#848287")
+        public static let gray700 = Color(hex: "#79777C")
+        public static let gray800 = Color(hex: "#6F6D72")
+        public static let gray900 = Color(hex: "#5C5A60")
     }
 }
 
@@ -43,7 +43,7 @@ public extension Color {
 // MARK: - Error Colors
 public extension Color {
     struct Error {
-        public static let error = Color(hex: "#F44336")
+        public static let error = Color(hex: "#FF3B32")
         public static let errorLight = Color(hex: "#FFEBEE")
     }
 }

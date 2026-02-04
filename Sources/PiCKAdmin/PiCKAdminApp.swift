@@ -14,6 +14,7 @@ let logger: Logger = Logger(subsystem: "com.team.pick.admin", category: "PiCKAdm
 
     public var body: some View {
         ContentView()
+            .preferredColorScheme(.light)
             .task {
                 logger.info("Skip app logs are viewable in the Xcode console for iOS; Android logs can be viewed in Studio or using adb logcat")
             }
