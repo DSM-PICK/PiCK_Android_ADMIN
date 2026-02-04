@@ -9,6 +9,9 @@ public struct OutListView: View {
     
     public var body: some View {
         ZStack {
+            Color.Background.background
+                .ignoresSafeArea()
+
             VStack(spacing: 0) {
                 navigationBar
                 
@@ -190,7 +193,7 @@ public struct OutListView: View {
             }
         }
         .frame(height: 56)
-        .background(Color.Normal.white)
+        .background(Color.Background.background)
     }
 
     // MARK: - Subviews

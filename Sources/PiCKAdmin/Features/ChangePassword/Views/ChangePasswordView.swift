@@ -5,84 +5,88 @@ struct ChangePasswordView: View {
     @State var viewModel = ChangePasswordViewModel()
     @Environment(\.dismiss) var dismiss
 
-    var body: some View {
-        VStack(spacing: 0) {
-            navigationBar
-
-            VStack(alignment: .leading, spacing: 0) {
-                headerSection
-                
-                emailTextField
-                
-                codeTextField
-
-                if let errorMessage = viewModel.errorMessage {
-                    Text(errorMessage)
-                        .pickText(type: .body1, textColor: .Error.error)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 8)
-                }
-
-                Spacer()
-                nextButton
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .onChange(of: viewModel.navigateToNewPassword) { _, navigate in
-            if navigate {
-                router.navigate(to: .newPassword(accountId: viewModel.email, code: viewModel.code))
-            }
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar(.hidden)
-        .overlay(alignment: .top) {
-            if let successMessage = viewModel.successMessage {
-                VStack {
-                    HStack(spacing: 8) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundColor(.white)
-                        Text(successMessage)
-                            .pickText(type: .body1, textColor: .Normal.white)
+        var body: some View {
+            ZStack {
+                Color.Background.background
+                    .ignoresSafeArea()
+    
+                VStack(spacing: 0) {
+                    navigationBar
+    
+                    VStack(alignment: .leading, spacing: 0) {
+                        headerSection
+                        
+                        emailTextField
+                        
+                        codeTextField
+    
+                        if let errorMessage = viewModel.errorMessage {
+                            Text(errorMessage)
+                                .pickText(type: .body1, textColor: .Error.error)
+                                .padding(.horizontal, 24)
+                                .padding(.top, 8)
+                        }
+    
+                        Spacer()
+                        nextButton
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .background(Color.Primary.primary500)
-                    .cornerRadius(8)
-                    .padding(.top, 60)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        viewModel.successMessage = nil
+            }
+            .onChange(of: viewModel.navigateToNewPassword) { _, navigate in
+                if navigate {
+                    router.navigate(to: .newPassword(accountId: viewModel.email, code: viewModel.code))
+                }
+            }
+            .navigationBarBackButtonHidden(true)
+            .toolbar(.hidden)
+            .overlay(alignment: .top) {
+                if let successMessage = viewModel.successMessage {
+                    VStack {
+                        HStack(spacing: 8) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.white)
+                            Text(successMessage)
+                                .pickText(type: .body1, textColor: .Normal.white)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(Color.Primary.primary500)
+                        .cornerRadius(8)
+                        .padding(.top, 60)
+                    }
+                    .transition(AnyTransition.move(edge: .top).combined(with: .opacity))
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            viewModel.successMessage = nil
+                        }
                     }
                 }
             }
+            .animation(.spring(response: 0.6, dampingFraction: 0.7), value: viewModel.successMessage)
         }
-        .animation(.spring(response: 0.6, dampingFraction: 0.7), value: viewModel.successMessage)
-    }
-
-    private var navigationBar: some View {
-        ZStack {
-            Text("비밀번호 변경")
-                .pickText(type: .subTitle1, textColor: .Normal.black)
-
-            HStack {
-                Button {
-                    router.pop()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.Normal.black)
+    
+        private var navigationBar: some View {
+            ZStack {
+                Text("비밀번호 변경")
+                    .pickText(type: .subTitle1, textColor: .Normal.black)
+    
+                HStack {
+                    Button {
+                        router.pop()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.Normal.black)
+                    }
+                    .padding(.leading, 16)
+    
+                    Spacer()
                 }
-                .padding(.leading, 16)
-
-                Spacer()
             }
+            .frame(height: 56)
+            .background(Color.Background.background)
         }
-        .frame(height: 56)
-        .background(Color.Normal.white)
-    }
-
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 0) {

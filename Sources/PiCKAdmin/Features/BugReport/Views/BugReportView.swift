@@ -14,6 +14,9 @@ struct BugReportView: View {
 
     var body: some View {
         ZStack {
+            Color.Background.background
+                .ignoresSafeArea()
+
             VStack(spacing: 0) {
                 navigationBar
 
@@ -23,7 +26,6 @@ struct BugReportView: View {
 
                 submitButton
             }
-            .background(Color.Gray.gray50)
             .navigationBarBackButtonHidden(true)
             .toolbar(.hidden)
 
@@ -52,7 +54,7 @@ struct BugReportView: View {
             }
         }
         .frame(height: 56)
-        .background(Color.Normal.white)
+        .background(Color.Background.background)
     }
 
     // MARK: - Form Content

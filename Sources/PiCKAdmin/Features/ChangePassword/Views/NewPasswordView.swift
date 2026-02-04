@@ -15,27 +15,32 @@ struct NewPasswordView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            navigationBar
+        ZStack {
+            Color.Background.background
+                .ignoresSafeArea()
 
-            VStack(alignment: .leading, spacing: 0) {
-                headerSection
-                
-                passwordTextField
-                
-                passwordCheckTextField
+            VStack(spacing: 0) {
+                navigationBar
 
-                if let errorMessage = viewModel.errorMessage {
-                    Text(errorMessage)
-                        .pickText(type: .body1, textColor: .Error.error)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 8)
+                VStack(alignment: .leading, spacing: 0) {
+                    headerSection
+                    
+                    passwordTextField
+                    
+                    passwordCheckTextField
+
+                    if let errorMessage = viewModel.errorMessage {
+                        Text(errorMessage)
+                            .pickText(type: .body1, textColor: .Error.error)
+                            .padding(.horizontal, 24)
+                            .padding(.top, 8)
+                    }
+
+                    Spacer()
+                    nextButton
                 }
-
-                Spacer()
-                nextButton
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .onChange(of: viewModel.isSuccess) { _, success in
             if success {
@@ -90,7 +95,7 @@ struct NewPasswordView: View {
             }
         }
         .frame(height: 56)
-        .background(Color.Normal.white)
+        .background(Color.Background.background)
     }
 
     private var headerSection: some View {
