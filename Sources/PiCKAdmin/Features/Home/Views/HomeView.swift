@@ -131,7 +131,7 @@ struct HomeView: View {
                 }
             }
             .task {
-                await viewModel.loadInitialDataIfNeeded()
+                await viewModel.onAppear()
             }
 
             // Alert Overlay

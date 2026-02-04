@@ -4,6 +4,7 @@ import SwiftUI
 
 // MARK: - Home ViewModel
 @Observable
+@MainActor
 public final class HomeViewModel {
     public var adminSelfStudyTeacher: String = ""
     public var selfStudyDirector: [SelfStudyDirector] = []
@@ -21,18 +22,15 @@ public final class HomeViewModel {
     public var alertMessage: String = ""
     public var alertSuccessType: Bool = true
 
-    private var hasLoaded: Bool = false
-
     public init() {}
 
     @MainActor
-    public func loadInitialDataIfNeeded() async {
-        guard !hasLoaded else { return }
-        hasLoaded = true
-
-        await fetchSelfStudyDirector(date: Date().toAPIDateString())
-        await fetchAdminSelfStudyInfo()
-        await fetchSelfStudyAndClassroom()
+    public func onAppear() async {
+        async let director = fetchSelfStudyDirector(date: Date().toAPIDateString())
+        async let adminInfo = fetchAdminSelfStudyInfo()
+        async let classroom = fetchSelfStudyAndClassroom()
+        
+        _ = await (director, adminInfo, classroom)
     }
 
     @MainActor
