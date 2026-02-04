@@ -24,7 +24,7 @@ public final class ChangePasswordViewModel {
         
         do {
             try await APIClient.shared.requestVoid(
-                AuthAPI.sendVerificationCode(accountId: email)
+                MailAPI.emailSend(email: email)
             )
             isVerificationSent = true
             successMessage = "이메일로 코드가 전송되었어요!"
@@ -46,7 +46,7 @@ public final class ChangePasswordViewModel {
         
         do {
             try await APIClient.shared.requestVoid(
-                AuthAPI.verifyCode(accountId: email, code: code)
+                MailAPI.codeCheck(email: email, code: code)
             )
             navigateToNewPassword = true
         } catch let error as APIError {
