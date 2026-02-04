@@ -15,42 +15,35 @@ struct NewPasswordView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            headerSection
-            
-            passwordTextField
-            
-            passwordCheckTextField
+        VStack(spacing: 0) {
+            navigationBar
 
-            if let errorMessage = viewModel.errorMessage {
-                Text(errorMessage)
-                    .pickText(type: .body1, textColor: .Error.error)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 8)
+            VStack(alignment: .leading, spacing: 0) {
+                headerSection
+                
+                passwordTextField
+                
+                passwordCheckTextField
+
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .pickText(type: .body1, textColor: .Error.error)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 8)
+                }
+
+                Spacer()
+                nextButton
             }
-
-            Spacer()
-            nextButton
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .onChange(of: viewModel.isSuccess) { _, success in
             if success {
                 router.popToRoot()
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("비밀번호 변경")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    router.pop()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.Normal.black)
-                }
-            }
-        }
+        .toolbar(.hidden)
         .overlay(alignment: .top) {
              if let successMessage = viewModel.successMessage {
                 VStack {
@@ -75,6 +68,28 @@ struct NewPasswordView: View {
             }
         }
         .animation(.spring(response: 0.6, dampingFraction: 0.7), value: viewModel.successMessage)
+    }
+
+    private var navigationBar: some View {
+        ZStack {
+            Text("비밀번호 변경")
+                .pickText(type: .subTitle1, textColor: .Normal.black)
+
+            HStack {
+                Button {
+                    router.pop()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.Normal.black)
+                }
+                .padding(.leading, 16)
+
+                Spacer()
+            }
+        }
+        .frame(height: 56)
+        .background(Color.Normal.white)
     }
 
     private var headerSection: some View {

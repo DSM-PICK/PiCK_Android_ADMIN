@@ -15,6 +15,8 @@ struct BugReportView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
+                navigationBar
+
                 ScrollView {
                     formContent
                 }
@@ -23,24 +25,34 @@ struct BugReportView: View {
             }
             .background(Color.Gray.gray50)
             .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { router.pop() }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.Normal.black)
-                            .font(.system(size: 20))
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("버그 제보")
-                        .pickText(type: .body1, textColor: .Normal.black)
-                }
-            }
+            .toolbar(.hidden)
 
             if viewModel.showAlert {
                 alertOverlay
             }
         }
+    }
+
+    private var navigationBar: some View {
+        ZStack {
+            Text("버그 제보")
+                .pickText(type: .subTitle1, textColor: .Normal.black)
+
+            HStack {
+                Button {
+                    router.pop()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.Normal.black)
+                }
+                .padding(.leading, 16)
+
+                Spacer()
+            }
+        }
+        .frame(height: 56)
+        .background(Color.Normal.white)
     }
 
     // MARK: - Form Content

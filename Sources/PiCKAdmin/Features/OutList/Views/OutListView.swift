@@ -10,6 +10,8 @@ public struct OutListView: View {
     public var body: some View {
         ZStack {
             VStack(spacing: 0) {
+                navigationBar
+                
                 // Header
                 HStack {
                     Text("\(todayString) 외출자")
@@ -152,21 +154,7 @@ public struct OutListView: View {
                 }
             }
             .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.Gray.gray800)
-                            .font(.system(size: 20))
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("외출자 목록")
-                        .pickText(type: .body1, textColor: .Normal.black)
-                }
-            }
+            .toolbar(.hidden)
             .task {
                 await viewModel.onAppear()
             }
@@ -181,6 +169,28 @@ public struct OutListView: View {
                 alertOverlay
             }
         }
+    }
+
+    private var navigationBar: some View {
+        ZStack {
+            Text("외출자 목록")
+                .pickText(type: .subTitle1, textColor: .Normal.black)
+
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.Normal.black)
+                }
+                .padding(.leading, 16)
+
+                Spacer()
+            }
+        }
+        .frame(height: 56)
+        .background(Color.Normal.white)
     }
 
     // MARK: - Subviews
