@@ -30,9 +30,10 @@ struct ChangePasswordView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        #if os(iOS)
+        .navigationTitle("비밀번호 변경")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
                     router.pop()
                 }) {
@@ -41,7 +42,6 @@ struct ChangePasswordView: View {
                 }
             }
         }
-        #endif
         .overlay(alignment: .top) {
             if let successMessage = viewModel.successMessage {
                 VStack {

@@ -44,7 +44,7 @@ public struct PiCKTextField: View {
                     .pickText(type: .label1, textColor: .Normal.black)
             }
 
-            HStack(spacing: 4) {
+            HStack(spacing: 2) {
                 if isSecure {
                     SecureField(placeholder, text: $text)
                         .focused($isFocused)
@@ -74,7 +74,7 @@ public struct PiCKTextField: View {
                     }
                 } else if showVerification {
                     Text("@dsm.hs.kr")
-                        .pickText(type: .caption2, textColor: .Gray.gray500)
+                        .pickText(type: .caption1, textColor: .Gray.gray500)
 
                     Button(action: {
                         verificationButtonTapped?()
@@ -90,7 +90,7 @@ public struct PiCKTextField: View {
                     .disabled(text.isEmpty || remainingSeconds > 0)
                 } else if showEmail {
                     Text("@dsm.hs.kr")
-                        .pickText(type: .caption2, textColor: .Gray.gray500)
+                        .pickText(type: .caption1, textColor: .Gray.gray500)
                 }
             }
             .padding(.horizontal, 16)
