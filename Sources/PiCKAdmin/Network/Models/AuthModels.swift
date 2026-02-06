@@ -4,11 +4,13 @@ public struct SigninRequest: Codable {
     public let adminId: String
     public let password: String
     public let deviceToken: String
+    public let os: String
 
     enum CodingKeys: String, CodingKey {
         case adminId = "admin_id"
         case password
         case deviceToken = "device_token"
+        case os
     }
 }
 

@@ -5,7 +5,8 @@ public struct AuthAPI {
         let body = try? JSONEncoder().encode(SigninRequest(
             adminId: adminId,
             password: password,
-            deviceToken: deviceToken
+            deviceToken: deviceToken,
+            os: "AOS"
         ))
         return APIEndpoint(
             path: "/admin/login",
