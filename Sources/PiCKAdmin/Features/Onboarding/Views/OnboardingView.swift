@@ -7,17 +7,10 @@ struct OnboardingView: View {
         VStack {
             Spacer()
 
-            // Logo
-            VStack(spacing: 8) {
-                Image(systemName: "checkmark.shield.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-                    .foregroundColor(.Primary.primary500)
-
-                Text("PiCK Admin")
-                    .pickText(type: .heading1, textColor: .Primary.primary500)
-            }
+            Image("adminLogo", bundle: .module)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200, height: 200)
 
             Spacer()
 
