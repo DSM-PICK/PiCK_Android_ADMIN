@@ -69,8 +69,10 @@ public struct PiCKTextField: View {
                     Button(action: {
                         isSecure.toggle()
                     }) {
-                        Image(systemName: isSecure ? "eye.slash" : "eye")
-                            .foregroundColor(.Gray.gray500)
+                        Image(isSecure ? "eyeOff" : "eyeOn", bundle: .module)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
                     }
                 } else if showVerification {
                     Text("@dsm.hs.kr")
