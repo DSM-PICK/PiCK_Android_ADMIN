@@ -94,7 +94,7 @@ public struct PiCKTextField: View {
                 }
             }
             .padding(.horizontal, 16)
-            .frame(height: 40)
+            .frame(height: 51)
             .background(Color.Gray.gray50)
             .cornerRadius(4)
             .overlay(

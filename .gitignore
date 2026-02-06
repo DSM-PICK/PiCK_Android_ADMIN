@@ -13,6 +13,7 @@ local.properties
 .android/
 .kotlin/
 Android/app/keystore.jks
+Android/app/release-key.jks
 Android/app/keystore.properties
 
 xcodebuild*.log
