@@ -31,6 +31,7 @@ struct SigninView: View {
             signupLinkSection
             signinButton
         }
+        .hideKeyboardOnTap()
         .frame(maxWidth: .infinity, alignment: .leading)
         .onChange(of: viewModel.isSigninSuccessful) { _, success in
             if success {

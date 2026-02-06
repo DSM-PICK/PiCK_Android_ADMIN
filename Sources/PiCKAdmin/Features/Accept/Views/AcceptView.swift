@@ -81,6 +81,7 @@ public struct AcceptView: View {
             }
         }
         .background(Color.white)
+        .toolbar(isTypePickerPresented ? .hidden : .visible, for: .tabBar)
     }
 
     // MARK: - Header Section
@@ -274,12 +275,20 @@ public struct AcceptView: View {
                 Spacer()
 
                 VStack(spacing: 0) {
-                    Text("수락 항목을 선택해주세요")
-                        .pickText(type: .heading3, textColor: .Normal.black)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 24)
-                        .padding(.bottom, 20)
+                    HStack {
+                        Text("수락 항목을 선택해주세요")
+                            .pickText(type: .heading3, textColor: .Normal.black)
+                        Spacer()
+                        Text("✕")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.Gray.gray600)
+                            .onTapGesture {
+                                isTypePickerPresented = false
+                            }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 24)
+                    .padding(.bottom, 20)
 
                     ForEach([ApplicationType.outgoing, .classroomMove, .earlyReturn], id: \.self) { type in
                         Button {
@@ -312,8 +321,9 @@ public struct AcceptView: View {
 
                     Spacer().frame(height: 40)
                 }
+                .padding(.bottom, 100)
                 .background(Color.Normal.white)
-                .cornerRadius(20, corners: [.topLeft, .topRight])
+                .cornerRadius(20)
             }
         }
     }

@@ -26,6 +26,7 @@ struct BugReportView: View {
 
                 submitButton
             }
+            .hideKeyboardOnTap()
             .navigationBarBackButtonHidden(true)
             .toolbar(.hidden)
 

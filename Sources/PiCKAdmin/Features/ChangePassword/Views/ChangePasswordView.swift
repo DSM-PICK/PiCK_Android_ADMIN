@@ -30,6 +30,7 @@ struct ChangePasswordView: View {
                         Spacer()
                         nextButton
                     }
+                    .hideKeyboardOnTap()
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
