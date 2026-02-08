@@ -4,12 +4,14 @@ struct PasswordView: View {
     let secretKey: String
     let accountId: String
     let code: String
-    @State private var viewModel = PasswordViewModel()
+    @State var viewModel = PasswordViewModel()
     @Environment(\.appRouter) var router: AppRouter
 
     var body: some View {
         @Bindable var viewModel = viewModel
         VStack(alignment: .leading, spacing: 0) {
+            navigationBar
+
             headerSection
 
             PiCKTextField(
@@ -55,23 +57,33 @@ struct PasswordView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        #if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    router.pop()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.Normal.black)
-                }
-            }
-        }
-        #endif
+        .toolbar(.hidden)
         .overlay(alignment: .top) {
             if viewModel.errorMessage != nil {
                 errorToast
             }
         }
+    }
+
+    private var navigationBar: some View {
+        ZStack {
+            Text("회원가입")
+                .pickText(type: .subTitle1, textColor: .Normal.black)
+
+            HStack {
+                Button {
+                    router.pop()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.Normal.black)
+                }
+                .padding(.leading, 16)
+
+                Spacer()
+            }
+        }
+        .frame(height: 56)
     }
 
     private var headerSection: some View {
