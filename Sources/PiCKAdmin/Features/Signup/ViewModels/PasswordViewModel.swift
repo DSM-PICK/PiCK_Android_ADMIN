@@ -10,6 +10,10 @@ public final class PasswordViewModel {
     
     public init() {}
     
+    public var isFormValid: Bool {
+        !password.isEmpty && !passwordConfirm.isEmpty
+    }
+    
     public func validatePassword() {
         let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&()])[A-Za-z\\d!@#$%^&()]{8,30}$"
         let isMatched = password.range(of: passwordRegex, options: .regularExpression) != nil

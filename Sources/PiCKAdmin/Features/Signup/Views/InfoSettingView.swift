@@ -5,25 +5,65 @@ struct InfoSettingView: View {
     let accountId: String
     let code: String
     let password: String
-    @State var viewModel = InfoSettingViewModel()
     @Environment(\.appRouter) var router: AppRouter
+    @State var viewModel = InfoSettingViewModel()
 
     var body: some View {
-        @Bindable var viewModel = viewModel
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
-                navigationBar
+                ZStack {
+                    Text("회원가입")
+                        .pickText(type: .subTitle1, textColor: .Normal.black)
 
-                headerSection
+                    HStack {
+                        Button {
+                            router.pop()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.Normal.black)
+                        }
+                        .padding(.leading, 16)
+                        Spacer()
+                    }
+                }
+                .frame(height: 56)
 
-                teacherCheckSection
-                    .padding(.top, 48)
-                    .padding(.leading, 24)
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack(spacing: 0) {
+                        Text("PiCK")
+                            .foregroundColor(.Primary.primary500)
+                        Text("에 회원가입하기")
+                    }
+                    .pickText(type: .heading2)
+
+                    Text("선생님 정보를 입력해주세요.")
+                        .pickText(type: .body1, textColor: .Gray.gray600)
+                }
+                .padding(.top, 58)
+                .padding(.leading, 24)
+
+                HStack(spacing: 8) {
+                    Text("담임 선생님이신가요?")
+                        .pickText(type: .subTitle1, textColor: .Normal.black)
+                    Button(action: {
+                        viewModel.isTeacher.toggle()
+                    }) {
+                        Image(viewModel.isTeacher ? "checkBoxOn" : "checkBoxOff", bundle: .module)
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                }
+                .padding(.top, 48)
+                .padding(.leading, 24)
 
                 if viewModel.isTeacher {
-                    gradeClassSelectSection
-                        .padding(.horizontal, 24)
-                        .padding(.top, 28)
+                    HStack(spacing: 8) {
+                        gradeClassButton(title: "학년", value: viewModel.selectedGrade == 0 ? "선택" : "\(viewModel.selectedGrade)학년")
+                        gradeClassButton(title: "반", value: viewModel.selectedClass == 0 ? "선택" : "\(viewModel.selectedClass)반")
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 28)
                 }
 
                 PiCKTextField(
@@ -56,86 +96,22 @@ struct InfoSettingView: View {
             }
             .hideKeyboardOnTap()
             .frame(maxWidth: .infinity, alignment: .leading)
-            .onChange(of: viewModel.isSignupSuccessful) { _, isSuccessful in
-                if isSuccessful {
-                    router.replace(with: .home)
-                }
-            }
-            .navigationBarBackButtonHidden(true)
-            .toolbar(.hidden)
-            .overlay(alignment: .top) {
-                if viewModel.errorMessage != nil {
-                    errorToast
-                }
-            }
 
             if viewModel.showGradeClassPicker {
                 gradeClassPickerOverlay
             }
         }
-    }
-
-    private var navigationBar: some View {
-        ZStack {
-            Text("회원가입")
-                .pickText(type: .subTitle1, textColor: .Normal.black)
-
-            HStack {
-                Button {
-                    router.pop()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.Normal.black)
-                }
-                .padding(.leading, 16)
-
-                Spacer()
+        .onChange(of: viewModel.isSignupSuccessful) { _, isSuccessful in
+            if isSuccessful {
+                router.replace(with: .home)
             }
         }
-        .frame(height: 56)
-    }
-
-    private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 0) {
-                Text("PiCK")
-                    .foregroundColor(.Primary.primary500)
-                Text("에 회원가입하기")
+        .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden)
+        .overlay(alignment: .top) {
+            if viewModel.errorMessage != nil {
+                errorToast
             }
-            .pickText(type: .heading2)
-
-            Text("선생님 정보를 입력해주세요.")
-                .pickText(type: .body1, textColor: .Gray.gray600)
-        }
-        .padding(.top, 80)
-        .padding(.leading, 24)
-    }
-
-    private var teacherCheckSection: some View {
-        HStack(spacing: 8) {
-            Text("담임 선생님이신가요?")
-                .pickText(type: .subTitle1, textColor: .Normal.black)
-            Button(action: {
-                viewModel.isTeacher.toggle()
-            }) {
-                Image(viewModel.isTeacher ? "checkBoxOn" : "checkBoxOff", bundle: .module)
-                    .resizable()
-                    .frame(width: 24, height: 24)
-            }
-        }
-    }
-
-    private var gradeClassSelectSection: some View {
-        HStack(spacing: 8) {
-            gradeClassButton(
-                title: "학년",
-                value: viewModel.selectedGrade == 0 ? "선택" : "\(viewModel.selectedGrade)학년"
-            )
-            gradeClassButton(
-                title: "반",
-                value: viewModel.selectedClass == 0 ? "선택" : "\(viewModel.selectedClass)반"
-            )
         }
     }
 
@@ -182,7 +158,6 @@ struct InfoSettingView: View {
                         .padding(.top, 24)
                         .padding(.bottom, 20)
 
-                    // Grade Selection
                     HStack(spacing: 8) {
                         ForEach([1, 2, 3], id: \.self) { grade in
                             Button {
@@ -206,7 +181,6 @@ struct InfoSettingView: View {
                     }
                     .padding(.horizontal, 24)
 
-                    // Class Selection
                     HStack(spacing: 8) {
                         ForEach([1, 2, 3, 4], id: \.self) { classNum in
                             Button {
@@ -231,7 +205,6 @@ struct InfoSettingView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
 
-                    // Confirm Button
                     Button {
                         viewModel.showGradeClassPicker = false
                     } label: {
@@ -247,7 +220,7 @@ struct InfoSettingView: View {
                     .padding(.bottom, 40)
                 }
                 .background(Color.Normal.white)
-                .cornerRadius(20) // Simplified corner radius for brevity
+                .cornerRadius(20)
             }
         }
     }

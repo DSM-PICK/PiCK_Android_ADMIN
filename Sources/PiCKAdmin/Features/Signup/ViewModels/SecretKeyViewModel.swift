@@ -13,10 +13,10 @@ public final class SecretKeyViewModel {
     public var isFormValid: Bool {
         !secretKey.isEmpty
     }
-
+    
     @MainActor
     public func checkSecretKey() async {
-        guard !secretKey.isEmpty else { return }
+        guard isFormValid else { return }
         
         isLoading = true
         errorMessage = nil

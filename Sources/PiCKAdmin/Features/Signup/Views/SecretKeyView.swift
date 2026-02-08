@@ -1,15 +1,42 @@
 import SwiftUI
 
 struct SecretKeyView: View {
-    @State var viewModel = SecretKeyViewModel()
     @Environment(\.appRouter) var router: AppRouter
+    @State var viewModel = SecretKeyViewModel()
 
     var body: some View {
-        @Bindable var viewModel = viewModel
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
+            ZStack {
+                Text("회원가입")
+                    .pickText(type: .subTitle1, textColor: .Normal.black)
 
-            headerSection
+                HStack {
+                    Button {
+                        router.pop()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.Normal.black)
+                    }
+                    .padding(.leading, 16)
+                    Spacer()
+                }
+            }
+            .frame(height: 56)
+
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 0) {
+                    Text("PiCK")
+                        .foregroundColor(.Primary.primary500)
+                    Text("에 회원가입하기")
+                }
+                .pickText(type: .heading2)
+
+                Text("PiCK Admin의 시크릿 키를 입력해주세요.")
+                    .pickText(type: .body1, textColor: .Gray.gray600)
+            }
+            .padding(.top, 58)
+            .padding(.leading, 24)
 
             PiCKTextField(
                 text: $viewModel.secretKey,
@@ -48,43 +75,6 @@ struct SecretKeyView: View {
                 errorToast
             }
         }
-    }
-
-    private var navigationBar: some View {
-        ZStack {
-            Text("회원가입")
-                .pickText(type: .subTitle1, textColor: .Normal.black)
-
-            HStack {
-                Button {
-                    router.pop()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.Normal.black)
-                }
-                .padding(.leading, 16)
-
-                Spacer()
-            }
-        }
-        .frame(height: 56)
-    }
-
-    private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 0) {
-                Text("PiCK")
-                    .foregroundColor(.Primary.primary500)
-                Text("에 회원가입하기")
-            }
-            .pickText(type: .heading2)
-
-            Text("PiCK Admin의 시크릿 키를 입력해주세요.")
-                .pickText(type: .body1, textColor: .Gray.gray600)
-        }
-        .padding(.top, 80)
-        .padding(.leading, 24)
     }
 
     private var errorToast: some View {

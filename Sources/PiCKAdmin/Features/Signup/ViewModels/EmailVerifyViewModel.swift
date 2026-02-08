@@ -12,6 +12,10 @@ public final class EmailVerifyViewModel {
     
     public init() {}
     
+    public var isFormValid: Bool {
+        !email.isEmpty && !code.isEmpty
+    }
+    
     @MainActor
     public func sendEmail() async {
         guard !email.isEmpty else { return }
