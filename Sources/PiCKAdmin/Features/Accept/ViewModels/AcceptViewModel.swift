@@ -2,7 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-// MARK: - Accept ViewModel
 @Observable
 public final class AcceptViewModel {
     public var studentItems: [AcceptStudentItem] = []
@@ -23,7 +22,6 @@ public final class AcceptViewModel {
 
     public init() {}
 
-    // MARK: - Fetch Self Study Info to get grade/classNum
     @MainActor
     public func fetchInitialData() async {
         isLoading = true
@@ -42,11 +40,9 @@ public final class AcceptViewModel {
             // Fetch initial data based on type
             await fetchApplications()
         } catch {
-            print("Failed to fetch initial data: \(error)")
         }
     }
 
-    // MARK: - Fetch Applications (Outgoing)
     @MainActor
     public func fetchApplications() async {
         guard currentGrade > 0 && currentClassNum > 0 else { return }
@@ -76,11 +72,9 @@ public final class AcceptViewModel {
                 ))
             }
         } catch {
-            print("Failed to fetch applications: \(error)")
         }
     }
 
-    // MARK: - Fetch Early Returns
     @MainActor
     public func fetchEarlyReturns() async {
         guard currentGrade > 0 && currentClassNum > 0 else { return }
@@ -109,11 +103,9 @@ public final class AcceptViewModel {
                 ))
             }
         } catch {
-            print("Failed to fetch early returns: \(error)")
         }
     }
 
-    // MARK: - Fetch Classroom Moves by Floor
     @MainActor
     public func fetchClassroomMovesByFloor(floor: Int) async {
         isLoading = true
@@ -142,11 +134,9 @@ public final class AcceptViewModel {
                 ))
             }
         } catch {
-            print("Failed to fetch classroom moves: \(error)")
         }
     }
 
-    // MARK: - Toggle Selection
     public func toggleSelection(id: String) {
         if selectedItemIds.contains(id) {
             selectedItemIds.remove(id)
@@ -155,7 +145,6 @@ public final class AcceptViewModel {
         }
     }
 
-    // MARK: - Approve Selected
     @MainActor
     public func approveSelected() async {
         let idList = Array(selectedItemIds)
@@ -195,7 +184,6 @@ public final class AcceptViewModel {
         isLoading = false
     }
 
-    // MARK: - Reject Selected
     @MainActor
     public func rejectSelected() async {
         let idList = Array(selectedItemIds)
@@ -235,7 +223,6 @@ public final class AcceptViewModel {
         isLoading = false
     }
 
-    // MARK: - Change Type
     @MainActor
     public func changeType(_ type: ApplicationType) async {
         currentType = type
@@ -251,7 +238,6 @@ public final class AcceptViewModel {
         }
     }
 
-    // MARK: - Alert Helpers
     @MainActor
     private func showSuccessAlert(message: String) {
         alertMessage = message
@@ -277,7 +263,6 @@ public final class AcceptViewModel {
     }
 }
 
-// MARK: - Accept API
 public struct AcceptAPI {
     // Get applications by grade (for outgoing - PENDING status)
     public static func getApplicationsByGrade(grade: Int, classNum: Int) -> APIEndpoint {

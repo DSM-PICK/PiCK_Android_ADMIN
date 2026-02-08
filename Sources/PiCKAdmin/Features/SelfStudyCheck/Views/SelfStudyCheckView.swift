@@ -45,7 +45,6 @@ public struct SelfStudyCheckView: View {
         }
     }
 
-    // MARK: - Navigation Bar
     private var navigationBar: some View {
         ZStack {
             Text("자습시간 출결")
@@ -68,7 +67,6 @@ public struct SelfStudyCheckView: View {
         .background(Color.Background.background)
     }
 
-    // MARK: - Header Section
     private var headerSection: some View {
         VStack(spacing: 0) {
             // Grade/Class Filter
@@ -134,7 +132,6 @@ public struct SelfStudyCheckView: View {
         }
     }
 
-    // MARK: - Student List Section
     private var studentListSection: some View {
         ScrollView {
             if viewModel.isLoading {
@@ -173,7 +170,6 @@ public struct SelfStudyCheckView: View {
         }
     }
 
-    // MARK: - Save Button
     private var saveButton: some View {
         Button {
             Task {
@@ -197,7 +193,6 @@ public struct SelfStudyCheckView: View {
         .background(Color.Normal.white)
     }
 
-    // MARK: - Grade/Class Picker Overlay
     private var gradeClassPickerOverlay: some View {
         ZStack {
             Color.black.opacity(0.4)
@@ -291,7 +286,6 @@ public struct SelfStudyCheckView: View {
         }
     }
 
-    // MARK: - Status Picker Overlay
     private var statusPickerOverlay: some View {
         ZStack {
             Color.black.opacity(0.4)
@@ -344,7 +338,6 @@ public struct SelfStudyCheckView: View {
         }
     }
 
-    // MARK: - Alert Overlay
     private var alertOverlay: some View {
         VStack {
             Spacer()

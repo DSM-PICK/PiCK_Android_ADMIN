@@ -2,7 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-// MARK: - ViewModel
 @Observable
 public final class ClassroomMoveListViewModel {
     public var studentItems: [ClassroomMoveListStudent] = []
@@ -55,7 +54,6 @@ public final class ClassroomMoveListViewModel {
                 )
             }
         } catch {
-            print("Failed to fetch classroom move by floor: \(error)")
             self.studentItems = []
             self.errorMessage = error.localizedDescription
         }
@@ -107,7 +105,6 @@ public final class ClassroomMoveListViewModel {
                 )
             }
         } catch {
-            print("Failed to fetch classroom move by classroom: \(error)")
             self.studentItems = []
             self.errorMessage = error.localizedDescription
         }

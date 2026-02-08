@@ -84,7 +84,6 @@ public struct AcceptView: View {
         .toolbar(isTypePickerPresented ? .hidden : .visible, for: .tabBar)
     }
 
-    // MARK: - Header Section
     private var headerSection: some View {
         HStack(spacing: 0) {
             HStack(spacing: 16) {
@@ -146,7 +145,6 @@ public struct AcceptView: View {
         .padding(.top, 24)
     }
 
-    // MARK: - Floor Filter Section
     private var floorFilterSection: some View {
         HStack(spacing: 0) {
             ForEach([1, 2, 3, 4, 5], id: \.self) { floor in
@@ -179,7 +177,6 @@ public struct AcceptView: View {
         .padding(.top, 16)
     }
 
-    // MARK: - Student List Section
     @ViewBuilder
     private var studentListSection: some View {
         if viewModel.studentItems.isEmpty && !viewModel.isLoading {
@@ -233,7 +230,6 @@ public struct AcceptView: View {
         }
     }
 
-    // MARK: - Empty State View
     private var emptyStateView: some View {
         VStack {
             Spacer()
@@ -262,7 +258,6 @@ public struct AcceptView: View {
         }
     }
 
-    // MARK: - Type Picker Overlay
     private var typePickerOverlay: some View {
         ZStack {
             Color.black.opacity(0.4)
@@ -328,7 +323,6 @@ public struct AcceptView: View {
         }
     }
 
-    // MARK: - Confirm Popup
     private func confirmPopup(title: String, explain: String, isApprove: Bool) -> some View {
         ZStack {
             Color.black.opacity(0.4)
@@ -394,7 +388,6 @@ public struct AcceptView: View {
         }
     }
 
-    // MARK: - Alert Overlay
     private var alertOverlay: some View {
         VStack {
             Spacer()
@@ -415,7 +408,6 @@ public struct AcceptView: View {
         .animation(.easeInOut, value: viewModel.showAlert)
     }
 
-    // MARK: - Helpers
     private func studentNumber(grade: Int, classNum: Int, num: Int) -> String {
         return "\(grade)\(classNum)\(num < 10 ? "0" : "")\(num)"
     }

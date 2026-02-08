@@ -19,7 +19,6 @@ public final class AllTabViewModel {
             )
             self.teacherName = response.name
         } catch {
-            print("Failed to fetch my name: \(error)")
         }
     }
     
@@ -34,7 +33,6 @@ public final class AllTabViewModel {
             try await APIClient.shared.requestVoid(AuthAPI.deleteAccount())
             JwtStore.shared.clearTokens()
         } catch {
-            print("Failed to resign: \(error)")
         }
     }
 }

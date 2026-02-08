@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Primary Colors
 public extension Color {
     struct Primary {
         public static let primary50 = Color(hex: "#F2EAFE")
@@ -16,7 +15,6 @@ public extension Color {
     }
 }
 
-// MARK: - Gray Colors
 public extension Color {
     struct Gray {
         public static let gray50 = Color(hex: "#F1F1F2")
@@ -32,7 +30,6 @@ public extension Color {
     }
 }
 
-// MARK: - Normal Colors
 public extension Color {
     struct Normal {
         public static let white = Color.white
@@ -40,7 +37,6 @@ public extension Color {
     }
 }
 
-// MARK: - Error Colors
 public extension Color {
     struct Error {
         public static let error = Color(hex: "#FF3B32")
@@ -48,7 +44,6 @@ public extension Color {
     }
 }
 
-// MARK: - Background Colors
 public extension Color {
     struct Background {
         public static let primary = Color.white
@@ -57,7 +52,6 @@ public extension Color {
     }
 }
 
-// MARK: - Color Extension for Hex
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

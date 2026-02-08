@@ -69,7 +69,6 @@ public final class PlanViewModel {
                 AcademicSchedule(id: $0.id, eventName: $0.eventName, month: $0.month, day: $0.day, dayName: $0.dayName)
             }
         } catch {
-            print("Failed to fetch month schedule: \(error)")
             self.monthAcademicSchedule = []
         }
     }
@@ -91,7 +90,6 @@ public final class PlanViewModel {
                 AcademicSchedule(id: $0.id, eventName: $0.eventName, month: $0.month, day: $0.day, dayName: $0.dayName)
             }
         } catch {
-            print("Failed to fetch day schedule: \(error)")
             self.academicSchedule = []
         }
     }

@@ -2,7 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-// MARK: - ViewModel
 @Observable
 public final class OutListViewModel {
     public var outingItems: [OutListStudent] = []
@@ -57,7 +56,6 @@ public final class OutListViewModel {
                 )
             }
         } catch {
-            print("Failed to fetch out list: \(error)")
             self.outingItems = []
         }
     }
@@ -82,7 +80,6 @@ public final class OutListViewModel {
                 )
             }
         } catch {
-            print("Failed to fetch early return list: \(error)")
             self.earlyReturnItems = []
         }
     }

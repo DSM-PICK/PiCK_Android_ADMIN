@@ -2,7 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-// MARK: - Home ViewModel
 @Observable
 @MainActor
 public final class HomeViewModel {
@@ -44,7 +43,6 @@ public final class HomeViewModel {
                 SelfStudyDirector(floor: $0.floor, teacherName: $0.teacherName)
             }
         } catch {
-            print("Failed to fetch self study director: \(error)")
         }
     }
 
@@ -56,7 +54,6 @@ public final class HomeViewModel {
             )
             self.adminSelfStudyTeacher = response
         } catch {
-            print("Failed to fetch admin self study info: \(error)")
         }
     }
 
@@ -86,7 +83,6 @@ public final class HomeViewModel {
             }
             
         } catch {
-            print("Failed to fetch self study and classroom: \(error)")
         }
     }
     
@@ -117,7 +113,6 @@ public final class HomeViewModel {
                 return $0.num < $1.num
             }
         } catch {
-            print("Failed to fetch accept lists: \(error)")
         }
     }
     
@@ -165,7 +160,6 @@ public final class HomeViewModel {
                 )
             }
         } catch {
-            print("Failed to fetch outing lists: \(error)")
         }
     }
 

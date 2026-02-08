@@ -2,7 +2,6 @@ import Foundation
 import Observation
 import SwiftUI
 
-// MARK: - ViewModel
 @Observable
 public final class SelfStudyCheckViewModel {
     public var studentItems: [StudentAttendanceItem] = []
@@ -29,7 +28,6 @@ public final class SelfStudyCheckViewModel {
 
     public init() {}
 
-    // MARK: - Fetch Students
     @MainActor
     public func fetchStudents() async {
         isLoading = true
@@ -64,7 +62,6 @@ public final class SelfStudyCheckViewModel {
             self.initialStudentItems = items
 
         } catch {
-            print("Failed to fetch students: \(error)")
             self.studentItems = []
             self.initialStudentItems = []
         }
@@ -72,14 +69,12 @@ public final class SelfStudyCheckViewModel {
         isLoading = false
     }
 
-    // MARK: - Update Student Status
     public func updateStudentStatus(id: String, status: String) {
         if let index = studentItems.firstIndex(where: { $0.id == id }) {
             studentItems[index].status = status
         }
     }
 
-    // MARK: - Save Attendance
     @MainActor
     public func saveAttendance() async {
         guard isChanged else { return }
@@ -121,14 +116,12 @@ public final class SelfStudyCheckViewModel {
         isSaving = false
     }
 
-    // MARK: - Select Period
     @MainActor
     public func selectPeriod(_ period: Period) async {
         selectedPeriod = period
         await fetchStudents()
     }
 
-    // MARK: - Select Grade and Class
     @MainActor
     public func selectGradeAndClass(grade: Int, classNum: Int) async {
         selectedGrade = grade
@@ -136,12 +129,10 @@ public final class SelfStudyCheckViewModel {
         await fetchStudents()
     }
 
-    // MARK: - Status Mapping
     private func mapStatusToKorean(_ status: String) -> String {
         return AttendanceStatus(rawValue: status)?.korean ?? status
     }
 
-    // MARK: - Alert Helpers
     @MainActor
     private func showSuccessAlert(message: String) {
         alertMessage = message
@@ -167,7 +158,6 @@ public final class SelfStudyCheckViewModel {
     }
 }
 
-// MARK: - SelfStudyCheck API
 public struct SelfStudyCheckAPI {
     public static func getStudentAttendance(grade: Int, classNum: Int, period: Int) -> APIEndpoint {
         return APIEndpoint(
