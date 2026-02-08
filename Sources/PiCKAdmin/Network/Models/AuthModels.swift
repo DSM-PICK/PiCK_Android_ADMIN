@@ -20,8 +20,23 @@ public struct SigninResponse: Codable {
 }
 
 public struct SignupRequest: Codable {
-    public let secretKey: String
     public let accountId: String
     public let password: String
     public let name: String
+    public let grade: Int
+    public let classNum: Int
+    public let code: String
+    public let deviceToken: String
+    public let secretKey: String
+
+    enum CodingKeys: String, CodingKey {
+        case accountId = "account_id"
+        case password
+        case name
+        case grade
+        case classNum = "class_num"
+        case code
+        case deviceToken = "device_token"
+        case secretKey = "secret_key"
+    }
 }

@@ -68,13 +68,13 @@ struct ContentView: View {
             SigninView()
                 .environment(\.appRouter, router)
         case .secretKey:
-            SecretKeyView(router: router)
+            SecretKeyView()
         case let .email(secretKey):
-            EmailVerifyView(secretKey: secretKey, router: router)
+            EmailVerifyView(secretKey: secretKey)
         case let .password(secretKey, accountId, code):
-            PasswordView(secretKey: secretKey, accountId: accountId, code: code, router: router)
+            PasswordView(secretKey: secretKey, accountId: accountId, code: code)
         case let .infoSetting(secretKey, accountId, code, password):
-            InfoSettingView(secretKey: secretKey, accountId: accountId, code: code, password: password, router: router)
+            InfoSettingView(secretKey: secretKey, accountId: accountId, code: code, password: password)
         case .home:
             EmptyView()
         case .outList:
@@ -108,75 +108,5 @@ struct ContentView: View {
             router.path = [.home]
         }
         isCheckingAuth = false
-    }
-}
-
-// MARK: - Placeholder Views (TODO: Implement)
-
-struct SecretKeyView: View {
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "시크릿 키 입력", backAction: { router.pop() })
-    }
-}
-
-struct EmailVerifyView: View {
-    let secretKey: String
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "이메일 인증", backAction: { router.pop() })
-    }
-}
-
-struct PasswordView: View {
-    let secretKey: String
-    let accountId: String
-    let code: String
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "비밀번호 설정", backAction: { router.pop() })
-    }
-}
-
-struct InfoSettingView: View {
-    let secretKey: String
-    let accountId: String
-    let code: String
-    let password: String
-    var router: AppRouter
-
-    var body: some View {
-        PlaceholderView(title: "정보 설정", backAction: { router.pop() })
-    }
-}
-
-// MARK: - Placeholder View Component
-struct PlaceholderView: View {
-    let title: String
-    let backAction: () -> Void
-
-    var body: some View {
-        VStack {
-            Text(title)
-                .pickText(type: .heading2)
-            Text("이 화면은 아직 구현되지 않았습니다")
-                .pickText(type: .body1, textColor: .Gray.gray600)
-                .padding(.top, 8)
-        }
-        .navigationBarBackButtonHidden(true)
-        #if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: backAction) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.Normal.black)
-                }
-            }
-        }
-        #endif
-        .navigationTitle(title)
     }
 }

@@ -15,38 +15,37 @@ public struct AuthAPI {
         )
     }
 
+    public static func secretKey(secretKey: String) -> APIEndpoint {
+        let body = try? JSONEncoder().encode(["secret_key": secretKey])
+        return APIEndpoint(
+            path: "/admin/key",
+            method: .post,
+            body: body
+        )
+    }
+
     public static func signup(
-        secretKey: String,
         accountId: String,
         password: String,
-        name: String
+        name: String,
+        grade: Int,
+        classNum: Int,
+        code: String,
+        deviceToken: String,
+        secretKey: String
     ) -> APIEndpoint {
         let body = try? JSONEncoder().encode(SignupRequest(
-            secretKey: secretKey,
             accountId: accountId,
             password: password,
-            name: name
+            name: name,
+            grade: grade,
+            classNum: classNum,
+            code: code,
+            deviceToken: deviceToken,
+            secretKey: secretKey
         ))
         return APIEndpoint(
             path: "/admin/signup",
-            method: .post,
-            body: body
-        )
-    }
-
-    public static func sendVerificationCode(accountId: String) -> APIEndpoint {
-        let body = try? JSONEncoder().encode(["accountId": accountId])
-        return APIEndpoint(
-            path: "/admin/email/send",
-            method: .post,
-            body: body
-        )
-    }
-
-    public static func verifyCode(accountId: String, code: String) -> APIEndpoint {
-        let body = try? JSONEncoder().encode(["accountId": accountId, "code": code])
-        return APIEndpoint(
-            path: "/admin/email/verify",
             method: .post,
             body: body
         )
