@@ -4,10 +4,11 @@ struct PasswordView: View {
     let secretKey: String
     let accountId: String
     let code: String
-    @State var viewModel = PasswordViewModel()
+    @State private var viewModel = PasswordViewModel()
     @Environment(\.appRouter) var router: AppRouter
 
     var body: some View {
+        @Bindable var viewModel = viewModel
         VStack(alignment: .leading, spacing: 0) {
             headerSection
 

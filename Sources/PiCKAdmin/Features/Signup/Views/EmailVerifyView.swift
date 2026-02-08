@@ -2,10 +2,11 @@ import SwiftUI
 
 struct EmailVerifyView: View {
     let secretKey: String
-    @State var viewModel = EmailVerifyViewModel()
+    @State private var viewModel = EmailVerifyViewModel()
     @Environment(\.appRouter) var router: AppRouter
 
     var body: some View {
+        @Bindable var viewModel = viewModel
         VStack(alignment: .leading, spacing: 0) {
             headerSection
 

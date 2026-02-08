@@ -5,10 +5,11 @@ struct InfoSettingView: View {
     let accountId: String
     let code: String
     let password: String
-    @State var viewModel = InfoSettingViewModel()
+    @State private var viewModel = InfoSettingViewModel()
     @Environment(\.appRouter) var router: AppRouter
 
     var body: some View {
+        @Bindable var viewModel = viewModel
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
                 headerSection

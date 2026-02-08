@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct SecretKeyView: View {
-    @State var viewModel = SecretKeyViewModel()
+    @State private var viewModel = SecretKeyViewModel()
     @Environment(\.appRouter) var router: AppRouter
 
     var body: some View {
+        @Bindable var viewModel = viewModel
         VStack(alignment: .leading, spacing: 0) {
             headerSection
 
