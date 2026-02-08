@@ -24,8 +24,9 @@ public final class SigninViewModel {
         errorMessage = nil
 
         do {
+            let deviceToken = UserDefaultStorage.shared.getString(forKey: .deviceToken) ?? ""
             let response = try await APIClient.shared.request(
-                AuthAPI.signin(adminId: email, password: password),
+                AuthAPI.signin(adminId: email, password: password, deviceToken: deviceToken),
                 responseType: SigninResponse.self
             )
 

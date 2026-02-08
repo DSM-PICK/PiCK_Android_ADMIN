@@ -81,3 +81,6 @@ Carthage/Build/
 **/secrets.json
 *.env
 .env.*
+
+# Firebase
+**/google-services.json

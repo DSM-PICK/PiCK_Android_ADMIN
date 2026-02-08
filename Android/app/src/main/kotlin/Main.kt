@@ -7,6 +7,10 @@ import skip.ui.*
 
 import android.Manifest
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.graphics.Color as AndroidColor
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,6 +30,10 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.MaterialTheme
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 
 internal val logger: SkipLogger = SkipLogger(subsystem = "pi.ckadmin", category = "PiCKAdmin")
 
@@ -42,6 +50,33 @@ open class AndroidAppMain: Application {
         logger.info("starting app")
         ProcessInfo.launch(applicationContext)
         AppDelegate.shared.onInit()
+
+        createNotificationChannel()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                logger.warning("FCM token fetch failed: ${task.exception}")
+                return@addOnCompleteListener
+            }
+            val token = task.result
+            logger.info("FCM token: $token")
+            val prefs = applicationContext.getSharedPreferences("defaults", Context.MODE_PRIVATE)
+            prefs.edit().putString("deviceToken", token).apply()
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "tools.skip.firebase.messaging",
+                "PiCK 알림",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "PiCK Admin 푸시 알림"
+            }
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(channel)
+        }
     }
 
     companion object {
@@ -163,5 +198,34 @@ internal fun PresentationRootView(context: ComposeContext) {
         Box(modifier = ctx.modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             AppRootView().Compose(context = contentContext)
         }
+    }
+}
+
+class PiCKFirebaseMessagingService : FirebaseMessagingService() {
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        logger.info("FCM new token: $token")
+        val prefs = applicationContext.getSharedPreferences("defaults", Context.MODE_PRIVATE)
+        prefs.edit().putString("deviceToken", token).apply()
+    }
+
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        super.onMessageReceived(remoteMessage)
+        logger.info("FCM message received: ${remoteMessage.data}")
+
+        val title = remoteMessage.notification?.title ?: remoteMessage.data["title"] ?: "PiCK"
+        val body = remoteMessage.notification?.body ?: remoteMessage.data["body"] ?: ""
+
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = NotificationCompat.Builder(this, "tools.skip.firebase.messaging")
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build()
+
+        manager.notify(System.currentTimeMillis().toInt(), notification)
     }
 }
