@@ -25,7 +25,7 @@ public final class EmailVerifyViewModel {
         
         do {
             try await APIClient.shared.requestVoid(
-                MailAPI.emailSend(email: email + "@dsm.hs.kr", title: "회원가입 인증", message: "회원가입 인증")
+                MailAPI.emailSend(email: email, title: "회원가입 인증", message: "회원가입 인증")
             )
             isEmailSent = true
         } catch let error as APIError {
@@ -46,7 +46,7 @@ public final class EmailVerifyViewModel {
         
         do {
             try await APIClient.shared.requestVoid(
-                MailAPI.codeCheck(email: email + "@dsm.hs.kr", code: code)
+                MailAPI.codeCheck(email: email, code: code)
             )
             isCodeVerified = true
         } catch let error as APIError {

@@ -7,6 +7,9 @@ struct NewPasswordView: View {
     @State var viewModel: NewPasswordViewModel
     @Environment(\.dismiss) var dismiss
 
+    @State var passwordText: String = ""
+    @State var passwordCheckText: String = ""
+
     init(accountId: String, code: String, router: AppRouter) {
         self.accountId = accountId
         self.code = code
@@ -41,12 +44,6 @@ struct NewPasswordView: View {
                 }
                 .hideKeyboardOnTap()
                 .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        }
-        .onChange(of: viewModel.isSuccess) { _, success in
-            if success {
-                JwtStore.shared.clearTokens()
-                router.popToRoot()
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -117,7 +114,7 @@ struct NewPasswordView: View {
 
     private var passwordTextField: some View {
         PiCKTextField(
-            text: $viewModel.password,
+            text: $passwordText,
             placeholder: "8~24자, 영문, 숫자, 특수문자",
             titleText: "비밀번호",
             isSecurity: true
@@ -125,10 +122,10 @@ struct NewPasswordView: View {
         .padding(.horizontal, 24)
         .padding(.top, 50)
     }
-    
+
     private var passwordCheckTextField: some View {
         PiCKTextField(
-            text: $viewModel.passwordCheck,
+            text: $passwordCheckText,
             placeholder: "비밀번호를 다시 입력해주세요",
             titleText: "비밀번호 확인",
             isSecurity: true
@@ -140,10 +137,16 @@ struct NewPasswordView: View {
     private var nextButton: some View {
         PiCKButton(
             buttonText: "확인",
-            isEnabled: !viewModel.password.isEmpty && !viewModel.passwordCheck.isEmpty,
-            action: { 
+            isEnabled: !passwordText.isEmpty && !passwordCheckText.isEmpty,
+            action: {
+                viewModel.password = passwordText
+                viewModel.passwordCheck = passwordCheckText
                 Task {
-                    await viewModel.changePassword() 
+                    await viewModel.changePassword()
+                    if viewModel.isSuccess {
+                        JwtStore.shared.clearTokens()
+                        router.popToRoot()
+                    }
                 }
             }
         )

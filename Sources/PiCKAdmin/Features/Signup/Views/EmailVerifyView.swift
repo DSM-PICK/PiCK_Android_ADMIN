@@ -4,6 +4,8 @@ struct EmailVerifyView: View {
     let secretKey: String
     @Environment(\.appRouter) var router: AppRouter
     @State var viewModel = EmailVerifyViewModel()
+    @State var emailText: String = ""
+    @State var codeText: String = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -40,11 +42,12 @@ struct EmailVerifyView: View {
             .padding(.leading, 24)
 
             PiCKTextField(
-                text: $viewModel.email,
+                text: $emailText,
                 placeholder: "학교 이메일을 입력해주세요",
                 titleText: "이메일",
                 showVerification: true,
                 verificationButtonTapped: {
+                    viewModel.email = emailText
                     Task {
                         await viewModel.sendEmail()
                     }
@@ -54,7 +57,7 @@ struct EmailVerifyView: View {
             .padding(.top, 50)
 
             PiCKTextField(
-                text: $viewModel.code,
+                text: $codeText,
                 placeholder: "인증 코드를 입력해주세요",
                 titleText: "인증 코드"
             )
@@ -65,11 +68,20 @@ struct EmailVerifyView: View {
 
             PiCKButton(
                 buttonText: "다음",
-                isEnabled: viewModel.isFormValid,
+                isEnabled: !emailText.isEmpty && !codeText.isEmpty,
                 isLoading: viewModel.isLoading,
                 action: {
+                    viewModel.email = emailText
+                    viewModel.code = codeText
                     Task {
                         await viewModel.verifyCode()
+                        if viewModel.isCodeVerified {
+                            router.navigate(to: .password(
+                                secretKey: secretKey,
+                                accountId: emailText + "@dsm.hs.kr",
+                                code: codeText
+                            ))
+                        }
                     }
                 }
             )
@@ -78,15 +90,6 @@ struct EmailVerifyView: View {
         }
         .hideKeyboardOnTap()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onChange(of: viewModel.isCodeVerified) { _, isVerified in
-            if isVerified {
-                router.navigate(to: .password(
-                    secretKey: secretKey,
-                    accountId: viewModel.email + "@dsm.hs.kr",
-                    code: viewModel.code
-                ))
-            }
-        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden)
         .overlay(alignment: .top) {

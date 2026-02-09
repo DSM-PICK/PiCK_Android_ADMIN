@@ -3,6 +3,7 @@ import SwiftUI
 struct SecretKeyView: View {
     @Environment(\.appRouter) var router: AppRouter
     @State var viewModel = SecretKeyViewModel()
+    @State var secretKeyText: String = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -39,7 +40,7 @@ struct SecretKeyView: View {
             .padding(.leading, 24)
 
             PiCKTextField(
-                text: $viewModel.secretKey,
+                text: $secretKeyText,
                 placeholder: "시크릿 키를 입력해주세요",
                 titleText: "시크릿 키"
             )
@@ -50,11 +51,15 @@ struct SecretKeyView: View {
 
             PiCKButton(
                 buttonText: "다음",
-                isEnabled: !viewModel.secretKey.isEmpty,
+                isEnabled: !secretKeyText.isEmpty,
                 isLoading: viewModel.isLoading,
                 action: {
+                    viewModel.secretKey = secretKeyText
                     Task {
                         await viewModel.checkSecretKey()
+                        if viewModel.isSecretKeyValid {
+                            router.navigate(to: .email(secretKey: secretKeyText))
+                        }
                     }
                 }
             )
@@ -63,11 +68,6 @@ struct SecretKeyView: View {
         }
         .hideKeyboardOnTap()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onChange(of: viewModel.isSecretKeyValid) { _, isValid in
-            if isValid {
-                router.navigate(to: .email(secretKey: viewModel.secretKey))
-            }
-        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden)
         .overlay(alignment: .top) {

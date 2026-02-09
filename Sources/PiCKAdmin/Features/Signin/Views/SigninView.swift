@@ -3,13 +3,15 @@ import SwiftUI
 struct SigninView: View {
     @Environment(\.appRouter) var router: AppRouter
     @State var viewModel = SigninViewModel()
+    @State var emailText: String = ""
+    @State var passwordText: String = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             headerSection
 
             PiCKTextField(
-                text: $viewModel.email,
+                text: $emailText,
                 placeholder: "학교 이메일을 입력해주세요",
                 titleText: "이메일",
                 showEmail: true
@@ -18,7 +20,7 @@ struct SigninView: View {
             .padding(.top, 50)
 
             PiCKTextField(
-                text: $viewModel.password,
+                text: $passwordText,
                 placeholder: "비밀번호를 입력해주세요",
                 titleText: "비밀번호",
                 isSecurity: true
@@ -33,11 +35,6 @@ struct SigninView: View {
         }
         .hideKeyboardOnTap()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onChange(of: viewModel.isSigninSuccessful) { _, success in
-            if success {
-                router.replace(with: .home)
-            }
-        }
         .navigationBarBackButtonHidden(true)
         #if os(iOS)
         .toolbar {
@@ -102,11 +99,16 @@ struct SigninView: View {
     private var signinButton: some View {
         PiCKButton(
             buttonText: "로그인하기",
-            isEnabled: viewModel.isFormValid,
+            isEnabled: !emailText.isEmpty && !passwordText.isEmpty,
             isLoading: viewModel.isLoading,
             action: {
+                viewModel.email = emailText
+                viewModel.password = passwordText
                 Task {
                     await viewModel.signin()
+                    if viewModel.isSigninSuccessful {
+                        router.replace(with: .home)
+                    }
                 }
             }
         )

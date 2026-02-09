@@ -6,6 +6,8 @@ struct PasswordView: View {
     let code: String
     @Environment(\.appRouter) var router: AppRouter
     @State var viewModel = PasswordViewModel()
+    @State var passwordText: String = ""
+    @State var passwordConfirmText: String = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -42,7 +44,7 @@ struct PasswordView: View {
             .padding(.leading, 24)
 
             PiCKTextField(
-                text: $viewModel.password,
+                text: $passwordText,
                 placeholder: "8~30자 영문자, 숫자, 특수문자 포함하세요",
                 titleText: "비밀번호",
                 isSecurity: true
@@ -51,7 +53,7 @@ struct PasswordView: View {
             .padding(.top, 50)
 
             PiCKTextField(
-                text: $viewModel.passwordConfirm,
+                text: $passwordConfirmText,
                 placeholder: "위에 입력한 비밀번호를 다시 입력해주세요",
                 titleText: "비밀번호 확인",
                 isSecurity: true
@@ -63,9 +65,19 @@ struct PasswordView: View {
 
             PiCKButton(
                 buttonText: "다음",
-                isEnabled: viewModel.isFormValid,
+                isEnabled: !passwordText.isEmpty && !passwordConfirmText.isEmpty,
                 action: {
+                    viewModel.password = passwordText
+                    viewModel.passwordConfirm = passwordConfirmText
                     viewModel.validatePassword()
+                    if viewModel.isPasswordValid {
+                        router.navigate(to: .infoSetting(
+                            secretKey: secretKey,
+                            accountId: accountId,
+                            code: code,
+                            password: passwordText
+                        ))
+                    }
                 }
             )
             .padding(.horizontal, 24)
@@ -73,16 +85,6 @@ struct PasswordView: View {
         }
         .hideKeyboardOnTap()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onChange(of: viewModel.isPasswordValid) { _, isValid in
-            if isValid {
-                router.navigate(to: .infoSetting(
-                    secretKey: secretKey,
-                    accountId: accountId,
-                    code: code,
-                    password: viewModel.password
-                ))
-            }
-        }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden)
         .overlay(alignment: .top) {

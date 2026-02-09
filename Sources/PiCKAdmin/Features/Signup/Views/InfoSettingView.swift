@@ -7,6 +7,19 @@ struct InfoSettingView: View {
     let password: String
     @Environment(\.appRouter) var router: AppRouter
     @State var viewModel = InfoSettingViewModel()
+    @State var nameText: String = ""
+    @State var isTeacher: Bool = false
+    @State var selectedGrade: Int = 0
+    @State var selectedClass: Int = 0
+    @State var showGradeClassPicker: Bool = false
+
+    var isFormValid: Bool {
+        if nameText.isEmpty { return false }
+        if isTeacher {
+            return selectedGrade != 0 && selectedClass != 0
+        }
+        return true
+    }
 
     var body: some View {
         ZStack {
@@ -47,9 +60,9 @@ struct InfoSettingView: View {
                     Text("담임 선생님이신가요?")
                         .pickText(type: .subTitle1, textColor: .Normal.black)
                     Button(action: {
-                        viewModel.isTeacher.toggle()
+                        isTeacher.toggle()
                     }) {
-                        Image(viewModel.isTeacher ? "checkBoxOn" : "checkBoxOff", bundle: .module)
+                        Image(isTeacher ? "checkBoxOn" : "checkBoxOff", bundle: .module)
                             .resizable()
                             .frame(width: 24, height: 24)
                     }
@@ -57,17 +70,17 @@ struct InfoSettingView: View {
                 .padding(.top, 48)
                 .padding(.leading, 24)
 
-                if viewModel.isTeacher {
+                if isTeacher {
                     HStack(spacing: 8) {
-                        gradeClassButton(title: "학년", value: viewModel.selectedGrade == 0 ? "선택" : "\(viewModel.selectedGrade)학년")
-                        gradeClassButton(title: "반", value: viewModel.selectedClass == 0 ? "선택" : "\(viewModel.selectedClass)반")
+                        gradeClassButton(title: "학년", value: selectedGrade == 0 ? "선택" : "\(selectedGrade)학년")
+                        gradeClassButton(title: "반", value: selectedClass == 0 ? "선택" : "\(selectedClass)반")
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 28)
                 }
 
                 PiCKTextField(
-                    text: $viewModel.name,
+                    text: $nameText,
                     placeholder: "이름을 입력해주세요",
                     titleText: "이름"
                 )
@@ -78,9 +91,13 @@ struct InfoSettingView: View {
 
                 PiCKButton(
                     buttonText: "완료",
-                    isEnabled: viewModel.isFormValid,
+                    isEnabled: isFormValid,
                     isLoading: viewModel.isLoading,
                     action: {
+                        viewModel.name = nameText
+                        viewModel.isTeacher = isTeacher
+                        viewModel.selectedGrade = selectedGrade
+                        viewModel.selectedClass = selectedClass
                         Task {
                             await viewModel.signup(
                                 secretKey: secretKey,
@@ -88,6 +105,9 @@ struct InfoSettingView: View {
                                 code: code,
                                 password: password
                             )
+                            if viewModel.isSignupSuccessful {
+                                router.replace(with: .home)
+                            }
                         }
                     }
                 )
@@ -97,13 +117,8 @@ struct InfoSettingView: View {
             .hideKeyboardOnTap()
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if viewModel.showGradeClassPicker {
+            if showGradeClassPicker {
                 gradeClassPickerOverlay
-            }
-        }
-        .onChange(of: viewModel.isSignupSuccessful) { _, isSuccessful in
-            if isSuccessful {
-                router.replace(with: .home)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -117,7 +132,7 @@ struct InfoSettingView: View {
 
     private func gradeClassButton(title: String, value: String) -> some View {
         Button(action: {
-            viewModel.showGradeClassPicker = true
+            showGradeClassPicker = true
         }) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
@@ -144,7 +159,7 @@ struct InfoSettingView: View {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    viewModel.showGradeClassPicker = false
+                    showGradeClassPicker = false
                 }
 
             VStack(spacing: 0) {
@@ -161,17 +176,17 @@ struct InfoSettingView: View {
                     HStack(spacing: 8) {
                         ForEach([1, 2, 3], id: \.self) { grade in
                             Button {
-                                viewModel.selectedGrade = grade
+                                selectedGrade = grade
                             } label: {
                                 Text("\(grade)학년")
                                     .pickText(
                                         type: .body1,
-                                        textColor: viewModel.selectedGrade == grade ? .Primary.primary500 : .Gray.gray600
+                                        textColor: selectedGrade == grade ? .Primary.primary500 : .Gray.gray600
                                     )
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 12)
                                     .background(
-                                        viewModel.selectedGrade == grade
+                                        selectedGrade == grade
                                             ? Color.Primary.primary50
                                             : Color.Gray.gray100
                                     )
@@ -184,17 +199,17 @@ struct InfoSettingView: View {
                     HStack(spacing: 8) {
                         ForEach([1, 2, 3, 4], id: \.self) { classNum in
                             Button {
-                                viewModel.selectedClass = classNum
+                                selectedClass = classNum
                             } label: {
                                 Text("\(classNum)반")
                                     .pickText(
                                         type: .body1,
-                                        textColor: viewModel.selectedClass == classNum ? .Primary.primary500 : .Gray.gray600
+                                        textColor: selectedClass == classNum ? .Primary.primary500 : .Gray.gray600
                                     )
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 12)
                                     .background(
-                                        viewModel.selectedClass == classNum
+                                        selectedClass == classNum
                                             ? Color.Primary.primary50
                                             : Color.Gray.gray100
                                     )
@@ -206,7 +221,7 @@ struct InfoSettingView: View {
                     .padding(.top, 12)
 
                     Button {
-                        viewModel.showGradeClassPicker = false
+                        showGradeClassPicker = false
                     } label: {
                         Text("확인")
                             .pickText(type: .button1, textColor: .Normal.white)

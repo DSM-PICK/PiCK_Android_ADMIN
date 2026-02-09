@@ -3,6 +3,8 @@ import SwiftUI
 struct ChangePasswordView: View {
     @Environment(\.appRouter) var router: AppRouter
     @State var viewModel = ChangePasswordViewModel()
+    @State var emailText: String = ""
+    @State var codeText: String = ""
     @Environment(\.dismiss) var dismiss
 
         var body: some View {
@@ -34,12 +36,7 @@ struct ChangePasswordView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .onChange(of: viewModel.navigateToNewPassword) { _, navigate in
-                if navigate {
-                    router.navigate(to: .newPassword(accountId: viewModel.email, code: viewModel.code))
-                }
-            }
-            .navigationBarBackButtonHidden(true)
+                .navigationBarBackButtonHidden(true)
             .toolbar(.hidden)
             .overlay(alignment: .top) {
                 if let successMessage = viewModel.successMessage {
@@ -106,11 +103,12 @@ struct ChangePasswordView: View {
 
     private var emailTextField: some View {
         PiCKTextField(
-            text: $viewModel.email,
+            text: $emailText,
             placeholder: "학교 이메일을 입력해주세요",
             titleText: "이메일",
             showVerification: true,
             verificationButtonTapped: {
+                viewModel.email = emailText
                 Task {
                     await viewModel.sendVerificationCode()
                 }
@@ -122,7 +120,7 @@ struct ChangePasswordView: View {
 
     private var codeTextField: some View {
         PiCKTextField(
-            text: $viewModel.code,
+            text: $codeText,
             placeholder: "인증 코드를 입력해주세요",
             titleText: "인증 코드"
         )
@@ -133,10 +131,15 @@ struct ChangePasswordView: View {
     private var nextButton: some View {
         PiCKButton(
             buttonText: "다음",
-            isEnabled: !viewModel.email.isEmpty && !viewModel.code.isEmpty,
-            action: { 
+            isEnabled: !emailText.isEmpty && !codeText.isEmpty,
+            action: {
+                viewModel.email = emailText
+                viewModel.code = codeText
                 Task {
-                    await viewModel.verifyCode() 
+                    await viewModel.verifyCode()
+                    if viewModel.navigateToNewPassword {
+                        router.navigate(to: .newPassword(accountId: emailText, code: codeText))
+                    }
                 }
             }
         )
