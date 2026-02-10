@@ -80,7 +80,11 @@ Carthage/Build/
 **/Secrets.swift
 **/secrets.json
 *.env
+!Skip.env
 .env.*
+
+# Claude Code
+.claude/
 
 # Firebase
 **/google-services.json
