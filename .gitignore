@@ -80,7 +80,6 @@ Carthage/Build/
 **/Secrets.swift
 **/secrets.json
 *.env
-!Skip.env
 .env.*
 
 # Claude Code
