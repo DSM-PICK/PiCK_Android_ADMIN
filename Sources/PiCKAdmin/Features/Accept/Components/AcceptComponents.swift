@@ -14,20 +14,26 @@ struct AcceptStudentCell: View {
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 0) {
-                HStack(spacing: 12) {
+                HStack(spacing: 8) {
                     Text("\(studentNumber) \(studentName)")
                         .pickText(type: .button1, textColor: .Normal.black)
+                        .lineLimit(1)
 
                     if !endTime.isEmpty {
                         Text("\(startTime) - \(endTime)")
                             .pickText(type: .body2, textColor: .Gray.gray700)
+                            .lineLimit(1)
                     } else {
                         Text(startTime)
                             .pickText(type: .body2, textColor: .Gray.gray700)
+                            .lineLimit(1)
                     }
+
+                    Spacer()
 
                     Text(activityType)
                         .pickText(type: .caption1, textColor: .Primary.primary500)
+                        .lineLimit(1)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
                         .overlay(

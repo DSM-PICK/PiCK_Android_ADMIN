@@ -92,6 +92,7 @@ public struct AcceptView: View {
                     HStack(spacing: 4) {
                         Text(selectedOption.title)
                             .pickText(type: .body1, textColor: .Normal.black)
+                            .lineLimit(1)
                         Image(systemName: "chevron.down")
                             .font(.system(size: 12))
                             .foregroundColor(.Normal.black)
@@ -117,7 +118,9 @@ public struct AcceptView: View {
                 Button(action: { viewModel.showRejectPopup = true }) {
                     Text("거절")
                         .pickText(type: .body2, textColor: .Normal.white)
-                        .frame(width: 65, height: 34)
+                        .lineLimit(1)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
                         .background(Color.Error.error)
                         .cornerRadius(8)
                         .overlay(
@@ -130,7 +133,9 @@ public struct AcceptView: View {
                 Button(action: { viewModel.showApprovePopup = true }) {
                     Text("수락")
                         .pickText(type: .body2, textColor: .Normal.white)
-                        .frame(width: 65, height: 34)
+                        .lineLimit(1)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
                         .background(Color.Primary.primary900)
                         .cornerRadius(8)
                         .overlay(
