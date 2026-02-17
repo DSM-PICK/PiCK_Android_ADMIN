@@ -84,6 +84,8 @@ Carthage/Build/
 
 # Claude Code
 .claude/
+.omc/
+agent-replay/
 
 # Firebase
 **/google-services.json
