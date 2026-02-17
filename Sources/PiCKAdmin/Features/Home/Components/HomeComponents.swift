@@ -16,7 +16,7 @@ struct SelfStudyCard: View {
             Text(adminMessage.isEmpty ? "자습감독 정보를 불러오는 중입니다" : adminMessage)
                 .pickText(type: .body1)
                 .padding(.bottom, 14)
-                .padding(.leading, 20)
+                .padding(.horizontal, 20)
         }
         .frame(maxWidth: .infinity, minHeight: 72, alignment: .topLeading)
         .background(Color.Gray.gray50)
@@ -154,53 +154,48 @@ struct AllSelfStudyCard: View {
     let selfStudyDirector: [SelfStudyDirector]
 
     var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                if selfStudyDirector.isEmpty {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Spacer()
-                        Text("오늘은\n자습감독 선생님이 없습니다.")
-                            .pickText(type: .body2, textColor: .Normal.black)
-                        Spacer()
-                    }
-                    .padding(.leading, 20)
-                } else {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("오늘의 자습 감독 선생님 입니다")
-                            .pickText(type: .body2)
-                            .padding(.top, 27.5)
+        HStack(spacing: 0) {
+            if selfStudyDirector.isEmpty {
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer()
+                    Text("오늘은\n자습감독 선생님이\n없습니다.")
+                        .pickText(type: .body2, textColor: .Normal.black)
+                    Spacer()
+                }
+                .padding(.leading, 20)
+            } else {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("오늘의 자습 감독\n선생님 입니다")
+                        .pickText(type: .body2)
+                        .padding(.top, 27.5)
 
-                        VStack(alignment: .leading, spacing: 12) {
-                            ForEach(selfStudyDirector, id: \.floor) {
-                                director in
-                                HStack(spacing: 16) {
-                                    Text("\(director.floor)층")
-                                        .pickText(type: .body2, textColor: .Primary.primary500)
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(selfStudyDirector, id: \.floor) {
+                            director in
+                            HStack(spacing: 16) {
+                                Text("\(director.floor)층")
+                                    .pickText(type: .body2, textColor: .Primary.primary500)
 
-                                    Text("\(director.teacherName) 선생님")
-                                        .pickText(type: .button1, textColor: .Normal.black)
-                                }
+                                Text("\(director.teacherName) 선생님")
+                                    .pickText(type: .button1, textColor: .Normal.black)
                             }
                         }
-                        .padding(.top, 16)
-
-                        Spacer()
                     }
-                    .padding(.leading, 20)
+                    .padding(.top, 16)
+
+                    Spacer()
                 }
-
-                Spacer()
+                .padding(.leading, 20)
             }
 
-            HStack {
-                Spacer()
-                Image("calendar", bundle: .module)
-                    .renderingMode(.original)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 120, height: 120)
-                    .padding(.trailing, 20)
-            }
+            Spacer(minLength: 8)
+
+            Image("calendar", bundle: .module)
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
+                .padding(.trailing, 20)
         }
         .frame(maxWidth: .infinity)
         .frame(height: 172)
