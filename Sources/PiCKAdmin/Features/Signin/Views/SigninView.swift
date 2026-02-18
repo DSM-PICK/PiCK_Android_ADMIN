@@ -5,6 +5,7 @@ struct SigninView: View {
     @State var viewModel = SigninViewModel()
     @State var emailText: String = ""
     @State var passwordText: String = ""
+    @State var dismissCount: Int = 0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -14,7 +15,8 @@ struct SigninView: View {
                 text: $emailText,
                 placeholder: "학교 이메일을 입력해주세요",
                 titleText: "이메일",
-                showEmail: true
+                showEmail: true,
+                dismissTrigger: dismissCount
             )
             .padding(.horizontal, 24)
             .padding(.top, 50)
@@ -23,7 +25,8 @@ struct SigninView: View {
                 text: $passwordText,
                 placeholder: "비밀번호를 입력해주세요",
                 titleText: "비밀번호",
-                isSecurity: true
+                isSecurity: true,
+                dismissTrigger: dismissCount
             )
             .padding(.horizontal, 24)
             .padding(.top, 44)
@@ -33,7 +36,7 @@ struct SigninView: View {
             signupLinkSection
             signinButton
         }
-        .hideKeyboardOnTap()
+        .onTapGesture { dismissCount += 1 }
         .frame(maxWidth: .infinity, alignment: .leading)
         .navigationBarBackButtonHidden(true)
         #if os(iOS)
