@@ -83,6 +83,7 @@ struct BugReportView: View {
 
             TextField("자세히 입력해주세요", text: $viewModel.bugDescription)
                 .font(.system(size: 14))
+                .textFieldStyle(.plain)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .background(Color.Gray.gray50)
