@@ -1,12 +1,10 @@
 import Foundation
 
-// MARK: - OutList Type
 public enum OutListType: String, Equatable, Hashable {
     case outing = "외출"
     case earlyReturn = "조기귀가"
 }
 
-// MARK: - Models
 public struct OutListStudent: Identifiable, Hashable {
     public let id: String
     public let userName: String
@@ -28,7 +26,6 @@ public struct OutListEarlyReturnStudent: Identifiable, Hashable {
     public let reason: String
 }
 
-// MARK: - DTOs
 struct OutListOutingDTO: Decodable {
     let id: String
     let userName: String

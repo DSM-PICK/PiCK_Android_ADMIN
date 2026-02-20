@@ -6,7 +6,6 @@ struct MainTabView: View {
     var body: some View {
         @Bindable var bindableRouter = router
         TabView(selection: $bindableRouter.selectedTab) {
-            // Tab 0: 급식
             NavigationStack {
                 SchoolMealView()
                     .toolbarBackground(Color.white, for: .navigationBar)
@@ -21,7 +20,6 @@ struct MainTabView: View {
                 }
             }
             
-            // Tab 1: 일정
             NavigationStack {
                 PlanView()
                     .toolbarBackground(Color.white, for: .navigationBar)
@@ -36,7 +34,6 @@ struct MainTabView: View {
                 }
             }
             
-            // Tab 2: 홈
             NavigationStack {
                 HomeView()
                     .toolbarBackground(Color.white, for: .navigationBar)
@@ -51,7 +48,6 @@ struct MainTabView: View {
                 }
             }
             
-            // Tab 3: 수락
             NavigationStack {
                 AcceptView()
                     .toolbarBackground(Color.white, for: .navigationBar)
@@ -66,7 +62,6 @@ struct MainTabView: View {
                 }
             }
             
-            // Tab 4: 전체
             NavigationStack {
                 AllTabView()
                     .toolbarBackground(Color.white, for: .navigationBar)

@@ -9,22 +9,18 @@ public struct AcceptView: View {
     public var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
-                // Header: Filter & Action Buttons
                 headerSection
 
-                // Divider
                 Rectangle()
                     .fill(Color.Gray.gray200)
                     .frame(height: 0.5)
                     .padding(.top, 20)
                     .padding(.horizontal, 24)
 
-                // Floor Filter (only for classroom move)
                 if selectedOption == .classroomMove {
                     floorFilterSection
                 }
 
-                // Title
                 HStack(spacing: 0) {
                     Text("\(selectedOption.title) 신청한 학생")
                         .pickText(type: .body2, textColor: .Gray.gray600)
@@ -33,7 +29,6 @@ public struct AcceptView: View {
                 .padding(.top, selectedOption == .classroomMove ? 16 : 10)
                 .padding(.horizontal, 24)
 
-                // Student List
                 studentListSection
 
                 Spacer()
@@ -52,12 +47,10 @@ public struct AcceptView: View {
                 await viewModel.fetchInitialData()
             }
 
-            // Type Picker Sheet
             if isTypePickerPresented {
                 typePickerOverlay
             }
 
-            // Approve Popup
             if viewModel.showApprovePopup {
                 confirmPopup(
                     title: "선택한 신청을 수락하시겠습니까?",
@@ -66,7 +59,6 @@ public struct AcceptView: View {
                 )
             }
 
-            // Reject Popup
             if viewModel.showRejectPopup {
                 confirmPopup(
                     title: "선택한 신청을 거절하시겠습니까?",
@@ -75,7 +67,6 @@ public struct AcceptView: View {
                 )
             }
 
-            // Alert
             if viewModel.showAlert {
                 alertOverlay
             }
@@ -87,7 +78,6 @@ public struct AcceptView: View {
     private var headerSection: some View {
         HStack(spacing: 0) {
             HStack(spacing: 16) {
-                // Filter Button
                 Button(action: { isTypePickerPresented = true }) {
                     HStack(spacing: 4) {
                         Text(selectedOption.title)
@@ -105,7 +95,6 @@ public struct AcceptView: View {
                     )
                 }
 
-                // Date
                 Text(Date().koreanMonthDayString())
                     .pickText(type: .body2, textColor: .Gray.gray700)
             }
@@ -113,7 +102,6 @@ public struct AcceptView: View {
 
             Spacer()
 
-            // Action Buttons
             HStack(spacing: 8) {
                 Button(action: { viewModel.showRejectPopup = true }) {
                     Text("거절")

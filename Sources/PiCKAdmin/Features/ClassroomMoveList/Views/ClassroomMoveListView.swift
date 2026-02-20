@@ -16,7 +16,6 @@ public struct ClassroomMoveListView: View {
             VStack(spacing: 0) {
                 navigationBar
                 
-                // Header
                 HStack {
                     Text("\(todayString) 교실 이동자")
                         .pickText(type: .heading4, textColor: .Normal.black)
@@ -24,7 +23,6 @@ public struct ClassroomMoveListView: View {
 
                     Spacer()
                     
-                    // Filter Type Button (Floor / Classroom)
                     Button(action: { isTypePickerPresented = true }) {
                         HStack(spacing: 4) {
                             Text(viewModel.currentType.rawValue)
@@ -44,21 +42,18 @@ public struct ClassroomMoveListView: View {
                 }
                 .padding(.top, 24)
 
-                // Divider
                 Rectangle()
                     .fill(Color.Gray.gray200)
                     .frame(height: 0.5)
                     .padding(.top, 16)
                     .padding(.horizontal, 24)
 
-                // Secondary Filter (Floor Scroll or Classroom Picker)
                 if viewModel.currentType == .floor {
                     floorFilterSection
                 } else {
                     classroomFilterButtonSection
                 }
 
-                // List Area
                 if viewModel.isLoading {
                     VStack {
                         Spacer()
@@ -95,12 +90,10 @@ public struct ClassroomMoveListView: View {
                 await viewModel.onAppear()
             }
 
-            // Type Picker Overlay
             if isTypePickerPresented {
                 typePickerOverlay
             }
             
-            // Classroom Picker Overlay
             if isClassroomPickerPresented {
                 classroomPickerOverlay
             }
@@ -129,7 +122,6 @@ public struct ClassroomMoveListView: View {
         .background(Color.Background.background)
     }
 
-    // MARK: - Subviews
     private var floorFilterSection: some View {
         HStack(spacing: 0) {
             ForEach([1, 2, 3, 4, 5], id: \.self) { floor in
@@ -277,7 +269,6 @@ public struct ClassroomMoveListView: View {
                         .padding(.top, 24)
                         .padding(.bottom, 20)
 
-                    // Grade Selection
                     HStack(spacing: 8) {
                         ForEach([5, 1, 2, 3], id: \.self) { grade in
                             Button {
@@ -303,7 +294,6 @@ public struct ClassroomMoveListView: View {
                     }
                     .padding(.horizontal, 24)
 
-                    // Class Selection
                     HStack(spacing: 8) {
                         ForEach([5, 1, 2, 3, 4], id: \.self) { classNum in
                             Button {
@@ -330,7 +320,6 @@ public struct ClassroomMoveListView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
 
-                    // Confirm Button
                     Button {
                         isClassroomPickerPresented = false
                     } label: {
@@ -351,7 +340,6 @@ public struct ClassroomMoveListView: View {
         }
     }
 
-    // MARK: - Helpers
     private var todayString: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")

@@ -2,12 +2,8 @@ import Foundation
 import SkipFuse
 import SwiftUI
 
-/// A logger for the PiCKAdmin module.
 let logger: Logger = Logger(subsystem: "com.team.pick.admin", category: "PiCKAdmin")
 
-/// The shared top-level view for the app, loaded from the platform-specific App delegates below.
-///
-/// The default implementation merely loads the `ContentView` for the app and logs a message.
 /* SKIP @bridge */public struct PiCKAdminRootView : View {
     /* SKIP @bridge */public init() {
     }
@@ -21,9 +17,6 @@ let logger: Logger = Logger(subsystem: "com.team.pick.admin", category: "PiCKAdm
     }
 }
 
-/// Global application delegate functions.
-///
-/// These functions can update a shared observable object to communicate app state changes to interested views.
 /* SKIP @bridge */public final class PiCKAdminAppDelegate : Sendable {
     /* SKIP @bridge */public static let shared = PiCKAdminAppDelegate()
 

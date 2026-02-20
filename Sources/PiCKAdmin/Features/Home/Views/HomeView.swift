@@ -8,12 +8,10 @@ struct HomeView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    // Self Study Info Card
                     SelfStudyCard(adminMessage: viewModel.adminSelfStudyTeacher)
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 72)
 
-                    // Outing Accept Section
                     if viewModel.isHomeroomTeacher {
                         AccordionView(
                             badge: viewModel.classroom,
@@ -58,7 +56,6 @@ struct HomeView: View {
                         }
                     }
 
-                    // Monitoring Sections
                     if viewModel.isSelfStudyTeacher {
                         AccordionView(
                             badge: viewModel.floor,
@@ -114,7 +111,6 @@ struct HomeView: View {
                         }
                     }
 
-                    // All Self Study Directors
                     AllSelfStudyCard(selfStudyDirector: viewModel.selfStudyDirector)
                         .frame(maxWidth: .infinity)
                 }
@@ -134,7 +130,6 @@ struct HomeView: View {
                 await viewModel.onAppear()
             }
 
-            // Alert Overlay
             if viewModel.showAlert {
                 alertOverlay
             }

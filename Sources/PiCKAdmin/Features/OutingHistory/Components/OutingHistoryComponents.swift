@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - OutingHistoryCell
 struct OutingHistoryCell: View {
     let data: OutingHistoryEntity
 

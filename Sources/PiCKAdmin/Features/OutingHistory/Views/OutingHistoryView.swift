@@ -10,16 +10,13 @@ struct OutingHistoryView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // 커스텀 네비게이션 바
                 navigationBar
 
-                // 검색 바
                 searchBar
                     .padding(.top, 24)
                     .padding(.bottom, 20)
                     .padding(.horizontal, 24)
 
-                // 컨텐츠
                 if viewModel.isLoading {
                     Spacer()
                     ProgressView()

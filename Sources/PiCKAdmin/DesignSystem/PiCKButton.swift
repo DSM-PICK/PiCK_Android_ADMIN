@@ -46,7 +46,6 @@ public struct PiCKButton: View {
     }
 }
 
-// MARK: - Underline Button
 public struct UnderLineButton: View {
     public var prefixText: String
     public var buttonText: String

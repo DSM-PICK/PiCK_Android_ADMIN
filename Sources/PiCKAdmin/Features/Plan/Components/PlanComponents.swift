@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Month Header
 struct MonthHeaderView: View {
     let currentMonth: Date
     let onPrevMonth: () -> Void
@@ -33,7 +32,6 @@ struct MonthHeaderView: View {
     }
 }
 
-// MARK: - Calendar View
 struct AcademicScheduleCalendarView: View {
     let monthSchedule: [AcademicSchedule]
     let selectedDate: Date
@@ -113,7 +111,6 @@ struct AcademicScheduleCalendarView: View {
     }
 }
 
-// MARK: - Date Cell
 struct DateCell: View {
     let date: Date
     let isSelected: Bool
@@ -178,7 +175,6 @@ struct DateCell: View {
     }
 }
 
-// MARK: - Schedule List View
 struct ScheduleListView: View {
     let selectedDate: Date
     let schedules: [AcademicSchedule]
@@ -246,7 +242,6 @@ struct ScheduleRow: View {
     }
 }
 
-// MARK: - Extensions
 extension Date {
     func toKoreanYearMonthString() -> String {
         let formatter = DateFormatter()

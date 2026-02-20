@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Application Type
 public enum ApplicationType: String, Equatable, Hashable {
     case outgoing = "외출 수락"
     case classroomMove = "교실 이동"
@@ -9,7 +8,6 @@ public enum ApplicationType: String, Equatable, Hashable {
     var title: String { rawValue }
 }
 
-// MARK: - Accept Models
 public struct AcceptApplicationStudent: Identifiable, Hashable {
     public let id: String
     public let userName: String
@@ -42,7 +40,6 @@ public struct AcceptClassroomMoveStudent: Identifiable, Hashable {
     public let classroomName: String
 }
 
-// MARK: - Student Item Enum
 public enum AcceptStudentItem: Identifiable, Hashable {
     case application(AcceptApplicationStudent)
     case classroomMove(AcceptClassroomMoveStudent)
@@ -57,7 +54,6 @@ public enum AcceptStudentItem: Identifiable, Hashable {
     }
 }
 
-// MARK: - DTOs for Accept
 struct AcceptApplicationDTO: Decodable {
     let id: String
     let userName: String

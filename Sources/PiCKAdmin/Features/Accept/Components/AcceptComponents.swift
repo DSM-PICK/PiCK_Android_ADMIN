@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Accept Student Cell (for Outgoing & Early Return)
 struct AcceptStudentCell: View {
     let studentNumber: String
     let studentName: String
@@ -63,7 +62,6 @@ struct AcceptStudentCell: View {
     }
 }
 
-// MARK: - Accept Classroom Move Cell
 struct AcceptClassroomMoveCell: View {
     let studentNumber: String
     let studentName: String

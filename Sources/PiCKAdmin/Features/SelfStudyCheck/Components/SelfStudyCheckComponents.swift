@@ -1,13 +1,11 @@
 import SwiftUI
 
-// MARK: - Student Attendance Cell
 struct StudentAttendanceCell: View {
     let student: StudentAttendanceItem
     let onStatusTap: () -> Void
 
     var body: some View {
         HStack(spacing: 0) {
-            // Student Number & Name
             HStack(spacing: 8) {
                 Text(student.studentNumber)
                     .pickText(type: .body1, textColor: .Gray.gray600)
@@ -19,7 +17,6 @@ struct StudentAttendanceCell: View {
 
             Spacer()
 
-            // Status Button
             Button(action: onStatusTap) {
                 Text(student.status)
                     .pickText(type: .body2, textColor: statusColor(student.status))

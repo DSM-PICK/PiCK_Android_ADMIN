@@ -31,7 +31,6 @@ public final class JwtStore: @unchecked Sendable {
         guard let token = accessToken, !token.isEmpty else {
             return false
         }
-        // TODO: Add JWT expiration check
         return true
     }
 

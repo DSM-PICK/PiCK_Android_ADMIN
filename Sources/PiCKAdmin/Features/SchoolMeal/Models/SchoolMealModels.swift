@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Models
 public struct MealInfo: Identifiable, Hashable {
     public let id = UUID()
     public let mealType: String // "중식", "석식"
@@ -8,7 +7,6 @@ public struct MealInfo: Identifiable, Hashable {
     public let kcal: String
 }
 
-// MARK: - DTOs
 struct NEISMealResponse: Decodable {
     let mealServiceDietInfo: [NEISMealInfoWrapper]?
 }

@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Plan Models
 public struct AcademicSchedule: Identifiable, Hashable {
     public let id: String
     public let eventName: String

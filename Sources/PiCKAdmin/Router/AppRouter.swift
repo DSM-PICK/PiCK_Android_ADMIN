@@ -26,7 +26,6 @@ public final class AppRouter: @unchecked Sendable {
     }
 }
 
-// MARK: - Environment Key
 struct AppRouterKey: EnvironmentKey {
     static let defaultValue: AppRouter = AppRouter()
 }

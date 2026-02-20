@@ -15,7 +15,6 @@ public struct OutListView: View {
             VStack(spacing: 0) {
                 navigationBar
                 
-                // Header
                 HStack {
                     Text("\(todayString) 외출자")
                         .pickText(type: .heading4, textColor: .Normal.black)
@@ -23,7 +22,6 @@ public struct OutListView: View {
 
                     Spacer()
                     
-                    // Floor Filter Button
                     Button(action: { isFloorPickerPresented = true }) {
                         HStack(spacing: 4) {
                             Text(floorDisplayText(viewModel.currentFloor))
@@ -43,14 +41,12 @@ public struct OutListView: View {
                 }
                 .padding(.top, 24)
 
-                // Divider
                 Rectangle()
                     .fill(Color.Gray.gray200)
                     .frame(height: 0.5)
                     .padding(.top, 16)
                     .padding(.horizontal, 24)
 
-                // Type Toggle (Outing / Early Return)
                 HStack(spacing: 8) {
                     Button {
                         Task { await viewModel.changeType(.outing) }
@@ -91,7 +87,6 @@ public struct OutListView: View {
                 .padding(.horizontal, 24)
                 .padding(.top, 16)
 
-                // List Area
                 if viewModel.isLoading {
                     VStack {
                         Spacer()
@@ -139,7 +134,6 @@ public struct OutListView: View {
                     }
                 }
 
-                // Action Button (Only for Outing)
                 if viewModel.currentType == .outing {
                     Button {
                         Task { await viewModel.returnStudents() }
@@ -162,12 +156,10 @@ public struct OutListView: View {
                 await viewModel.onAppear()
             }
 
-            // Floor Picker Overlay
             if isFloorPickerPresented {
                 floorPickerOverlay
             }
 
-            // Alert
             if viewModel.showAlert {
                 alertOverlay
             }
@@ -196,7 +188,6 @@ public struct OutListView: View {
         .background(Color.Background.background)
     }
 
-    // MARK: - Subviews
     private func emptyStateView(message: String) -> some View {
         VStack {
             Spacer()
@@ -287,7 +278,6 @@ public struct OutListView: View {
         .transition(AnyTransition.move(edge: .bottom).combined(with: .opacity))
     }
 
-    // MARK: - Helpers
     private var todayString: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")

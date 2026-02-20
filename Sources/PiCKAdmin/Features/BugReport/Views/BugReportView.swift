@@ -58,7 +58,6 @@ struct BugReportView: View {
         .background(Color.Background.background)
     }
 
-    // MARK: - Form Content
     private var formContent: some View {
         VStack(alignment: .leading, spacing: 24) {
             bugLocationField
@@ -69,7 +68,6 @@ struct BugReportView: View {
         .padding(.top, 28)
     }
 
-    // MARK: - Bug Location Field
     private var bugLocationField: some View {
         PiCKTextField(
             text: $viewModel.bugLocation,
@@ -78,7 +76,6 @@ struct BugReportView: View {
         )
     }
 
-    // MARK: - Bug Description TextView
     private var bugDescriptionTextView: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("버그에 대해 설명해주세요")
@@ -98,7 +95,6 @@ struct BugReportView: View {
         }
     }
 
-    // MARK: - Bug Image Section
     private var bugImageSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("버그 사진을 첨부해주세요")
@@ -249,7 +245,6 @@ struct BugReportView: View {
         emptyImageButtonContent
     }
 
-    // MARK: - Submit Button
     private var submitButton: some View {
         PiCKButton(
             buttonText: viewModel.isSubmitting ? "제보 중..." : "제보하기",
@@ -264,7 +259,6 @@ struct BugReportView: View {
         .padding(.bottom, 24)
     }
 
-    // MARK: - Alert Overlay
     private var alertOverlay: some View {
         VStack {
             Spacer()

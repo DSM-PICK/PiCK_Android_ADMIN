@@ -1,7 +1,6 @@
 import SwiftUI
 import Observation
 
-// MARK: - ViewModel
 @MainActor
 @Observable
 final class OutingHistoryViewModel {

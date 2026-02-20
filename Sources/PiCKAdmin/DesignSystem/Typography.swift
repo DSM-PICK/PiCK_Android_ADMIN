@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Text Type
 public enum PiCKTextType {
     case heading1
     case heading2
@@ -48,7 +47,6 @@ public enum PiCKTextType {
     }
 }
 
-// MARK: - Text Style Modifier
 struct PiCKTextModifier: ViewModifier {
     let type: PiCKTextType
     let textColor: Color

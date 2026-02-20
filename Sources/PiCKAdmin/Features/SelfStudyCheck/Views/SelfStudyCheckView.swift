@@ -10,30 +10,23 @@ public struct SelfStudyCheckView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Navigation Bar
                 navigationBar
 
-                // Header: Grade/Class Filter & Period Tabs
                 headerSection
 
-                // Student List
                 studentListSection
 
-                // Save Button
                 saveButton
             }
 
-            // Grade/Class Picker Overlay
             if viewModel.showGradeClassPicker {
                 gradeClassPickerOverlay
             }
 
-            // Status Picker Overlay
             if viewModel.showStatusPicker {
                 statusPickerOverlay
             }
 
-            // Alert
             if viewModel.showAlert {
                 alertOverlay
             }
@@ -69,7 +62,6 @@ public struct SelfStudyCheckView: View {
 
     private var headerSection: some View {
         VStack(spacing: 0) {
-            // Grade/Class Filter
             HStack {
                 Button {
                     viewModel.showGradeClassPicker = true
@@ -97,7 +89,6 @@ public struct SelfStudyCheckView: View {
             .padding(.horizontal, 24)
             .padding(.top, 16)
 
-            // Period Tabs
             HStack(spacing: 0) {
                 ForEach(Period.allCases, id: \.self) { period in
                     Button {
@@ -124,7 +115,6 @@ public struct SelfStudyCheckView: View {
             .padding(.horizontal, 24)
             .padding(.top, 16)
 
-            // Divider
             Rectangle()
                 .fill(Color.Gray.gray200)
                 .frame(height: 1)
@@ -212,7 +202,6 @@ public struct SelfStudyCheckView: View {
                         .padding(.top, 24)
                         .padding(.bottom, 20)
 
-                    // Grade Selection
                     HStack(spacing: 8) {
                         ForEach([1, 2, 3], id: \.self) { grade in
                             Button {
@@ -238,7 +227,6 @@ public struct SelfStudyCheckView: View {
                     }
                     .padding(.horizontal, 24)
 
-                    // Class Selection
                     HStack(spacing: 8) {
                         ForEach([1, 2, 3, 4], id: \.self) { classNum in
                             Button {
@@ -265,7 +253,6 @@ public struct SelfStudyCheckView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
 
-                    // Confirm Button
                     Button {
                         viewModel.showGradeClassPicker = false
                     } label: {
@@ -306,7 +293,6 @@ public struct SelfStudyCheckView: View {
                         .padding(.top, 24)
                         .padding(.bottom, 20)
 
-                    // Status Options
                     LazyVGrid(columns: [
                         GridItem(.flexible()),
                         GridItem(.flexible()),
