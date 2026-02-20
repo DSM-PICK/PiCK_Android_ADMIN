@@ -47,7 +47,7 @@ public struct PiCKTextField: View {
                     .pickText(type: .label1, textColor: .Normal.black)
             }
 
-            HStack(spacing: 2) {
+            HStack(spacing: 8) {
                 if isSecure {
                     SecureField(placeholder, text: $text)
                         .focused($isFocused)

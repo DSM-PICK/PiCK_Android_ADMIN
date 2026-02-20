@@ -154,24 +154,20 @@ struct AllSelfStudyCard: View {
     let selfStudyDirector: [SelfStudyDirector]
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             if selfStudyDirector.isEmpty {
-                VStack(alignment: .leading, spacing: 0) {
-                    Spacer()
-                    Text("오늘은\n자습감독 선생님이\n없습니다.")
-                        .pickText(type: .body2, textColor: .Normal.black)
-                    Spacer()
-                }
-                .padding(.leading, 20)
+                Text("오늘은\n자습감독 선생님이\n없습니다.")
+                    .pickText(type: .body2, textColor: .Normal.black)
+                    .padding(.leading, 20)
+                    .padding(.vertical, 24)
             } else {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("오늘의 자습 감독\n선생님 입니다")
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("오늘의 자습 감독 선생님 입니다")
                         .pickText(type: .body2)
-                        .padding(.top, 27.5)
+                        .lineLimit(1)
 
-                    VStack(alignment: .leading, spacing: 12) {
-                        ForEach(selfStudyDirector, id: \.floor) {
-                            director in
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(selfStudyDirector, id: \.floor) { director in
                             HStack(spacing: 16) {
                                 Text("\(director.floor)층")
                                     .pickText(type: .body2, textColor: .Primary.primary500)
@@ -181,11 +177,9 @@ struct AllSelfStudyCard: View {
                             }
                         }
                     }
-                    .padding(.top, 16)
-
-                    Spacer()
                 }
                 .padding(.leading, 20)
+                .padding(.vertical, 24)
             }
 
             Spacer(minLength: 8)
@@ -196,9 +190,9 @@ struct AllSelfStudyCard: View {
                 .scaledToFit()
                 .frame(width: 120, height: 120)
                 .padding(.trailing, 20)
+                .padding(.top, 16)
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 172)
+        .frame(maxWidth: .infinity, minHeight: 140)
         .background(Color.Gray.gray50)
         .cornerRadius(8)
     }
