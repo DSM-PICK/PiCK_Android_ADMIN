@@ -167,19 +167,13 @@ struct PiCKCalendarView: View {
                 .buttonStyle(.plain)
             }
         }
-        // Frame height adjustment: 
-        // Week mode: 1 row ~ 44-48pt
-        // Month mode: ~6 rows ~ 260pt
-        // I will let it size itself or provide frame if needed.
     }
 
     private func generateDates(for month: Date) -> [Date] {
-        // 월의 첫날과 마지막날 구하기
         guard let monthInterval = calendar.dateInterval(of: .month, for: month) else {
             return []
         }
 
-        // 월의 첫 주와 마지막 주의 범위 구하기 (firstWeekday 자동 반영)
         guard let firstWeekInterval = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.start),
               let lastWeekInterval = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.end.addingTimeInterval(-1)) else {
             return []
@@ -188,7 +182,6 @@ struct PiCKCalendarView: View {
         var dates: [Date] = []
         var currentDate = firstWeekInterval.start
 
-        // 첫 주 시작부터 마지막 주 끝까지 날짜 생성
         while currentDate < lastWeekInterval.end {
             dates.append(currentDate)
             guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else { break }
@@ -199,13 +192,8 @@ struct PiCKCalendarView: View {
     }
 
     private func weekDates(from selected: Date, in allDates: [Date]) -> [Date] {
-        // Find which week selectedDate belongs to in allDates (which represents the full month view)
-        // Note: allDates includes padding.
-        // If selectedDate is not in current month (e.g. prev/next month ghost days), it should still work.
         
-        // Ensure selected date comparison ignores time
         guard let index = allDates.firstIndex(where: { calendar.isDate($0, inSameDayAs: selected) }) else { 
-            // Fallback: generate current week
             return generateCurrentWeek(from: selected)
         }
         
@@ -215,7 +203,6 @@ struct PiCKCalendarView: View {
     }
     
     private func generateCurrentWeek(from date: Date) -> [Date] {
-        // Fallback generator
         let weekday = calendar.component(.weekday, from: date)
         let startOfWeek = calendar.date(byAdding: .day, value: -(weekday - 1), to: date)!
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }

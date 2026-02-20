@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Period Enum
 public enum Period: Int, CaseIterable, Hashable {
     case eighth = 8
     case ninth = 9
@@ -11,7 +10,6 @@ public enum Period: Int, CaseIterable, Hashable {
     }
 }
 
-// MARK: - Attendance Status
 public enum AttendanceStatus: String, CaseIterable {
     case attendance = "ATTENDANCE"
     case movement = "MOVEMENT"
@@ -36,7 +34,6 @@ public enum AttendanceStatus: String, CaseIterable {
     }
 }
 
-// MARK: - Student Attendance Model
 public struct StudentAttendanceItem: Identifiable, Equatable, Hashable {
     public let id: String
     public let grade: Int
@@ -51,7 +48,6 @@ public struct StudentAttendanceItem: Identifiable, Equatable, Hashable {
     }
 }
 
-// MARK: - DTO
 struct StudentAttendanceDTO: Decodable {
     let id: String
     let userName: String

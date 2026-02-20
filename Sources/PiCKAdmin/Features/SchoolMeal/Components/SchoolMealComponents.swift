@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Selected Date View
 struct SelectedDateView: View {
     let date: Date
 
@@ -33,7 +32,6 @@ struct SelectedDateView: View {
     }
 }
 
-// MARK: - School Meal Cell
 struct SchoolMealCell: View {
     let mealTime: String
     let menu: [String]

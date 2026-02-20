@@ -44,12 +44,10 @@ final class BugReportViewModel {
         do {
             var fileNames: [String] = []
 
-            // Upload images first if any
             if !selectedImages.isEmpty {
                 fileNames = try await uploadImages()
             }
 
-            // Submit bug report
             try await submitReport(fileNames: fileNames)
 
             isSubmitting = false
@@ -58,7 +56,6 @@ final class BugReportViewModel {
             showAlert = true
             shouldDismiss = true
 
-            // Reset form
             bugLocation = ""
             bugDescription = ""
             selectedImages = []

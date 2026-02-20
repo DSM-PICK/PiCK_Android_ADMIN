@@ -9,6 +9,7 @@ public struct PiCKTextField: View {
     public var showVerification: Bool
     public var errorMessage: String?
     public var verificationButtonTapped: (() -> Void)?
+    public var dismissTrigger: Int
 
     @State var isSecure: Bool = false
     @State var isVerificationSent: Bool = false
@@ -24,7 +25,8 @@ public struct PiCKTextField: View {
         showEmail: Bool = false,
         showVerification: Bool = false,
         errorMessage: String? = nil,
-        verificationButtonTapped: (() -> Void)? = nil
+        verificationButtonTapped: (() -> Void)? = nil,
+        dismissTrigger: Int = 0
     ) {
         self._text = text
         self.placeholder = placeholder
@@ -34,6 +36,7 @@ public struct PiCKTextField: View {
         self.showVerification = showVerification
         self.errorMessage = errorMessage
         self.verificationButtonTapped = verificationButtonTapped
+        self.dismissTrigger = dismissTrigger
         self._isSecure = State(initialValue: isSecurity)
     }
 
@@ -44,7 +47,7 @@ public struct PiCKTextField: View {
                     .pickText(type: .label1, textColor: .Normal.black)
             }
 
-            HStack(spacing: 2) {
+            HStack(spacing: 8) {
                 if isSecure {
                     SecureField(placeholder, text: $text)
                         .focused($isFocused)
@@ -109,6 +112,9 @@ public struct PiCKTextField: View {
                     .pickText(type: .body1, textColor: .Error.error)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
+        }
+        .onChange(of: dismissTrigger) {
+            isFocused = false
         }
         .onDisappear {
             stopTimer()

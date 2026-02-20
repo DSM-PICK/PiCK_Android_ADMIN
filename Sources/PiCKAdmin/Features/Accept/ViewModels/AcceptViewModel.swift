@@ -37,7 +37,6 @@ public final class AcceptViewModel {
             self.currentClassNum = response.classNum
             self.currentFloor = response.selfStudyFloor > 0 ? response.selfStudyFloor : 3
 
-            // Fetch initial data based on type
             await fetchApplications()
         } catch {
         }
@@ -168,7 +167,6 @@ public final class AcceptViewModel {
                 )
             }
 
-            // Remove approved items from list
             studentItems.removeAll { item in
                 selectedItemIds.contains(item.id)
             }
@@ -207,7 +205,6 @@ public final class AcceptViewModel {
                 )
             }
 
-            // Remove rejected items from list
             studentItems.removeAll { item in
                 selectedItemIds.contains(item.id)
             }
@@ -264,7 +261,6 @@ public final class AcceptViewModel {
 }
 
 public struct AcceptAPI {
-    // Get applications by grade (for outgoing - PENDING status)
     public static func getApplicationsByGrade(grade: Int, classNum: Int) -> APIEndpoint {
         return APIEndpoint(
             path: "/application/grade",
@@ -275,7 +271,6 @@ public struct AcceptAPI {
         )
     }
 
-    // Get early returns by grade
     public static func getEarlyReturnByGrade(grade: Int, classNum: Int) -> APIEndpoint {
         return APIEndpoint(
             path: "/early-return/grade",
@@ -286,7 +281,6 @@ public struct AcceptAPI {
         )
     }
 
-    // Get classroom moves by floor (QUIET status for pending)
     public static func getClassroomMovesByFloor(floor: Int) -> APIEndpoint {
         return APIEndpoint(
             path: "/class-room/floor",
@@ -297,7 +291,6 @@ public struct AcceptAPI {
         )
     }
 
-    // Update application status
     public static func updateApplicationStatus(idList: [String], status: String) -> APIEndpoint {
         let body = try? JSONEncoder().encode(UpdateStatusRequest(status: status, idList: idList))
         return APIEndpoint(
@@ -307,7 +300,6 @@ public struct AcceptAPI {
         )
     }
 
-    // Update classroom move status
     public static func updateClassroomMoveStatus(idList: [String], status: String) -> APIEndpoint {
         let body = try? JSONEncoder().encode(UpdateStatusRequest(status: status, idList: idList))
         return APIEndpoint(
@@ -317,7 +309,6 @@ public struct AcceptAPI {
         )
     }
 
-    // Update early return status
     public static func updateEarlyReturnStatus(idList: [String], status: String) -> APIEndpoint {
         let body = try? JSONEncoder().encode(UpdateStatusRequest(status: status, idList: idList))
         return APIEndpoint(

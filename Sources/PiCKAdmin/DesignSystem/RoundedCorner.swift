@@ -1,6 +1,5 @@
 import SwiftUI
 
-// Replacement for UIRectCorner
 struct RectCorner: OptionSet {
     let rawValue: Int
     static let topLeft = RectCorner(rawValue: 1 << 0)
@@ -21,7 +20,6 @@ struct RoundedCorner: Shape {
         let h = rect.size.height
         let r = radius
 
-        // Top Left
         if corners.contains(.topLeft) {
             path.move(to: CGPoint(x: 0, y: r))
             path.addArc(center: CGPoint(x: r, y: r), radius: r, startAngle: .degrees(180), endAngle: .degrees(270), clockwise: false)
@@ -29,7 +27,6 @@ struct RoundedCorner: Shape {
             path.move(to: CGPoint(x: 0, y: 0))
         }
 
-        // Top Right
         if corners.contains(.topRight) {
             path.addLine(to: CGPoint(x: w - r, y: 0))
             path.addArc(center: CGPoint(x: w - r, y: r), radius: r, startAngle: .degrees(270), endAngle: .degrees(0), clockwise: false)
@@ -37,7 +34,6 @@ struct RoundedCorner: Shape {
             path.addLine(to: CGPoint(x: w, y: 0))
         }
 
-        // Bottom Right
         if corners.contains(.bottomRight) {
             path.addLine(to: CGPoint(x: w, y: h - r))
             path.addArc(center: CGPoint(x: w - r, y: h - r), radius: r, startAngle: .degrees(0), endAngle: .degrees(90), clockwise: false)
@@ -45,7 +41,6 @@ struct RoundedCorner: Shape {
             path.addLine(to: CGPoint(x: w, y: h))
         }
 
-        // Bottom Left
         if corners.contains(.bottomLeft) {
             path.addLine(to: CGPoint(x: r, y: h))
             path.addArc(center: CGPoint(x: r, y: h - r), radius: r, startAngle: .degrees(90), endAngle: .degrees(180), clockwise: false)

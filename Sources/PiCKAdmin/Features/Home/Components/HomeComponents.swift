@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Self Study Card
 struct SelfStudyCard: View {
     let adminMessage: String
 
@@ -16,7 +15,7 @@ struct SelfStudyCard: View {
             Text(adminMessage.isEmpty ? "자습감독 정보를 불러오는 중입니다" : adminMessage)
                 .pickText(type: .body1)
                 .padding(.bottom, 14)
-                .padding(.leading, 20)
+                .padding(.horizontal, 20)
         }
         .frame(maxWidth: .infinity, minHeight: 72, alignment: .topLeading)
         .background(Color.Gray.gray50)
@@ -24,7 +23,6 @@ struct SelfStudyCard: View {
     }
 }
 
-// MARK: - Accordion View
 struct AccordionView<Content: View>: View {
     @State var isExpanded: Bool = false
     let badge: String
@@ -65,7 +63,6 @@ struct AccordionView<Content: View>: View {
     }
 }
 
-// MARK: - Accept Cell
 struct AcceptCell: View {
     let studentNumber: String
     let name: String
@@ -118,7 +115,6 @@ struct AcceptCell: View {
     }
 }
 
-// MARK: - Outing Cell
 struct OutingCell: View {
     let studentNumber: String
     let name: String
@@ -149,61 +145,48 @@ struct OutingCell: View {
     }
 }
 
-// MARK: - All Self Study Card
 struct AllSelfStudyCard: View {
     let selfStudyDirector: [SelfStudyDirector]
 
     var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                if selfStudyDirector.isEmpty {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Spacer()
-                        Text("오늘은\n자습감독 선생님이 없습니다.")
-                            .pickText(type: .body2, textColor: .Normal.black)
-                        Spacer()
-                    }
+        HStack(alignment: .center, spacing: 0) {
+            if selfStudyDirector.isEmpty {
+                Text("오늘은\n자습감독 선생님이\n없습니다.")
+                    .pickText(type: .body2, textColor: .Normal.black)
                     .padding(.leading, 20)
-                } else {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("오늘의 자습 감독 선생님 입니다")
-                            .pickText(type: .body2)
-                            .padding(.top, 27.5)
+                    .padding(.vertical, 24)
+            } else {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("오늘의 자습 감독 선생님 입니다")
+                        .pickText(type: .body2)
+                        .lineLimit(1)
 
-                        VStack(alignment: .leading, spacing: 12) {
-                            ForEach(selfStudyDirector, id: \.floor) {
-                                director in
-                                HStack(spacing: 16) {
-                                    Text("\(director.floor)층")
-                                        .pickText(type: .body2, textColor: .Primary.primary500)
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(selfStudyDirector, id: \.floor) { director in
+                            HStack(spacing: 16) {
+                                Text("\(director.floor)층")
+                                    .pickText(type: .body2, textColor: .Primary.primary500)
 
-                                    Text("\(director.teacherName) 선생님")
-                                        .pickText(type: .button1, textColor: .Normal.black)
-                                }
+                                Text("\(director.teacherName) 선생님")
+                                    .pickText(type: .button1, textColor: .Normal.black)
                             }
                         }
-                        .padding(.top, 16)
-
-                        Spacer()
                     }
-                    .padding(.leading, 20)
                 }
-
-                Spacer()
+                .padding(.leading, 20)
+                .padding(.vertical, 24)
             }
 
-            HStack {
-                Spacer()
-                Image("calendar", bundle: .module)
-                    .renderingMode(.original)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 120, height: 120)
-                    .padding(.trailing, 20)
-            }
+            Spacer(minLength: 8)
+
+            Image("calendar", bundle: .module)
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
+                .padding(.trailing, 20)
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 172)
+        .frame(maxWidth: .infinity, minHeight: 140)
         .background(Color.Gray.gray50)
         .cornerRadius(8)
     }

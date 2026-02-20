@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Home Models (Used by View)
 public struct OutingStudent: Identifiable, Hashable {
     public let id: String
     public let userName: String
@@ -47,7 +46,6 @@ public struct SelfStudyDirector: Hashable {
     public let teacherName: String
 }
 
-// MARK: - DTOs
 struct SelfStudyDirectorDTO: Decodable {
     let floor: Int
     let teacherName: String

@@ -1,7 +1,6 @@
 import Foundation
 
 public struct HomeAPI {
-    // MARK: - Self Study
     public static func getSelfStudyDirector(date: String) -> APIEndpoint {
         return APIEndpoint(
             path: "/self-study/today",
@@ -21,7 +20,6 @@ public struct HomeAPI {
         )
     }
 
-    // MARK: - Application (Homeroom Teacher)
     public static func getApplicationsByGrade(grade: Int, classNum: Int) -> APIEndpoint {
         return APIEndpoint(
             path: "/application/grade",
@@ -60,7 +58,6 @@ public struct HomeAPI {
         )
     }
 
-    // MARK: - Classroom Move (Self Study Teacher)
     public static func getClassroomMoveByFloor(floor: Int) -> APIEndpoint {
         return APIEndpoint(
             path: "/class-room/floor",

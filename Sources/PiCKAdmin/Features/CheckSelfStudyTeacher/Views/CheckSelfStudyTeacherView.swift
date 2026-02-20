@@ -19,10 +19,8 @@ struct CheckSelfStudyTeacherView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // 커스텀 네비게이션 바
                 navigationBar
 
-                // 컨텐츠 영역
                 VStack(alignment: .leading, spacing: 0) {
                     titleView(selectedDate: viewModel.selectedDate)
                         .padding(.top, 24)
@@ -76,11 +74,9 @@ struct CheckSelfStudyTeacherView: View {
 
     private var navigationBar: some View {
         ZStack {
-            // 중앙 타이틀
             Text("자습 감독 선생님 확인")
                 .pickText(type: .subTitle1, textColor: .Normal.black)
 
-            // 뒤로가기 버튼
             HStack {
                 Button {
                     router.pop()

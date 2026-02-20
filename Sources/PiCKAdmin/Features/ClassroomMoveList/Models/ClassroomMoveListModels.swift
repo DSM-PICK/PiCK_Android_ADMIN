@@ -1,12 +1,10 @@
 import Foundation
 
-// MARK: - ClassroomMoveList Type
 public enum ClassroomMoveListType: String, Equatable, Hashable {
     case floor = "층으로"
     case classroom = "교실로"
 }
 
-// MARK: - Models
 public struct ClassroomMoveListStudent: Identifiable, Hashable {
     public let id: String
     public let userName: String
@@ -18,7 +16,6 @@ public struct ClassroomMoveListStudent: Identifiable, Hashable {
     public let classroomName: String
 }
 
-// MARK: - DTOs
 struct ClassroomMoveListDTO: Decodable {
     let userName: String
     let classroomName: String

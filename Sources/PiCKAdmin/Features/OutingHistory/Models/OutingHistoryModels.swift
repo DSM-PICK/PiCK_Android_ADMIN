@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Response DTO
 struct OutingHistoryResponse: Codable {
     let id: String
     let userName: String
@@ -11,7 +10,6 @@ struct OutingHistoryResponse: Codable {
     let earlyReturnCnt: Int
 }
 
-// MARK: - Entity
 struct OutingHistoryEntity: Identifiable, Equatable {
     let id: String
     let userName: String

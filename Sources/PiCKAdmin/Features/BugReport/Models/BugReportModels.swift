@@ -1,6 +1,5 @@
 import Foundation
 
-// MARK: - Bug Report Request
 struct BugReportRequest: Codable {
     let title: String
     let model: String
@@ -15,7 +14,6 @@ struct BugReportRequest: Codable {
     }
 }
 
-// MARK: - Image Upload Response
 struct ImageUploadResponse: Codable {
     let fileNames: [String]
 
