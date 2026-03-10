@@ -24,22 +24,9 @@ public final class AcceptViewModel {
 
     @MainActor
     public func fetchInitialData() async {
-        isLoading = true
-        defer { isLoading = false }
-
-        do {
-            let response = try await APIClient.shared.request(
-                HomeAPI.getSelfStudyAndClassroom(),
-                responseType: SelfStudyAndClassroomDTO.self
-            )
-
-            self.currentGrade = response.grade
-            self.currentClassNum = response.classNum
-            self.currentFloor = response.selfStudyFloor > 0 ? response.selfStudyFloor : 3
-
-            await fetchApplications()
-        } catch {
-        }
+        self.currentGrade = 5
+        self.currentClassNum = 5
+        await fetchApplications()
     }
 
     @MainActor
