@@ -43,8 +43,10 @@ public struct AcceptView: View {
                         .padding(.leading, 8)
                 }
             }
-            .task {
-                await viewModel.fetchInitialData()
+            .onAppear {
+                Task {
+                    await viewModel.fetchInitialData()
+                }
             }
 
             if isTypePickerPresented {
