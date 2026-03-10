@@ -63,17 +63,6 @@ struct AcceptApplicationDTO: Decodable {
     let start: String
     let end: String
     let reason: String
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userName = "user_name"
-        case grade
-        case classNum = "class_num"
-        case num
-        case start
-        case end
-        case reason
-    }
 }
 
 struct AcceptEarlyReturnDTO: Decodable {
@@ -84,16 +73,6 @@ struct AcceptEarlyReturnDTO: Decodable {
     let num: Int
     let start: String
     let reason: String
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userName = "user_name"
-        case grade
-        case classNum = "class_num"
-        case num
-        case start
-        case reason
-    }
 }
 
 struct AcceptClassroomMoveDTO: Decodable {
@@ -106,16 +85,4 @@ struct AcceptClassroomMoveDTO: Decodable {
     let num: Int
     let start: Int
     let end: Int
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userId = "user_id"
-        case userName = "user_name"
-        case classroomName = "classroom_name"
-        case grade
-        case classNum = "class_num"
-        case num
-        case start
-        case end
-    }
 }

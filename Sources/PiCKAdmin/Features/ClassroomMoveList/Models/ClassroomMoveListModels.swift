@@ -25,15 +25,4 @@ struct ClassroomMoveListDTO: Decodable {
     let start: Int
     let end: Int
     let userId: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case userName = "user_name"
-        case classroomName = "classroom_name"
-        case grade
-        case classNum = "class_num"
-        case num
-        case start
-        case end
-        case userId = "user_id"
-    }
 }
