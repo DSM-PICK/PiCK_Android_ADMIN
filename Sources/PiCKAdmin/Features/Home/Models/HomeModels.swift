@@ -63,14 +63,6 @@ struct ApplicationDTO: Decodable {
     let grade: Int
     let classNum: Int
     let num: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userName = "user_name"
-        case grade
-        case classNum = "class_num"
-        case num
-    }
 }
 
 struct EarlyReturnDTO: Decodable {
@@ -79,14 +71,6 @@ struct EarlyReturnDTO: Decodable {
     let grade: Int
     let classNum: Int
     let num: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case userName = "user_name"
-        case grade
-        case classNum = "class_num"
-        case num
-    }
 }
 
 struct ClassroomMoveDTO: Decodable {
@@ -98,15 +82,4 @@ struct ClassroomMoveDTO: Decodable {
     let start: Int
     let end: Int
     let userId: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case userName = "user_name"
-        case classroomName = "classroom_name"
-        case grade
-        case classNum = "class_num"
-        case num
-        case start
-        case end
-        case userId = "user_id"
-    }
 }

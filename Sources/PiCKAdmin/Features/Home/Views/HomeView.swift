@@ -126,8 +126,10 @@ struct HomeView: View {
                         .padding(.leading, 8)
                 }
             }
-            .task {
-                await viewModel.onAppear()
+            .onAppear {
+                Task {
+                    await viewModel.onAppear()
+                }
             }
 
             if viewModel.showAlert {
