@@ -4,8 +4,10 @@ struct MainTabView: View {
     @Environment(\.appRouter) var router: AppRouter
 
     var body: some View {
-        @Bindable var bindableRouter = router
-        TabView(selection: $bindableRouter.selectedTab) {
+        TabView(selection: Binding(
+            get: { router.selectedTab },
+            set: { router.selectedTab = $0 }
+        )) {
             NavigationStack {
                 SchoolMealView()
                     .toolbarBackground(Color.white, for: .navigationBar)
