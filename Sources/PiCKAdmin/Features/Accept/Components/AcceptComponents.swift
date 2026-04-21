@@ -89,8 +89,11 @@ struct AcceptClassroomMoveCell: View {
                     Text(currentClassroom)
                         .pickText(type: .body1, textColor: .Normal.black)
 
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 14))
+                    Image("rightArrow", bundle: .module)
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
                         .foregroundColor(.Normal.black)
 
                     Text(moveToClassroom)
