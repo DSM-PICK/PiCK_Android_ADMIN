@@ -10,8 +10,8 @@ let package = Package(
         .library(name: "PiCKAdmin", type: .dynamic, targets: ["PiCKAdmin"]),
     ],
     dependencies: [
-        .package(url: "https://source.skip.tools/skip.git", from: "1.7.0"),
-        .package(url: "https://source.skip.tools/skip-fuse-ui.git", from: "1.0.0")
+        .package(url: "https://source.skip.tools/skip.git", exact: "1.7.0"),
+        .package(url: "https://source.skip.tools/skip-fuse-ui.git", exact: "1.12.0")
     ],
     targets: [
         .target(name: "PiCKAdmin", dependencies: [
