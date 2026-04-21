@@ -6,6 +6,10 @@ import FoundationNetworking
 
 private let apiLogger = Logger(subsystem: "com.team.pick.admin", category: "APIClient")
 
+extension Notification.Name {
+    static let authSessionExpired = Notification.Name("authSessionExpired")
+}
+
 public final class APIClient: @unchecked Sendable {
     public static let shared = APIClient()
 
@@ -16,6 +20,12 @@ public final class APIClient: @unchecked Sendable {
         self.baseURL = Secrets.apiBaseURL
         self.session = URLSession.shared
         apiLogger.info("APIClient initialized with baseURL: \(self.baseURL)")
+    }
+
+    private func handleUnauthorizedResponse() {
+        apiLogger.info("Unauthorized (401) - clearing tokens and notifying auth session expiration")
+        JwtStore.shared.clearTokens()
+        NotificationCenter.default.post(name: .authSessionExpired, object: nil)
     }
 
     public func request<T: Decodable>(
@@ -80,7 +90,7 @@ public final class APIClient: @unchecked Sendable {
                     throw APIError.decodingError(error)
                 }
             case 401:
-                apiLogger.info("Unauthorized (401)")
+                handleUnauthorizedResponse()
                 throw APIError.unauthorized
             default:
                 apiLogger.info("Server error: \(httpResponse.statusCode)")
@@ -142,7 +152,7 @@ public final class APIClient: @unchecked Sendable {
                 apiLogger.info("SUCCESS: \(endpoint.path)")
                 return
             case 401:
-                apiLogger.info("Unauthorized (401)")
+                handleUnauthorizedResponse()
                 throw APIError.unauthorized
             default:
                 apiLogger.info("Server error: \(httpResponse.statusCode)")
@@ -203,7 +213,7 @@ public final class APIClient: @unchecked Sendable {
                 apiLogger.info("SUCCESS: \(endpoint.path)")
                 return responseString
             case 401:
-                apiLogger.info("Unauthorized (401)")
+                handleUnauthorizedResponse()
                 throw APIError.unauthorized
             default:
                 apiLogger.info("Server error: \(httpResponse.statusCode)")
