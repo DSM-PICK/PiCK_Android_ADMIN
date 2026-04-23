@@ -22,9 +22,16 @@ struct StudentAttendanceCell: View {
                     .pickText(type: .body2, textColor: statusColor(student.status))
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(statusBackgroundColor(student.status))
-                    .cornerRadius(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(statusBackgroundColor(student.status))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(statusBorderColor(student.status), lineWidth: 1)
+                    )
             }
+            .buttonStyle(.plain)
         }
         .padding(.vertical, 12)
         .padding(.horizontal, 16)
@@ -36,13 +43,13 @@ struct StudentAttendanceCell: View {
     private func statusColor(_ status: String) -> Color {
         switch status {
         case "출석":
-            return .Primary.primary500
+            return .Normal.white
         case "이동":
-            return .Gray.gray700
+            return .Normal.white
         case "귀가", "외출":
-            return .Primary.primary400
+            return .Error.error
         case "현체", "취업":
-            return .Gray.gray600
+            return .Gray.gray900
         default:
             return .Normal.black
         }
@@ -51,15 +58,30 @@ struct StudentAttendanceCell: View {
     private func statusBackgroundColor(_ status: String) -> Color {
         switch status {
         case "출석":
-            return .Primary.primary50
+            return .Primary.primary500
         case "이동":
-            return .Gray.gray100
+            return .Gray.gray700
         case "귀가", "외출":
-            return .Primary.primary50.opacity(0.5)
+            return .Error.errorLight
         case "현체", "취업":
-            return .Gray.gray100
+            return .Gray.gray200
         default:
             return .Gray.gray100
+        }
+    }
+
+    private func statusBorderColor(_ status: String) -> Color {
+        switch status {
+        case "출석":
+            return .Primary.primary500
+        case "이동":
+            return .Gray.gray700
+        case "귀가", "외출":
+            return .Error.error
+        case "현체", "취업":
+            return .Gray.gray600
+        default:
+            return .Gray.gray400
         }
     }
 }
