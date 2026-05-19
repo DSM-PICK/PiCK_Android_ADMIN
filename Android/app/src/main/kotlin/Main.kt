@@ -12,6 +12,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.graphics.Color as AndroidColor
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.SystemBarStyle
@@ -85,12 +87,20 @@ open class AndroidAppMain: Application {
 
 /// AndroidAppMain is initial `androidx.appcompat.app.AppCompatActivity`, and must match `activity android:name` in the AndroidMainfest.xml file.
 open class MainActivity: AppCompatActivity {
+    private lateinit var appUpdateCoordinator: AppUpdateCoordinator
+    private val updateLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        appUpdateCoordinator.onUpdateResult(result.resultCode)
+    }
+
     constructor() {
     }
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         logger.info("starting activity")
+        appUpdateCoordinator = AppUpdateCoordinator(this, updateLauncher)
         UIApplication.launch(this)
         enableEdgeToEdge()
 
@@ -111,6 +121,8 @@ open class MainActivity: AppCompatActivity {
                 1
             )
         }
+
+        appUpdateCoordinator.checkForUpdates()
     }
 
     override fun onStart() {
@@ -120,6 +132,7 @@ open class MainActivity: AppCompatActivity {
 
     override fun onResume() {
         super.onResume()
+        appUpdateCoordinator.resumeImmediateUpdateIfNeeded()
         AppDelegate.shared.onResume()
     }
 
