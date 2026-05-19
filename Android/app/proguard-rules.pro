@@ -8,3 +8,6 @@
 -keep class * implements skip.bridge.** { *; }
 -keep class **._ModuleBundleAccessor_* { *; }
 -keep class pi.ckadmin.** { *; }
+-dontwarn kotlin.reflect.full.KClasses
+-dontwarn kotlin.reflect.full.KTypes
+-dontwarn kotlin.reflect.jvm.KTypesJvm

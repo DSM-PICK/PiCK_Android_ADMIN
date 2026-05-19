@@ -83,8 +83,8 @@ final class BugReportViewModel {
         bodyData.append("--\(boundary)--\r\n".data(using: .utf8)!)
 
         let endpoint = BugReportAPI.uploadImages(boundary: boundary, body: bodyData)
-        let response = try await APIClient.shared.request(endpoint, responseType: [String].self)
-        return response
+        let response = try await APIClient.shared.request(endpoint, responseType: ImageUploadResponse.self)
+        return response.fileNames
     }
 
     private func submitReport(fileNames: [String]) async throws {
